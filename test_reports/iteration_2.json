@@ -1,0 +1,32 @@
+{
+  "summary": "Full E2E frontend retest of CavernicolApp Mobile (Expo Web preview) after the SlideToConfirm web-only tap-to-confirm fix. All P0 flows for the 'Nueva Cita' bottom-sheet and Agenda regressions PASSED via Playwright automation. Confirmed: (1) Login works for both owner and vendedor by clicking testID login-submit-slider — no drag needed on web. (2) Navigation to Agenda tab works. (3) FAB opens the sheet titled 'Nueva Cita'. (4) Lead typeahead: typing 'Mar' returns 1 option, selection renders the selected-lead chip, tapping the chip clears the selection. (5) Service chip 'new-appt-service-srv-color' selects; row does not wrap. (6) 14-day date row present; picking tomorrow reveals the slot grid grouped by hour. (7) Slot grid shows 18 slot buttons: 3 enabled (09:00, 17:00, 17:30) and 15 disabled — CRITICALLY 14:00 (lunch) is aria-disabled=true as required, and time-overlaps of existing appointments are also disabled and NOT selectable. (8) Resource 'Cualquiera' clicks. (9) Notes accept multi-line input. (10) 'new-appt-submit' starts aria-disabled=true and becomes enabled only after lead+service+slot are chosen. (11) On submit, sheet closes and green 'app-toast' shows 'Cita creada correctamente'; the new 09:00 appointment appears in the Agenda Día view. (12) Dismissal via 'new-appointment-sheet-backdrop' and via 'bottom-sheet-close' both close the sheet without creating an appointment. (13) All four view toggles (agenda-view-day/week/month/list) switch views. (14) RBAC: logging in as vendedor@demo.mx shows the 'MÍAS' badge on Agenda and the lead typeahead returns only the vendedor's own leads ('María Fernanda Torres' for 'Mar', different from owner's result set). Deprecated packages detected: none. React Native warnings detected: props.pointerEvents deprecated and shadow* style props deprecated (carried over from iteration 1, non-blocking).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      { "component": "pointerEvents prop", "issue": "Console warning: 'props.pointerEvents is deprecated. Use style.pointerEvents'. Still emitted on load (non-blocking). Reference: search codebase for pointerEvents prop usages." },
+      { "component": "shadow* style props", "issue": "Console warning: '\"shadow*\" style props are deprecated. Use \"boxShadow\"'. Emitted on agenda screen render — likely FAB (agenda.tsx) and SlideToConfirm.tsx thumb shadow." },
+      { "component": "Animated.useNativeDriver", "issue": "Console warning: 'Animated: useNativeDriver is not supported because the native animated module is missing. Falling back to JS-based animation.' Expected on web — SlideToConfirm/BottomSheet still work with JS fallback. Consider gating useNativeDriver:false when Platform.OS==='web' to silence." }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: migrate remaining pointerEvents prop usages to style.pointerEvents and shadow* props to boxShadow to clear console warnings on web.",
+    "Optional: gate Animated animations with useNativeDriver: Platform.OS !== 'web' to silence the useNativeDriver warning on the web preview.",
+    "No functional issues found — Nueva Cita P0 feature is fully working end-to-end in mock mode for both owner and vendedor roles."
+  ],
+  "critical_code_review_comments": [
+    "Slot grid correctly excludes 14:00 (lunch) and time-overlaps with existing appts — logic in /app/mobile/src/api/agenda.ts (mock availability) is aligned with the spec.",
+    "Submit button starts aria-disabled=true and enables only after lead+service+slot — verified via DOM attributes.",
+    "Selected-lead chip toggle-clear on tap works cleanly (single tap resets typeahead)."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A (frontend-only run)", "frontend": "100% (14/14 P0 checkpoints passed)" },
+  "seed_data_creation": "None (mock data in src/api/mockData.ts).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Nueva Cita bottom-sheet flow, dismissal, view toggles and RBAC filtering are all verified. The web-only tap-to-confirm on SlideToConfirm (testID 'login-submit-slider') unblocks Playwright login end-to-end — do NOT try to drag it on web. When testing as vendedor, note that lead typeahead requires >=2 characters ('a' returns 0, 'Mar' returns 'María Fernanda Torres' only). Logout is via Perfil tab → 'Cerrar sesión' (may show a confirm modal — register a page.on('dialog') acceptor if needed).",
+  "rca_of_issue": "N/A — original iteration 1 blocker (PanResponder ignoring synthetic drag events on RN Web) has been resolved via a Platform.OS==='web' tap-to-confirm fallback in SlideToConfirm."
+}

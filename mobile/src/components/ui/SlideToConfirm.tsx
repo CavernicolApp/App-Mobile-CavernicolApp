@@ -3,7 +3,7 @@
 // Usa PanResponder nativo de RN (funciona en iOS/Android/web sin reanimated).
 
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, PanResponder, View } from 'react-native';
+import { ActivityIndicator, Animated, PanResponder, Platform, Pressable, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
@@ -45,6 +45,25 @@ export function SlideToConfirm({
   const [confirmed, setConfirmed] = useState(false);
 
   const maxTranslate = Math.max(0, width - THUMB_SIZE - THUMB_MARGIN * 2);
+
+  // Confirmación programática (reutilizada por el gesto y por el tap web).
+  function confirmNow() {
+    if (disabled || loading || confirmed) return;
+    Animated.timing(translateX, {
+      toValue: maxTranslate,
+      duration: 150,
+      useNativeDriver: true,
+    }).start(() => {
+      setConfirmed(true);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+      onConfirm();
+    });
+  }
+
+  // En web el gesto de arrastre con mouse es incómodo (y no es automatizable por
+  // el ResponderSystem de react-native-web). El preview/QA corren en web, así que
+  // habilitamos tap-to-confirm SOLO en web — iOS/Android conservan el slide.
+  const isWeb = Platform.OS === 'web';
 
   const panResponder = useRef(
     PanResponder.create({
@@ -228,7 +247,36 @@ export function SlideToConfirm({
   );
 
   if (labelPosition === 'inside') {
+    if (isWeb) {
+      return (
+        <Pressable testID={testID} onPress={confirmNow} disabled={disabled || loading || confirmed}>
+          {track}
+        </Pressable>
+      );
+    }
     return <View testID={testID}>{track}</View>;
+  }
+
+  if (isWeb) {
+    return (
+      <Pressable
+        testID={testID}
+        onPress={confirmNow}
+        disabled={disabled || loading || confirmed}
+        className="w-full"
+      >
+        {track}
+        <Animated.View
+          pointerEvents="none"
+          className="items-center justify-center mt-3"
+          style={{ opacity: labelOpacity }}
+        >
+          <Txt variant="label" weight="medium" tone="muted" className="tracking-[3px] text-center">
+            {displayLabel}
+          </Txt>
+        </Animated.View>
+      </Pressable>
+    );
   }
 
   return (
