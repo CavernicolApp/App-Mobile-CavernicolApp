@@ -279,7 +279,29 @@ CavernicolAppMobile/
 
 ## 10. Estado actual y próximas acciones
 
-### ✅ Hecho en esta sesión (jul 2026)
+### ✅ Hecho en esta sesión (E1 · jul 24, 2026) — Formulario "Nueva Cita" (P0)
+- **Feature P0 completada**: formulario real "Nueva Cita" en la Agenda, reemplazando el stub `Alert`.
+  - Nuevo `src/components/ui/BottomSheet.tsx` — hoja inferior Cyberpunk reutilizable (RN `Modal` + `Animated` + `PanResponder`, borde superior gradiente flame→magenta sobre obsidian, drag-handle para cerrar, `KeyboardAvoidingView`). **Cero dependencias nuevas** (no reanimated: se descartó porque su setup web exige envolver `metro.config.js`, archivo protegido, y rompe en Expo Go SDK 52).
+  - Nuevo `src/components/ui/Toast.tsx` — `ToastProvider` global (montado en `app/_layout.tsx`) + hook `useToast()`, animado con RN `Animated`.
+  - Nuevo `src/components/agenda/NewAppointmentSheet.tsx` — form de 6 pasos: Cliente/Lead (typeahead sobre `listLeads`), Servicio (chips), Fecha (chips 14 días), Slot de horario (grid agrupado por hora desde `getAvailability`), Recurso (opcional), Notas (multiline). CTA "CREAR CITA" → `createAppointment`.
+  - Data mock extendida en `src/api/mockData.ts`: `MOCK_SERVICES`, `MOCK_RESOURCES`, `buildMockAvailability()` (slots 09–19h c/30min, marca no disponibles los solapes + comida 14:00), `createMockAppointment()`. Contrato idéntico a `BACKEND_MOBILE_SPEC.md` — al poner `MOCK_MODE=false` solo se cambia la rama de red.
+  - `src/api/agenda.ts`: `listServices`/`listResources` ahora devuelven mocks; añadidos `getAvailability()` y `createAppointment()`.
+  - `src/hooks/useAgenda.ts`: añadidos `useAvailability()` y `useCreateAppointment()` (invalidan `appointments`/`agenda-status`/`availability`).
+  - `app/(tabs)/agenda.tsx`: FAB abre la hoja; al crear → cierra + toast verde "Cita creada correctamente" + haptic Success + refetch.
+- **Fix de login para QA/preview web**: `SlideToConfirm` ahora ofrece **tap-to-confirm SOLO en web** (`Platform.OS==='web'`). iOS/Android conservan el gesto de arrastre. Necesario porque el ResponderSystem de react-native-web ignora eventos sintéticos (bloqueaba el testing automatizado).
+- **Package drift alineado a SDK 52**: `expo-linear-gradient` → `~14.0.2`, `@expo/vector-icons` → `~14.0.4` (vía `yarn expo install`). `react-native` se deja en 0.76.5 (pin SDK 52; no se actualiza).
+- **Code review biometría** (`biometric.ts` + `login.tsx`): OK. Fallback web correcto, cancelación silenciosa, invalidación por credenciales obsoletas y opt-in tras primer login funcionan como se espera.
+- **Testing**: `testing_agent` frontend — **14/14 checkpoints PASS** (login ambos roles, typeahead, servicio, fecha, slots disponibles/deshabilitados incl. comida 14:00, recurso, notas, submit+toast+creación, dismissal backdrop/close, view toggles, RBAC vendedor "MÍAS"). Lint + `tsc --noEmit` limpios.
+- **Entorno Emergent**: código en `/app/mobile/` (respetado); `/app/frontend` es un symlink → `/app/mobile` para que el preview del supervisor (puerto 3000, dir `/app/frontend`) sirva la app móvil. Vars de packager (`EXPO_PACKAGER_PROXY_URL`, etc.) añadidas a `/app/mobile/.env`.
+
+### 🔜 Próximas acciones sugeridas (backlog)
+- **P1**: rediseñar pantallas de detalle (Conversation, Lead, Appointment) al estilo Cyberpunk.
+- **P1**: confirmación de depósito en Nueva Cita (campo `deposit_paid`/monto) cuando el spec de pago móvil esté definido.
+- **P1**: cuando Grok/Claude aprueben `BACKEND_MOBILE_SPEC.md` e implementen `/api/mobile/*`, cambiar `EXPO_PUBLIC_MOCK_MODE=false` y validar contratos (availability + POST appointments).
+- **P2**: migrar deprecaciones RN Web (`pointerEvents`, `shadow*`) a `style`.
+- **P2**: setup EAS real (`eas init` + credenciales) para builds iOS/Android.
+
+### ✅ Hecho en sesión previa (jul 2026)
 - Deploy key SSH read-only generada y usada para clonar el repo privado `SAAS-CavernicolApp` en `/tmp/cavernicol-analysis` (fuera de `/app`, sin tocar producción).
 - Análisis completo: 842 archivos, 159 ADRs, 105 migraciones Alembic, ~200 sprints/hotfixes documentados.
 - Mapa de módulos → clasificación productivo vs administrativo.
