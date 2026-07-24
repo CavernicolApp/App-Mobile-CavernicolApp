@@ -1,0 +1,81 @@
+{
+  "expo": {
+    "name": "CavernicolApp",
+    "slug": "cavernicolapp-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "cavernicolapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dragontech.cavernicolapp.mobile",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSFaceIDUsageDescription": "Usa Face ID para iniciar sesión de forma rápida y segura en CavernicolApp.",
+        "NSUserNotificationsUsageDescription": "Recibe alertas de nuevas conversaciones, leads y citas.",
+        "NSCameraUsageDescription": "Escanea códigos QR y adjunta fotos a leads.",
+        "NSPhotoLibraryUsageDescription": "Adjunta imágenes desde la galería a mensajes y leads.",
+        "NSContactsUsageDescription": "Importa contactos como leads."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.dragontech.cavernicolapp.mobile",
+      "versionCode": 1,
+      "permissions": [
+        "NOTIFICATIONS",
+        "CAMERA",
+        "READ_CONTACTS",
+        "VIBRATE"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Usa Face ID para iniciar sesión de forma rápida y segura en CavernicolApp."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#F72585"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "REPLACE_WITH_EAS_PROJECT_ID_AFTER_eas_init"
+      },
+      "apiUrl": "https://app.cavernicolapp.com"
+    },
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#F72585",
+      "iosDisplayInForeground": true
+    }
+  }
+}
