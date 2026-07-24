@@ -4,6 +4,7 @@
 
 import type {
   Appointment, Conversation, Deal, InboxMessage, Lead, Task, AuthUser,
+  AgendaService, AgendaResource, AvailabilitySlot, AvailabilityResponse, CreateAppointmentPayload,
 } from '@/types';
 import type { DashboardSummary } from './dashboard';
 
@@ -300,3 +301,102 @@ export const MOCK_AGENDA_STATUS = {
   completed_this_week: 12,
   no_shows_this_month: 1,
 };
+
+// ---------------- Agenda: Servicios & Recursos ----------------
+
+export const MOCK_SERVICES: AgendaService[] = [
+  { id: 'srv-haircut', name: 'Corte de cabello', duration_minutes: 45, price: 350, currency: 'MXN', color: '#FF5637', active: true },
+  { id: 'srv-color', name: 'Corte y color', duration_minutes: 120, price: 1800, currency: 'MXN', color: '#FF45A1', active: true },
+  { id: 'srv-treatment', name: 'Tratamiento capilar', duration_minutes: 90, price: 2200, currency: 'MXN', color: '#FFBA20', active: true },
+  { id: 'srv-manicure', name: 'Manicure gel', duration_minutes: 60, price: 450, currency: 'MXN', color: '#22C55E', active: true },
+  { id: 'srv-bridal', name: 'Paquete de novia', duration_minutes: 180, price: 4500, currency: 'MXN', color: '#8B5CF6', active: true },
+];
+
+export const MOCK_RESOURCES: AgendaResource[] = [
+  { id: 'res-carlos', name: 'Carlos Méndez', user_id: 'user-vendor-002', location_id: null, active: true },
+  { id: 'res-andrea', name: 'Andrea Ríos', user_id: 'user-owner-001', location_id: null, active: true },
+  { id: 'res-sofia', name: 'Sofía Lugo', user_id: null, location_id: null, active: true },
+];
+
+/**
+ * Genera slots de disponibilidad de 09:00 a 19:00 en pasos de 30 min.
+ * Marca no disponibles: los que se solapan con citas existentes del recurso
+ * y la hora de comida (14:00). Contrato idéntico al GET /availability real.
+ */
+export function buildMockAvailability(params: { date: string; service_id?: string; resource_id?: string }): AvailabilityResponse {
+  const service = MOCK_SERVICES.find((s) => s.id === params.service_id) ?? null;
+  const duration = service?.duration_minutes ?? 60;
+  const base = new Date(`${params.date}T00:00:00`);
+
+  const dayAppointments = MOCK_APPOINTMENTS.filter((a) => {
+    const d = new Date(a.starts_at);
+    return d.getFullYear() === base.getFullYear()
+      && d.getMonth() === base.getMonth()
+      && d.getDate() === base.getDate()
+      && (!params.resource_id || a.resource_id === params.resource_id)
+      && a.status !== 'cancelled';
+  });
+
+  const slots: AvailabilitySlot[] = [];
+  for (let h = 9; h < 19; h++) {
+    for (const m of [0, 30]) {
+      const start = new Date(base); start.setHours(h, m, 0, 0);
+      const end = new Date(start.getTime() + duration * 60_000);
+      // Excluir si termina después de las 19:30
+      if (end.getHours() > 19 || (end.getHours() === 19 && end.getMinutes() > 30)) continue;
+
+      const overlaps = dayAppointments.some((a) => {
+        const as = new Date(a.starts_at).getTime();
+        const ae = new Date(a.ends_at).getTime();
+        return start.getTime() < ae && end.getTime() > as;
+      });
+      const isLunch = h === 14; // comida
+
+      slots.push({
+        start: start.toISOString(),
+        end: end.toISOString(),
+        available: !overlaps && !isLunch,
+        resource_id: params.resource_id ?? null,
+      });
+    }
+  }
+
+  return {
+    date: params.date,
+    service_id: params.service_id ?? null,
+    resource_id: params.resource_id ?? null,
+    slots,
+  };
+}
+
+/** Crea una cita mock, la agrega a MOCK_APPOINTMENTS y la devuelve resuelta. */
+export function createMockAppointment(payload: CreateAppointmentPayload): Appointment {
+  const service = MOCK_SERVICES.find((s) => s.id === payload.service_id) ?? null;
+  const resource = MOCK_RESOURCES.find((r) => r.id === payload.resource_id) ?? null;
+  const user = Object.values(MOCK_USERS).find((u) => u.id === payload.assigned_to_user_id) ?? null;
+
+  const appt: Appointment = {
+    id: `appt-${Date.now().toString(36)}`,
+    tenant_id: 'tenant-demo-001',
+    crm_lead_id: payload.crm_lead_id ?? null,
+    contact_id: payload.contact_id ?? null,
+    contact_name: payload.contact_name ?? null,
+    service_id: payload.service_id,
+    service_name: service?.name ?? null,
+    resource_id: payload.resource_id ?? null,
+    resource_name: resource?.name ?? null,
+    location_id: null,
+    starts_at: payload.starts_at,
+    ends_at: payload.ends_at,
+    status: 'scheduled',
+    assigned_to_user_id: payload.assigned_to_user_id ?? null,
+    assigned_to_name: user?.name ?? null,
+    notes: payload.notes ?? null,
+    price: service?.price ?? null,
+    currency: service?.currency ?? 'MXN',
+    deposit_paid: false,
+    created_at: new Date().toISOString(),
+  };
+  MOCK_APPOINTMENTS.push(appt);
+  return appt;
+}

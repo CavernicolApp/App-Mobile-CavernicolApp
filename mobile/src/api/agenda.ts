@@ -1,8 +1,8 @@
 // src/api/agenda.ts — Agenda / Appointments endpoints
 import { API, MOCK_MODE } from '@/constants/config';
 import { makeQueryString, requestGet, requestPatch, requestPost } from './client';
-import type { AgendaResource, AgendaService, Appointment, AppointmentStatus } from '@/types';
-import { MOCK_APPOINTMENTS, MOCK_AGENDA_STATUS } from './mockData';
+import type { AgendaResource, AgendaService, Appointment, AppointmentStatus, AvailabilityResponse, CreateAppointmentPayload } from '@/types';
+import { MOCK_APPOINTMENTS, MOCK_AGENDA_STATUS, MOCK_SERVICES, MOCK_RESOURCES, buildMockAvailability, createMockAppointment } from './mockData';
 
 export interface AppointmentFilters {
   from?: string;                  // ISO date
@@ -51,13 +51,36 @@ export async function updateAppointment(id: string, patch: Partial<Appointment>)
 }
 
 export async function listServices(): Promise<{ items: AgendaService[] }> {
-  if (MOCK_MODE) return { items: [] };
+  if (MOCK_MODE) {
+    await new Promise((r) => setTimeout(r, 120));
+    return { items: MOCK_SERVICES.filter((s) => s.active) };
+  }
   return requestGet(API.agenda.services);
 }
 
 export async function listResources(): Promise<{ items: AgendaResource[] }> {
-  if (MOCK_MODE) return { items: [] };
+  if (MOCK_MODE) {
+    await new Promise((r) => setTimeout(r, 120));
+    return { items: MOCK_RESOURCES.filter((r) => r.active) };
+  }
   return requestGet(API.agenda.resources);
+}
+
+export async function getAvailability(params: { date: string; service_id?: string; resource_id?: string }): Promise<AvailabilityResponse> {
+  if (MOCK_MODE) {
+    await new Promise((r) => setTimeout(r, 220));
+    return buildMockAvailability(params);
+  }
+  const qs = makeQueryString(params);
+  return requestGet<AvailabilityResponse>(API.agenda.availability + qs);
+}
+
+export async function createAppointment(payload: CreateAppointmentPayload): Promise<Appointment> {
+  if (MOCK_MODE) {
+    await new Promise((r) => setTimeout(r, 320));
+    return createMockAppointment(payload);
+  }
+  return requestPost<Appointment>(API.agenda.appointments, payload);
 }
 
 export async function getAgendaStatus() {

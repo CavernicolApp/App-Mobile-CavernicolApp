@@ -1,6 +1,6 @@
 // app/(tabs)/agenda.tsx — Agenda con vistas Día/Semana/Mes/Lista + FAB
 import { useMemo, useState } from 'react';
-import { FlatList, RefreshControl, ScrollView, View, Pressable, Alert } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, View, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -18,6 +18,8 @@ import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { LoadingInline } from '@/components/ui/LoadingScreen';
 import { Logo } from '@/components/ui/Logo';
+import { useToast } from '@/components/ui/Toast';
+import { NewAppointmentSheet } from '@/components/agenda/NewAppointmentSheet';
 import { useAppointments } from '@/hooks/useAgenda';
 import { useAuthStore } from '@/stores/auth';
 import { formatTime } from '@/lib/format';
@@ -36,9 +38,11 @@ type ViewMode = 'day' | 'week' | 'month' | 'list';
 
 export default function AgendaScreen() {
   const router = useRouter();
+  const { showToast } = useToast();
   const [view, setView] = useState<ViewMode>('day');
   const [selectedDate, setSelectedDate] = useState<Date>(startOfDay(new Date()));
   const [refreshing, setRefreshing] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const hasFullAccess = useAuthStore((s) => s.hasFullTenantAccess());
 
   // Rango de fetch según vista (para no llamar 30 días innecesariamente)
@@ -80,14 +84,14 @@ export default function AgendaScreen() {
 
   function handleNewAppointment() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
-    Alert.alert(
-      'Nueva cita',
-      'Aquí abrirá el formulario para crear una cita nueva:\n\n• Elegir cliente (contacto o lead)\n• Seleccionar servicio\n• Elegir recurso (barbero/estilista)\n• Ver horarios disponibles\n• Confirmar depósito',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Continuar', onPress: () => {} },
-      ],
-    );
+    setSheetOpen(true);
+  }
+
+  async function handleAppointmentCreated() {
+    setSheetOpen(false);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+    showToast('Cita creada correctamente', 'success');
+    await query.refetch();
   }
 
   return (
@@ -167,6 +171,12 @@ export default function AgendaScreen() {
           <Txt variant="small" weight="bold" tone="inverse">Nueva Cita</Txt>
         </LinearGradient>
       </Pressable>
+
+      <NewAppointmentSheet
+        visible={sheetOpen}
+        onClose={() => setSheetOpen(false)}
+        onCreated={handleAppointmentCreated}
+      />
     </View>
   );
 }

@@ -14,6 +14,7 @@ import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } f
 import { Geist_500Medium } from '@expo-google-fonts/geist';
 import { useAuthStore } from '@/stores/auth';
 import { LoadingScreen } from '@/components/ui/LoadingScreen';
+import { ToastProvider } from '@/components/ui/Toast';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -82,21 +83,23 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#000' }}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
-          <StatusBar style="light" />
-          <AuthGate />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              animation: 'slide_from_right',
-              contentStyle: { backgroundColor: '#000000' },
-            }}
-          >
-            <Stack.Screen name="(auth)" options={{ animation: 'fade' }} />
-            <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
-            <Stack.Screen name="inbox/[conversationId]" options={{ presentation: 'card' }} />
-            <Stack.Screen name="crm/lead/[leadId]" options={{ presentation: 'card' }} />
-            <Stack.Screen name="agenda/appointment/[id]" options={{ presentation: 'card' }} />
-          </Stack>
+          <ToastProvider>
+            <StatusBar style="light" />
+            <AuthGate />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                animation: 'slide_from_right',
+                contentStyle: { backgroundColor: '#000000' },
+              }}
+            >
+              <Stack.Screen name="(auth)" options={{ animation: 'fade' }} />
+              <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
+              <Stack.Screen name="inbox/[conversationId]" options={{ presentation: 'card' }} />
+              <Stack.Screen name="crm/lead/[leadId]" options={{ presentation: 'card' }} />
+              <Stack.Screen name="agenda/appointment/[id]" options={{ presentation: 'card' }} />
+            </Stack>
+          </ToastProvider>
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

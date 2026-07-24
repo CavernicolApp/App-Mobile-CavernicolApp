@@ -1,8 +1,8 @@
 // src/hooks/useAgenda.ts
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getAgendaStatus, getAppointment, listAppointments, listResources, listServices, updateAppointment, type AppointmentFilters } from '@/api/agenda';
+import { createAppointment, getAgendaStatus, getAppointment, getAvailability, listAppointments, listResources, listServices, updateAppointment, type AppointmentFilters } from '@/api/agenda';
 import { useAuthStore } from '@/stores/auth';
-import type { Appointment } from '@/types';
+import type { Appointment, CreateAppointmentPayload } from '@/types';
 
 export function useAppointments(baseFilters: AppointmentFilters = {}) {
   const assignedTo = useAuthStore((s) => s.assignedToFilter());
@@ -60,5 +60,29 @@ export function useAgendaStatus() {
     queryKey: ['agenda-status'],
     queryFn: getAgendaStatus,
     staleTime: 60_000,
+  });
+}
+
+export function useAvailability(
+  params: { date: string; service_id?: string; resource_id?: string },
+  enabled = true,
+) {
+  return useQuery({
+    queryKey: ['availability', params],
+    queryFn: () => getAvailability(params),
+    enabled: enabled && !!params.date && !!params.service_id,
+    staleTime: 30_000,
+  });
+}
+
+export function useCreateAppointment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: CreateAppointmentPayload) => createAppointment(payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['appointments'] });
+      qc.invalidateQueries({ queryKey: ['agenda-status'] });
+      qc.invalidateQueries({ queryKey: ['availability'] });
+    },
   });
 }

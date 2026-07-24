@@ -230,3 +230,31 @@ export interface AgendaResource {
   location_id: string | null;
   active: boolean;
 }
+
+// Disponibilidad de slots (GET /api/tenant/agenda/availability)
+export interface AvailabilitySlot {
+  start: string;              // ISO
+  end: string;                // ISO
+  available: boolean;
+  resource_id: string | null;
+}
+
+export interface AvailabilityResponse {
+  date: string;              // YYYY-MM-DD
+  service_id: string | null;
+  resource_id: string | null;
+  slots: AvailabilitySlot[];
+}
+
+// Payload de creación (POST /api/tenant/agenda/appointments)
+export interface CreateAppointmentPayload {
+  crm_lead_id?: string | null;
+  contact_id?: string | null;
+  contact_name?: string | null;
+  service_id: string;
+  resource_id?: string | null;
+  starts_at: string;         // ISO
+  ends_at: string;           // ISO
+  notes?: string | null;
+  assigned_to_user_id?: string | null;
+}

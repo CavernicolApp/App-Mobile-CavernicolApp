@@ -1,0 +1,51 @@
+{
+  "summary": "Frontend UI testing for CavernicolApp Mobile (Expo Web preview). Blocked at login: the react-native-web PanResponder used by the Slide-to-Confirm login button did NOT respond to any synthetic drag (Playwright mouse fine-grained drag, CDP Input.dispatchTouchEvent, JS-dispatched PointerEvent/MouseEvent/TouchEvent). Because auth is required to reach the Agenda tab, the entire Nueva Cita form flow (lead search, service, date, slot, resource, notes, submit + toast) and Agenda view-toggle regression could NOT be exercised end-to-end via automation. App bundles and renders correctly (login screen loads, inputs work, no red-screen, no runtime errors). Static code review of NewAppointmentSheet, BottomSheet, Toast, agenda.tsx and hooks/useAgenda is clean and matches the spec.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "SlideToConfirm (login)",
+        "issue": "PanResponder never grants/moves under any synthetic web event (mousedown+mousemove+mouseup, PointerEvent touch, TouchEvent, CDP Input.dispatchTouchEvent). Thumb stays at origin, no visible translateX. This makes login untestable via Playwright and likely also degrades UX on desktop web (users on desktop mouse still work in real browsers because RN Web's ResponderSystem processes real trusted events — synthetic dispatch is blocked). Reference: /app/mobile/src/components/ui/SlideToConfirm.tsx:49-88",
+        "testID": "login-submit-slider-thumb",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Login -> Agenda -> Nueva Cita",
+        "issue": "Cannot proceed past login screen via automation; NewAppointmentSheet flow could not be executed. All downstream test cases (sheet open, lead typeahead, service/date/slot/resource pick, notes, CREAR CITA, toast, backdrop/close dismiss, agenda view toggles) are UNVERIFIED.",
+        "affected_testIDs": [
+          "agenda-fab-new","new-appointment-sheet","new-appt-lead-search","new-appt-lead-option-*","new-appt-selected-lead","new-appt-service-*","new-appt-date-*","new-appt-slot-grid","new-appt-slot-*","new-appt-resource-any","new-appt-resource-*","new-appt-notes","new-appt-submit","app-toast","new-appointment-sheet-backdrop","bottom-sheet-close","agenda-view-day","agenda-view-week","agenda-view-month","agenda-view-list"
+        ]
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      { "component": "pointerEvents prop", "issue": "Console warning: `props.pointerEvents is deprecated. Use style.pointerEvents`. Emitted by internal RN Web or a component using the deprecated prop." },
+      { "component": "shadow* style props", "issue": "Console warning: `shadow* style props are deprecated. Use boxShadow` — appears from LinearGradient FAB and thumb shadow in agenda.tsx & SlideToConfirm.tsx." },
+      { "component": "Expo SDK version drift", "issue": "expo doctor reports @expo/vector-icons@14.1.0 (exp ~14.0.4), expo-linear-gradient@57.0.1 (exp ~14.0.2), react-native@0.76.5 (exp 0.76.9). Not fatal but should be aligned." }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "CRITICAL: Provide a testable fallback for login on web. Options: (a) add a plain 'ENTRAR' button as a hidden/dev-only alternative when Platform.OS === 'web' with the same handleLogin handler and a testID like `login-submit-fallback`, (b) expose useAuthStore on window in dev/mock mode so tests can call login() directly, or (c) refactor SlideToConfirm to also listen to `onResponderRelease` via a plain Pressable long-press escape hatch. Without one of these, no automated E2E can pass login on web.",
+    "Investigate why RN Web PanResponder does not respond to any synthetic event on this build — verify react-native-web version and confirm the Responder system is bound. A quick smoke check: on a real mouse in the browser preview the slider must actually be draggable (main agent should confirm manually).",
+    "Address the deprecation warnings: swap remaining `pointerEvents` prop usages to `style={{ pointerEvents: 'none' }}` and migrate `shadowColor/shadowOpacity/shadowRadius/shadowOffset` to `boxShadow` where used on web (agenda.tsx FAB, SlideToConfirm thumb).",
+    "Consider running `npx expo install --check` to align expo-linear-gradient, @expo/vector-icons, and react-native versions.",
+    "Once login is unblocked, RE-RUN the full Nueva Cita flow (lead typeahead → service → date → slot → resource → notes → CREAR CITA → toast + sheet close), backdrop/close dismissal, and the 4 agenda view toggles — none were verifiable in this iteration."
+  ],
+  "critical_code_review_comments": [
+    "NewAppointmentSheet.tsx (355 lines) is close to the 700-line soft-limit but still fine.",
+    "agenda.tsx keeps `getMinutes` import unused (guarded with `void getMinutes` at bottom). Harmless but consider removing.",
+    "BottomSheet renders a KeyboardAvoidingView without `style={{ flex: 0 }}` — on Android it may push content oddly; on web it's a no-op. Not critical.",
+    "SlideToConfirm has two useEffects that both reset the slider (on error and on !loading) — the 400ms timer race after loading could reset the thumb briefly if navigation is slow; consider consolidating.",
+    "Every interactive control has proper testID coverage — great."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A (frontend-only run)", "frontend": "0% executed past login (blocked by slider). App shell + login screen render OK." },
+  "seed_data_creation": "None (mock data already in src/api/mockData.ts).",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Do NOT waste cycles retrying synthetic drag on the login SlideToConfirm — it is proven non-responsive to Playwright mouse, CDP touch, and JS-dispatched PointerEvent/MouseEvent/TouchEvent. Ask main agent to expose a `login-submit-fallback` button on web or to add `window.__authStoreLogin = ...` in mock mode. Once the login barrier is removed, testIDs on the Nueva Cita form are all present and correctly wired; the flow should be straightforward: fill lead-search ('Ana' or 'Mar') → click first `new-appt-lead-option-*` → click first `new-appt-service-*` → click a `new-appt-date-*` (index 1 for tomorrow) → wait for slots → click any enabled `new-appt-slot-*` → fill `new-appt-notes` → click `new-appt-submit` → assert `app-toast` contains 'creada'. Then verify the 4 `agenda-view-*` toggles and backdrop/close dismissal.",
+  "rca_of_issue": "React-Native-Web's ResponderSystem (used by PanResponder) subscribes via `useResponderEvents` and gates event handling through the React Native event system. Synthetic DOM events dispatched via `element.dispatchEvent(...)` are marked `isTrusted=false` and are effectively ignored/short-circuited by the responder implementation on this react-native-web build (also common with React's `nativeEvent` filtering). CDP `Input.dispatchTouchEvent` normally emits trusted events, but the Playwright context here is launched without `hasTouch=true`, so the ResponderSystem's pointer/touch pipeline may still not engage the pan gesture path. Real browsers with real user input work fine; the fix on the testability side is to add a web-only tappable fallback or an in-mock-mode dev hook to trigger `useAuthStore.login`."
+}
