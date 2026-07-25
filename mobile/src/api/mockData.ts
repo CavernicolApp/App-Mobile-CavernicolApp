@@ -7,7 +7,7 @@
 import type {
   Appointment, Conversation, Deal, InboxMessage, Lead, Task, AuthUser,
   AgendaService, AgendaResource, AvailabilitySlot, AvailabilityResponse, CreateAppointmentPayload,
-  LeadStatus, DealStatus, AppointmentStatus, InboxChannel,
+  LeadStatus, DealStatus, AppointmentStatus, InboxChannel, VirtualCard,
 } from '@/types';
 import type { DashboardSummary } from './dashboard';
 
@@ -489,6 +489,20 @@ const lostThisMonth = MOCK_DEALS.filter((d) => d.status === 'lost' && thisMonth(
 const wonThisWeek = MOCK_DEALS.filter((d) => d.status === 'won' && d.won_at && withinDays(d.won_at, 7));
 const revenueThisWeek = wonThisWeek.reduce((s, d) => s + (d.amount ?? 0), 0);
 
+// Serie de ingresos por mes (últimos 6 meses) — para la mini-gráfica del Dashboard.
+const MONTH_ABBR = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const revenueSeries = Array.from({ length: 6 }, (_, k) => {
+  const d = new Date(NOW.getFullYear(), NOW.getMonth() - (5 - k), 1);
+  const total = MOCK_DEALS
+    .filter((dl) => {
+      if (dl.status !== 'won' || !dl.won_at) return false;
+      const w = new Date(dl.won_at);
+      return w.getFullYear() === d.getFullYear() && w.getMonth() === d.getMonth();
+    })
+    .reduce((s, dl) => s + (dl.amount ?? 0), 0);
+  return { month: MONTH_ABBR[d.getMonth()], total };
+});
+
 const todayAppts = MOCK_APPOINTMENTS.filter((a) => isSameDayLocal(new Date(a.starts_at), NOW));
 const upcomingAppts = MOCK_APPOINTMENTS.filter((a) => {
   const t = new Date(a.starts_at).getTime();
@@ -523,6 +537,7 @@ export const MOCK_DASHBOARD: DashboardSummary = {
     revenue: revenueThisWeek,
     currency: 'MXN',
   },
+  revenue_series: revenueSeries,
   attention_needed: ([
     { kind: 'unassigned_lead', count: unassignedLeads.length, label: 'Leads sin asignar' },
     { kind: 'stale_conversation', count: staleConvs.length, label: 'Conversaciones sin responder' },
@@ -643,3 +658,61 @@ export function createMockAppointment(payload: CreateAppointmentPayload): Appoin
   MOCK_APPOINTMENTS.push(appt);
   return appt;
 }
+
+// ---------------- Tarjeta Virtual (mock por usuario) ----------------
+
+export const MOCK_VIRTUAL_CARDS: Record<string, VirtualCard> = {
+  'user-owner-001': {
+    user_id: 'user-owner-001',
+    name: 'Andrea Ríos',
+    position: 'Directora & Estilista Master',
+    company: 'Salón Bella Época',
+    bio: 'Más de 15 años transformando la imagen de mis clientas. Especialista en colorimetría, tratamientos capilares premium y paquetes de novia. Tu confianza es mi mejor carta de presentación.',
+    phone: '+52 55 1234 5678',
+    email: 'andrea.rios@bellaepoca.mx',
+    whatsapp: '+52 55 1234 5678',
+    slug: 'andrea-rios',
+    socials: [
+      { platform: 'instagram', enabled: true, url: 'https://instagram.com/andrea.bellaepoca' },
+      { platform: 'facebook', enabled: true, url: 'https://facebook.com/bellaepocasalon' },
+      { platform: 'tiktok', enabled: true, url: 'https://tiktok.com/@bellaepoca' },
+      { platform: 'linkedin', enabled: false, url: '' },
+      { platform: 'threads', enabled: false, url: '' },
+    ],
+    links: [
+      { id: 'lnk-catalog', label: 'Catálogo de servicios', sublabel: 'Precios y paquetes 2026', url: 'https://bellaepoca.mx/servicios', enabled: true, icon: 'pricetags-outline' },
+      { id: 'lnk-booking', label: 'Reserva en línea', sublabel: 'Agenda tu cita 24/7', url: 'https://bellaepoca.mx/reservar', enabled: true, icon: 'calendar-outline' },
+      { id: 'lnk-portfolio', label: 'Portafolio de trabajos', sublabel: 'Antes y después', url: 'https://instagram.com/andrea.bellaepoca', enabled: true, icon: 'images-outline' },
+    ],
+    credentials: [
+      { id: 'cr-1', title: 'Certificación L\'Oréal Professionnel', year: '2019' },
+      { id: 'cr-2', title: 'Colorimetría Avanzada · Wella', year: '2021' },
+      { id: 'cr-3', title: 'Diplomado en Imagen de Novia', year: '2023' },
+    ],
+  },
+  'user-vendor-002': {
+    user_id: 'user-vendor-002',
+    name: 'Carlos Méndez',
+    position: 'Estilista Senior',
+    company: 'Salón Bella Época',
+    bio: 'Apasionado por los cortes de tendencia y el cuidado masculino. Agenda conmigo y platiquemos el look que buscas.',
+    phone: '+52 55 8765 4321',
+    email: 'carlos.mendez@bellaepoca.mx',
+    whatsapp: '+52 55 8765 4321',
+    slug: 'carlos-mendez',
+    socials: [
+      { platform: 'instagram', enabled: true, url: 'https://instagram.com/carlos.stylist' },
+      { platform: 'tiktok', enabled: true, url: 'https://tiktok.com/@carloscortes' },
+      { platform: 'facebook', enabled: false, url: '' },
+      { platform: 'linkedin', enabled: false, url: '' },
+      { platform: 'threads', enabled: false, url: '' },
+    ],
+    links: [
+      { id: 'lnk-booking', label: 'Reserva en línea', sublabel: 'Agenda tu cita', url: 'https://bellaepoca.mx/reservar', enabled: true, icon: 'calendar-outline' },
+      { id: 'lnk-portfolio', label: 'Mis trabajos', sublabel: 'Galería de cortes', url: 'https://instagram.com/carlos.stylist', enabled: true, icon: 'images-outline' },
+    ],
+    credentials: [
+      { id: 'cr-1', title: 'Barbería Clásica · American Crew', year: '2022' },
+    ],
+  },
+};

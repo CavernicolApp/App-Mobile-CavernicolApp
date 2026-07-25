@@ -1,27 +1,25 @@
 // app/(tabs)/profile.tsx — Perfil cyberpunk
-import { ScrollView, View, Pressable, Linking, Alert } from 'react-native';
+import { useState } from 'react';
+import { ScrollView, View, Pressable, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Txt } from '@/components/ui/Text';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Logo } from '@/components/ui/Logo';
+import { BottomSheet } from '@/components/ui/BottomSheet';
 import { useAuthStore } from '@/stores/auth';
 import { labelForRole } from '@/lib/roleLabels';
 import { initials } from '@/lib/format';
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
   const hasFullAccess = useAuthStore((s) => s.hasFullTenantAccess());
-
-  function handleLogout() {
-    Alert.alert('Cerrar sesión', '¿Seguro que quieres salir?', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Salir', style: 'destructive', onPress: () => logout() },
-    ]);
-  }
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   if (!user) return null;
 
@@ -53,6 +51,8 @@ export default function ProfileScreen() {
         <View className="gap-2">
           <Txt variant="label" weight="medium" tone="muted" className="ml-1">CUENTA</Txt>
           <Card padded={false}>
+            <LinkRow icon="card-outline" label="Mi Tarjeta Virtual" onPress={() => router.push('/(tabs)/tarjeta')} />
+            <Divider />
             <Row icon="globe-outline" label="Idioma" value={user.locale} />
             <Divider />
             <Row icon="time-outline" label="Zona horaria" value={user.timezone} />
@@ -97,7 +97,7 @@ export default function ProfileScreen() {
           testID="profile-logout-button"
           label="CERRAR SESIÓN"
           variant="outline"
-          onPress={handleLogout}
+          onPress={() => setConfirmLogout(true)}
           size="lg"
           fullWidth
           icon={<Ionicons name="log-out-outline" size={16} color="#FF5637" />}
@@ -108,6 +108,26 @@ export default function ProfileScreen() {
           <Txt variant="caption" tone="muted">© Dragon Technologies S.A.P.I. de C.V.</Txt>
         </View>
       </ScrollView>
+
+      <BottomSheet visible={confirmLogout} onClose={() => setConfirmLogout(false)} title="Cerrar sesión" testID="logout-confirm-sheet">
+        <View className="px-5 pt-4">
+          <Txt variant="body" tone="muted">¿Seguro que quieres salir de tu cuenta?</Txt>
+          <Pressable
+            testID="logout-confirm-button"
+            onPress={() => { setConfirmLogout(false); logout(); }}
+            className="mt-5 py-4 rounded-lg items-center bg-flame active:opacity-80"
+          >
+            <Txt variant="body" weight="bold" tone="inverse">SALIR</Txt>
+          </Pressable>
+          <Pressable
+            testID="logout-cancel-button"
+            onPress={() => setConfirmLogout(false)}
+            className="mt-3 py-4 rounded-lg items-center bg-obsidian-surface border border-obsidian-hi active:opacity-70"
+          >
+            <Txt variant="body" weight="semibold">Cancelar</Txt>
+          </Pressable>
+        </View>
+      </BottomSheet>
     </SafeAreaView>
   );
 }

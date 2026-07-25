@@ -258,3 +258,42 @@ export interface CreateAppointmentPayload {
   notes?: string | null;
   assigned_to_user_id?: string | null;
 }
+
+// ---------------- Tarjeta Virtual (vCard compartible por QR / NFC) ----------------
+export type CardSocialPlatform = 'linkedin' | 'instagram' | 'facebook' | 'tiktok' | 'threads';
+
+export interface CardSocial {
+  platform: CardSocialPlatform;
+  enabled: boolean;
+  url: string;
+}
+
+export interface CardLink {
+  id: string;
+  label: string;
+  sublabel: string;
+  url: string;
+  enabled: boolean;
+  icon: string;              // nombre de ícono Ionicons
+}
+
+export interface CardCredential {
+  id: string;
+  title: string;
+  year: string;
+}
+
+export interface VirtualCard {
+  user_id: string;
+  name: string;
+  position: string;
+  company: string;
+  bio: string;
+  phone: string;
+  email: string;
+  whatsapp: string;
+  slug: string;
+  socials: CardSocial[];
+  links: CardLink[];
+  credentials: CardCredential[];
+}

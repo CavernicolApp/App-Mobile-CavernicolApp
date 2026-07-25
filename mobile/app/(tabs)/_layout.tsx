@@ -60,7 +60,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="inbox"
         options={{
-          title: 'Conversaciones',
+          title: 'Chats',
           tabBarIcon: (props) => <InboxTabIcon {...props} />,
         }}
       />
@@ -79,6 +79,15 @@ export default function TabsLayout() {
           title: 'Agenda',
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons name={focused ? 'calendar' : 'calendar-outline'} size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="tarjeta"
+        options={{
+          title: 'Tarjeta',
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons name={focused ? 'card' : 'card-outline'} size={size} color={color} />
           ),
         }}
       />

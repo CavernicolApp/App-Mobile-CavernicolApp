@@ -24,6 +24,7 @@ export interface DashboardSummary {
     count: number;
     label: string;
   }>;
+  revenue_series: Array<{ month: string; total: number }>;
 }
 
 export async function getDashboardSummary(): Promise<DashboardSummary> {

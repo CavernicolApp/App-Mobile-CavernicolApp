@@ -166,14 +166,17 @@ export default function DashboardScreen() {
           </View>
         ) : null}
 
-        {/* Flujo de conversión (barras semanales) */}
+        {/* Ingresos por mes (últimos 6 meses) */}
         <View className="mt-6">
           <View className="flex-row items-center justify-between mb-3">
-            <Txt variant="heading" weight="bold" font="heading">Flujo de Conversión</Txt>
-            <Ionicons name="ellipsis-horizontal" size={18} color="#A0A0A0" />
+            <Txt variant="heading" weight="bold" font="heading">Ingresos por mes</Txt>
+            <View className="flex-row items-center gap-1">
+              <Ionicons name="trending-up" size={16} color="#22C55E" />
+              <Txt variant="label" weight="semibold" tone="muted">MXN</Txt>
+            </View>
           </View>
           <Card>
-            <ConversionChart />
+            <RevenueChart series={dashboard.data?.revenue_series ?? []} />
           </Card>
         </View>
 
@@ -238,37 +241,51 @@ function KpiCardV2({
   );
 }
 
-function ConversionChart() {
-  const bars = [
-    { label: 'Lun', h: 60, tone: '#8B3450' },
-    { label: 'Mar', h: 105, tone: '#B84670' },
-    { label: 'Mie', h: 45, tone: '#8A6318' },
-    { label: 'Jue', h: 140, tone: '#FF45A1' },
-    { label: 'Vie', h: 90, tone: '#6C4041' },
-  ];
-  const maxH = Math.max(...bars.map((b) => b.h));
+function RevenueChart({ series }: { series: Array<{ month: string; total: number }> }) {
+  const maxV = Math.max(1, ...series.map((s) => s.total));
+  const totalSemester = series.reduce((s, x) => s + x.total, 0);
+  const fmt = (n: number) => (n >= 1000 ? `$${(n / 1000).toFixed(1)}k` : `$${n}`);
+
+  if (!series.length) {
+    return <Txt variant="small" tone="muted">Sin datos de ingresos aún.</Txt>;
+  }
+
   return (
     <View>
-      <View className="flex-row items-end justify-around h-40 gap-3">
-        {bars.map((b) => (
-          <View key={b.label} className="flex-1 items-center">
-            <View
-              style={{
-                height: (b.h / maxH) * 140,
-                backgroundColor: b.tone,
-                borderRadius: 4,
-                width: '100%',
-              }}
-            />
-          </View>
-        ))}
+      <View className="flex-row items-end justify-between h-44 gap-2.5">
+        {series.map((b, i) => {
+          const isLast = i === series.length - 1;
+          const h = Math.max(6, (b.total / maxV) * 150);
+          return (
+            <View key={`${b.month}-${i}`} className="flex-1 items-center justify-end">
+              <Txt variant="label" weight="semibold" tone={isLast ? 'magenta' : 'muted'} className="mb-1">
+                {fmt(b.total)}
+              </Txt>
+              {isLast ? (
+                <LinearGradient
+                  colors={['#FF5637', '#FF45A1']}
+                  start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+                  style={{ height: h, width: '100%', borderRadius: 6 }}
+                />
+              ) : (
+                <View style={{ height: h, width: '100%', borderRadius: 6, backgroundColor: '#3A1E2C' }} />
+              )}
+            </View>
+          );
+        })}
       </View>
-      <View className="flex-row items-end justify-around mt-2 gap-3">
-        {bars.map((b) => (
-          <Txt key={b.label} variant="label" tone="muted" className="flex-1 text-center">
-            {b.label.toUpperCase()}
+      <View className="flex-row items-center justify-between mt-2 gap-2.5">
+        {series.map((b, i) => (
+          <Txt key={`${b.month}-lbl-${i}`} variant="label" tone="muted" className="flex-1 text-center">
+            {b.month.toUpperCase()}
           </Txt>
         ))}
+      </View>
+      <View className="flex-row items-center justify-between mt-4 pt-3 border-t border-obsidian-border">
+        <Txt variant="small" tone="muted">Total del semestre</Txt>
+        <Txt variant="body" weight="bold" font="heading" tone="flame">
+          ${totalSemester.toLocaleString('es-MX')} MXN
+        </Txt>
       </View>
     </View>
   );

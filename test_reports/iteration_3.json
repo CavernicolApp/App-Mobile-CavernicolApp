@@ -1,0 +1,31 @@
+{
+  "summary": "Full E2E frontend retest of CavernicolApp Mobile (Expo web preview) focused on: (1) the LOGOUT bug fix, (2) new Tarjeta Virtual tab, (3) Ingresos-por-mes dashboard chart, (4) share/edit card sheets, (5) populated datasets and (6) RBAC for vendedor. ALL P0 checkpoints PASSED via Playwright automation. Verified: Login as owner via tap-to-confirm on 'login-submit-slider' → Dashboard reached; 'Ingresos por mes' card + 'Total del semestre' visible after scroll; Tarjeta tab shows 'Andrea Ríos', 'Salón Bella Época', all contact buttons (card-call/whatsapp/email), card-share-button, 3 socials, 3 links and 'TRAYECTORIA & CERTIFICACIONES' section; Share sheet opens with QR, copy row, WhatsApp button, NFC button — Copy shows 'Enlace copiado al portapapeles' toast; NFC shows informational toast; Edit sheet opens, changing 'Cargo' to 'Directora Creativa' and saving reflects immediately on the card; CRM has 10 lead cards with 'hace X meses' text; Inbox has 12 conversations; Agenda day/week/month/list toggles all clickable and FAB visible. LOGOUT BUG FIX confirmed: Perfil → profile-logout-button opens logout-confirm-sheet; logout-cancel-button dismisses without logout (CERRAR SESIÓN still visible); reopening + logout-confirm-button returns user to the login screen. RBAC: vendedor@demo.mx sees 'Carlos Méndez' on Tarjeta (not 'Andrea Ríos') and 'MÍAS' badge on Agenda. Deprecated packages detected: none. React-Native web warnings detected: props.pointerEvents deprecated, shadow* style props deprecated, and Animated useNativeDriver not supported on web (carried over from previous iterations, non-blocking).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      { "component": "pointerEvents prop", "issue": "Console warning: 'props.pointerEvents is deprecated. Use style.pointerEvents'. Non-blocking, carried over from prior iterations." },
+      { "component": "shadow* style props", "issue": "Console warning: '\"shadow*\" style props are deprecated. Use \"boxShadow\"'. Emitted on Tarjeta screen (avatar shadow on tarjeta.tsx:70) and Agenda FAB — non-blocking on web." },
+      { "component": "Animated.useNativeDriver", "issue": "Console warning: 'Animated: useNativeDriver is not supported because the native animated module is missing.' Expected on RN Web — consider gating with Platform.OS!=='web' to silence." }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "No functional issues found — logout bug fix, Tarjeta Virtual tab, share/edit sheets, dashboard revenue chart, populated datasets and RBAC all working end-to-end in mock mode.",
+    "Optional cleanup: migrate the remaining pointerEvents prop and shadow* style-prop usages (e.g. tarjeta.tsx line 70 uses shadowColor/Opacity/Radius) to boxShadow, and gate Animated useNativeDriver with Platform.OS!=='web' to clean up console warnings on the web preview."
+  ],
+  "critical_code_review_comments": [
+    "profile.tsx: The logout confirm flow is correctly implemented via BottomSheet (testID logout-confirm-sheet) with dedicated logout-cancel-button and logout-confirm-button Pressables — this correctly replaces Alert.alert (which does not trigger button onPress on react-native-web).",
+    "ShareCardSheet.tsx: QR renders via react-native-qrcode-svg using cardUrl(card) — verified DOM element with testID share-card-qr is present; copy uses expo-clipboard with a success toast; NFC intentionally shows an info toast because writing NFC requires a native build.",
+    "tarjeta.tsx: The avatar container (line 70) still uses shadowColor/shadowOpacity/shadowRadius which emit the shadow* deprecation warning on web — consider migrating to boxShadow for cleaner web console."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A (frontend-only run)", "frontend": "100% (all P0 checkpoints passed: login, logout bug fix incl. cancel/confirm, dashboard revenue chart, tarjeta virtual, share+copy+NFC toast, edit+persist, CRM/Inbox/Agenda populated + view toggles + FAB, RBAC vendedor Carlos Méndez + MÍAS badge)" },
+  "seed_data_creation": "None (mock data in /app/mobile/src/api/mockData.ts and card store in /app/mobile/src/stores/card.ts).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The logout bug is fixed by replacing Alert.alert with a BottomSheet (profile.tsx). On web, keep clicking testID 'login-submit-slider' (tap-to-confirm) — never drag. For share sheet, dismissing can be done via bottom-sheet-close or Escape key. The Edit sheet uses testIDs edit-card-name / -position / -company / -bio / -phone / -email / -whatsapp / -save; changes are persisted via useCardStore (AsyncStorage in mock mode). When testing RBAC, vendedor's tarjeta shows 'Carlos Méndez' and Agenda shows 'MÍAS' badge.",
+  "rca_of_issue": "Original bug: 'Cerrar Sesión' inactive on web because it used Alert.alert whose buttons do not fire onPress on react-native-web. Fix (verified working): replaced Alert with a BottomSheet (testID logout-confirm-sheet) containing two Pressables (logout-cancel-button, logout-confirm-button) that call setConfirmLogout(false) and logout() respectively. E2E validated: cancel keeps session; confirm returns to login screen."
+}
