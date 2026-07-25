@@ -279,7 +279,26 @@ CavernicolAppMobile/
 
 ## 10. Estado actual y próximas acciones
 
-### ✅ Hecho en esta sesión (E1 · jul 24, 2026) — Formulario "Nueva Cita" (P0)
+### ✅ Hecho en esta sesión (E1 · jul 25, 2026) — Tarjeta Virtual + fix logout + ambientación
+- **BUG FIX — Cerrar sesión**: `Alert.alert` no dispara el `onPress` de sus botones en react-native-web (por eso el botón se veía "inactivo"). Reemplazado por un `BottomSheet` de confirmación (`logout-confirm-sheet`) con Pressables dedicados → funciona en web y nativo. Verificado por testing_agent.
+- **NUEVA PANTALLA "Tarjeta Virtual"** (`app/(tabs)/tarjeta.tsx`, nuevo tab): tarjeta digital estilo landing pública con portada gradiente, avatar con iniciales, cargo/empresa, botones de contacto (llamar/WhatsApp/correo), bio, redes, enlaces y trayectoria/certificaciones. Colores/estilos adaptados al tema Cyberpunk (no el verde del web).
+  - **Compartir** (`src/components/card/ShareCardSheet.tsx`): QR (`react-native-qrcode-svg`), copiar enlace (`expo-clipboard`), WhatsApp (`wa.me`), Share nativo, y **NFC (Plus)** — el NFC muestra aviso de que requiere build instalado (módulo nativo no disponible en Expo Go/web). **NFC MARCADO como pendiente de build.**
+  - **Editar** (`src/components/card/EditCardSheet.tsx`): edita nombre/cargo/empresa/bio/contactos + toggles y URLs de redes/enlaces. Persistencia local con `@react-native-async-storage/async-storage` (`src/stores/card.ts`).
+  - Mock por usuario en `MOCK_VIRTUAL_CARDS` (Andrea = Directora, Carlos = Estilista) → respeta RBAC.
+- **Dashboard — "Ingresos por mes"**: reemplazado el chart hardcodeado por una gráfica real de 6 meses calculada desde `MOCK_DEALS` ganados (`revenue_series` en `DashboardSummary`), con total del semestre.
+- **Dataset ambientado ~10 meses** (sesión previa de datos): 26 leads, 24 deals, 16 tareas, 12 conversaciones+mensajes, ~130 citas (incluye 5 garantizadas HOY), stats computados. Nombres/teléfonos/correos MX realistas.
+- **Tabs**: ahora 6 (Inicio · Chats · CRM · Agenda · Tarjeta · Perfil). "Conversaciones" → "Chats" para que quepan.
+- **Deps añadidas**: `react-native-qrcode-svg`, `expo-clipboard` (ambas SDK 52 compatibles).
+- **Testing**: testing_agent frontend **100% PASS** (logout fix, tarjeta+compartir+editar, revenue chart, datos poblados, RBAC, regresión Nueva Cita).
+- **Warnings no bloqueantes** (solo web): `pointerEvents` y `shadow*` deprecados, `useNativeDriver` en web. Pendiente de limpieza P2.
+
+### 🔜 Próximas acciones sugeridas (backlog)
+- **P1**: NFC real (requiere `react-native-nfc-manager` + build nativo, no Expo Go).
+- **P1**: editor de tarjeta más completo (foto de portada/avatar en base64, agregar/quitar enlaces y certificaciones dinámicamente).
+- **P1**: conectar a `/api/mobile/*` cuando Grok/Claude aprueben el spec → `EXPO_PUBLIC_MOCK_MODE=false`.
+- **P2**: migrar deprecaciones RN-web (`pointerEvents`/`shadow*`/`useNativeDriver`).
+
+### ✅ Hecho en sesión previa (E1 · jul 24, 2026) — Formulario "Nueva Cita" (P0)
 - **Feature P0 completada**: formulario real "Nueva Cita" en la Agenda, reemplazando el stub `Alert`.
   - Nuevo `src/components/ui/BottomSheet.tsx` — hoja inferior Cyberpunk reutilizable (RN `Modal` + `Animated` + `PanResponder`, borde superior gradiente flame→magenta sobre obsidian, drag-handle para cerrar, `KeyboardAvoidingView`). **Cero dependencias nuevas** (no reanimated: se descartó porque su setup web exige envolver `metro.config.js`, archivo protegido, y rompe en Expo Go SDK 52).
   - Nuevo `src/components/ui/Toast.tsx` — `ToastProvider` global (montado en `app/_layout.tsx`) + hook `useToast()`, animado con RN `Animated`.
