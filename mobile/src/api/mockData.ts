@@ -1,10 +1,13 @@
 // src/api/mockData.ts — Datos mock para preview de la app sin backend
 // Solo se usan cuando EXPO_PUBLIC_MOCK_MODE=true.
-// La app se ve y navega igual que en producción, sin llamar al SaaS real.
+// Dataset "ambientado": ~10 meses de histórico generado de forma DETERMINISTA
+// (semilla fija → siempre la misma data) con nombres/teléfonos/correos realistas MX.
+// La app se ve y navega como en producción sin llamar al SaaS real.
 
 import type {
   Appointment, Conversation, Deal, InboxMessage, Lead, Task, AuthUser,
   AgendaService, AgendaResource, AvailabilitySlot, AvailabilityResponse, CreateAppointmentPayload,
+  LeadStatus, DealStatus, AppointmentStatus, InboxChannel,
 } from '@/types';
 import type { DashboardSummary } from './dashboard';
 
@@ -43,264 +46,304 @@ export const MOCK_USERS: Record<string, AuthUser> = {
 
 export const MOCK_PASSWORD = 'demo123';
 
-// ---------------- Dashboard ----------------
+const OWNER = 'user-owner-001';
+const OWNER_NAME = 'Andrea Ríos';
+const VENDOR = 'user-vendor-002';
+const VENDOR_NAME = 'Carlos Méndez';
+const TENANT = 'tenant-demo-001';
 
-export const MOCK_DASHBOARD: DashboardSummary = {
-  business_name: 'Salón Bella Época',
-  vertical: 'beauty',
-  timezone: 'America/Mexico_City',
-  today: {
-    new_leads: 7,
-    unread_conversations: 3,
-    upcoming_appointments: 5,
-    tasks_due_today: 4,
-  },
-  week: {
-    leads: 42,
-    conversions: 11,
-    revenue: 18450,
+// ---------------- RNG determinista (mulberry32) ----------------
+
+function mulberry32(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rng = mulberry32(20260724);
+const rand = () => rng();
+const randInt = (min: number, max: number) => Math.floor(rand() * (max - min + 1)) + min;
+const pick = <T,>(arr: readonly T[]): T => arr[Math.floor(rand() * arr.length)];
+const chance = (p: number) => rand() < p;
+
+// ---------------- Helpers de fecha ----------------
+
+const NOW = new Date();
+function atTime(base: Date, h: number, m = 0): Date {
+  const d = new Date(base); d.setHours(h, m, 0, 0); return d;
+}
+function daysFromNow(days: number): Date {
+  const d = new Date(NOW); d.setDate(d.getDate() + days); return d;
+}
+function isoDaysAgo(days: number, h = 10, m = 0): string {
+  const d = daysFromNow(-days); d.setHours(h, m, 0, 0); return d.toISOString();
+}
+
+// ---------------- Pools de datos realistas MX ----------------
+
+const FIRST = [
+  'María Fernanda', 'Luis Enrique', 'Ana Sofía', 'Roberto', 'Fernanda', 'Diego', 'Isabella',
+  'Valentina', 'Sofía', 'Miguel Ángel', 'Regina', 'Alejandro', 'Camila', 'José Luis', 'Daniela',
+  'Ricardo', 'Paola', 'Emiliano', 'Ximena', 'Andrés', 'Renata', 'Gabriel', 'Mariana', 'Héctor',
+  'Lucía', 'Rodrigo', 'Ángela', 'Sebastián', 'Natalia', 'Patricio', 'Montserrat', 'Iván',
+] as const;
+const LAST = [
+  'Torres', 'Ramírez', 'Pérez', 'Cárdenas', 'Ochoa', 'García', 'Lugo', 'Hernández', 'Vázquez',
+  'Flores', 'Castillo', 'Romero', 'Domínguez', 'Reyes', 'Aguilar', 'Mendoza', 'Guerrero',
+  'Rosales', 'Ibarra', 'Navarro', 'Salazar', 'Cortés', 'Delgado', 'Fuentes', 'Peña', 'Rivas',
+  'Campos', 'Zamora', 'Vega', 'Bautista', 'Solís', 'Cabrera',
+] as const;
+const EMAIL_DOMAINS = ['gmail.com', 'outlook.com', 'hotmail.com', 'yahoo.com.mx', 'icloud.com'] as const;
+
+function stripAccents(s: string): string {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '.').toLowerCase();
+}
+function makePhone(i: number): string {
+  const a = String(1000 + ((i * 3797) % 9000));
+  const b = String(1000 + ((i * 6421) % 9000));
+  return `+52 55 ${a} ${b}`;
+}
+
+interface Person {
+  idx: number;
+  name: string;
+  phone: string;
+  email: string | null;
+  contact_id: string;
+}
+
+const PEOPLE: Person[] = Array.from({ length: 32 }, (_, i) => {
+  const name = `${FIRST[i % FIRST.length]} ${LAST[(i * 7 + 3) % LAST.length]}`;
+  const hasEmail = chance(0.82);
+  const email = hasEmail
+    ? `${stripAccents(name)}${chance(0.3) ? randInt(1, 99) : ''}@${pick(EMAIL_DOMAINS)}`
+    : null;
+  return { idx: i, name, phone: makePhone(i + 1), email, contact_id: `contact-${String(i + 1).padStart(3, '0')}` };
+});
+
+const SOURCES = [
+  { source_type: 'whatsapp_ad', source_name: 'Meta Ads · Corte y color', channel: 'whatsapp', medium: 'paid_social', campaign: 'Verano 2026' },
+  { source_type: 'instagram_dm', source_name: 'DM directo', channel: 'instagram_dm', medium: 'organic', campaign: null },
+  { source_type: 'facebook_ad', source_name: 'Meta Ads · Tratamiento capilar', channel: 'facebook_dm', medium: 'paid_social', campaign: 'Reactivación Otoño' },
+  { source_type: 'referral', source_name: 'Recomendación de cliente', channel: 'whatsapp', medium: 'referral', campaign: null },
+  { source_type: 'google_ad', source_name: 'Google Ads · Salón cerca de mí', channel: 'whatsapp', medium: 'paid_search', campaign: 'Search Marca' },
+  { source_type: 'tiktok_ad', source_name: 'TikTok Ads · Antes y después', channel: 'instagram_dm', medium: 'paid_social', campaign: 'UGC Enero' },
+  { source_type: 'organic_web', source_name: 'Formulario del sitio', channel: 'email', medium: 'organic', campaign: null },
+] as const;
+
+const STAGES_BY_STATUS: Record<string, string> = {
+  new: 'nuevo', active: 'contactado', won: 'ganado', lost: 'perdido', archived: 'archivado',
+};
+const LOSS_REASONS = ['Precio', 'Eligió competencia', 'Sin respuesta', 'No era el momento', 'Fuera de zona'];
+
+// ---------------- CRM: Leads (26, histórico ~10 meses) ----------------
+
+const LEAD_STATUSES: LeadStatus[] = ['won', 'won', 'lost', 'active', 'active', 'new', 'archived'];
+
+export const MOCK_LEADS: Lead[] = Array.from({ length: 26 }, (_, i) => {
+  const p = PEOPLE[i];
+  const src = SOURCES[i % SOURCES.length];
+  const status: LeadStatus = i < 4 ? (['active', 'new', 'active', 'active'] as LeadStatus[])[i] : pick(LEAD_STATUSES);
+  // Repartir asignación: ~50% Carlos, ~35% Andrea, ~15% sin asignar
+  const roll = rand();
+  const assigned = status === 'new' && chance(0.5)
+    ? { id: null as string | null, name: null as string | null }
+    : roll < 0.5 ? { id: VENDOR, name: VENDOR_NAME }
+    : roll < 0.85 ? { id: OWNER, name: OWNER_NAME }
+    : { id: null, name: null };
+
+  const createdAgo = randInt(3, 300); // hasta ~10 meses
+  const lastActAgo = Math.max(0, createdAgo - randInt(0, Math.min(createdAgo, 40)));
+
+  return {
+    id: `lead-${String(i + 1).padStart(3, '0')}`,
+    tenant_id: TENANT,
+    display_name: p.name,
+    primary_phone: p.phone,
+    primary_email: p.email,
+    status,
+    stage: STAGES_BY_STATUS[status],
+    source_type: src.source_type,
+    source_name: src.source_name,
+    campaign_name: src.campaign,
+    channel: src.channel,
+    medium: src.medium,
+    assigned_to_user_id: assigned.id,
+    assigned_to_name: assigned.name,
+    pool_id: null,
+    branch_id: null,
+    contact_id: p.contact_id,
+    created_at: isoDaysAgo(createdAgo, randInt(9, 19), pick([0, 15, 30, 45])),
+    updated_at: isoDaysAgo(lastActAgo, randInt(9, 19)),
+    last_activity_at: isoDaysAgo(lastActAgo, randInt(9, 19)),
+    next_action_at: status === 'active' || status === 'new'
+      ? daysFromNow(randInt(-2, 6)).toISOString()
+      : null,
+    notes: pick([
+      'Interesada en paquete de novia. Prefiere sábados.',
+      'Pidió cotización por WhatsApp, dar seguimiento.',
+      'Cliente frecuente, trato preferente.',
+      'Alergia a productos con amoniaco.',
+      'Recomendado por otra clienta.',
+      null, null,
+    ]),
+    score: randInt(35, 98),
+  };
+});
+
+const activeLeads = MOCK_LEADS.filter((l) => l.assigned_to_user_id);
+
+// ---------------- CRM: Deals / Pipeline (histórico de ingresos) ----------------
+
+const OPEN_STAGES = [
+  { key: 'quote', name: 'Cotización' },
+  { key: 'negotiation', name: 'Negociación' },
+  { key: 'contacted', name: 'Contactado' },
+] as const;
+
+export const MOCK_DEALS: Deal[] = Array.from({ length: 24 }, (_, i) => {
+  const lead = MOCK_LEADS[(i * 5 + 2) % MOCK_LEADS.length];
+  const r = rand();
+  const status: DealStatus = r < 0.45 ? 'won' : r < 0.7 ? 'lost' : 'open';
+  const amount = pick([350, 450, 600, 850, 1200, 1800, 2200, 3200, 4500, 6000]);
+  const createdAgo = randInt(10, 300);
+  const closedAgo = Math.max(1, createdAgo - randInt(3, 30));
+  const stage = status === 'won'
+    ? { key: 'won', name: 'Ganado' }
+    : status === 'lost'
+    ? { key: 'lost', name: 'Perdido' }
+    : pick(OPEN_STAGES);
+
+  return {
+    id: `deal-${String(i + 1).padStart(3, '0')}`,
+    lead_id: lead.id,
+    contact_id: lead.contact_id ?? `contact-${i + 1}`,
+    pipeline_id: 'pipe-default',
+    stage_id: `stage-${stage.key}`,
+    stage_key: stage.key,
+    stage_name: stage.name,
+    status,
+    amount,
     currency: 'MXN',
-  },
-  attention_needed: [
-    { kind: 'unassigned_lead', count: 2, label: 'Leads sin asignar de WhatsApp Ads' },
-    { kind: 'stale_conversation', count: 1, label: 'Conversación sin respuesta hace 2 horas' },
-    { kind: 'overdue_task', count: 3, label: 'Tareas vencidas del equipo' },
-  ],
-};
+    probability: status === 'won' ? 100 : status === 'lost' ? 0 : pick([30, 50, 60, 75]),
+    expected_close_date: status === 'open' ? daysFromNow(randInt(1, 20)).toISOString() : null,
+    assigned_to_user_id: lead.assigned_to_user_id ?? VENDOR,
+    assigned_to_name: lead.assigned_to_name ?? VENDOR_NAME,
+    title: `${pick(['Paquete', 'Servicio', 'Tratamiento', 'Cotización'])} — ${lead.display_name}`,
+    created_at: isoDaysAgo(createdAgo),
+    updated_at: isoDaysAgo(status === 'open' ? randInt(0, 5) : closedAgo),
+    won_at: status === 'won' ? isoDaysAgo(closedAgo) : null,
+    lost_at: status === 'lost' ? isoDaysAgo(closedAgo) : null,
+    loss_reason: status === 'lost' ? pick(LOSS_REASONS) : null,
+  };
+});
 
-// ---------------- CRM ----------------
+// ---------------- CRM: Tareas ----------------
 
-const now = new Date();
-const iso = (offsetHours: number) => new Date(now.getTime() + offsetHours * 3600_000).toISOString();
-
-export const MOCK_LEADS: Lead[] = [
-  {
-    id: 'lead-001', tenant_id: 'tenant-demo-001',
-    display_name: 'María Fernanda Torres', primary_phone: '+525512345678', primary_email: 'maria.torres@gmail.com',
-    status: 'active', stage: 'contactado', source_type: 'whatsapp_ad', source_name: 'Meta Ads · Corte y color',
-    campaign_name: 'Verano 2026', channel: 'whatsapp', medium: 'paid_social',
-    assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    pool_id: null, branch_id: null, contact_id: 'contact-001',
-    created_at: iso(-3), updated_at: iso(-1), last_activity_at: iso(-0.5), next_action_at: iso(24),
-    notes: 'Interesada en paquete de novia. Prefiere sábados.', score: 78,
-  },
-  {
-    id: 'lead-002', tenant_id: 'tenant-demo-001',
-    display_name: 'Luis Enrique Ramírez', primary_phone: '+525587654321', primary_email: null,
-    status: 'active', stage: 'nuevo', source_type: 'instagram_dm', source_name: 'DM directo',
-    campaign_name: null, channel: 'instagram_dm', medium: 'organic',
-    assigned_to_user_id: null, assigned_to_name: null,
-    pool_id: null, branch_id: null, contact_id: 'contact-002',
-    created_at: iso(-1), updated_at: iso(-1), last_activity_at: iso(-1), next_action_at: null,
-    notes: null, score: 45,
-  },
-  {
-    id: 'lead-003', tenant_id: 'tenant-demo-001',
-    display_name: 'Ana Sofía Pérez', primary_phone: '+525599887766', primary_email: 'ana.perez@outlook.com',
-    status: 'active', stage: 'agendado', source_type: 'facebook_ad', source_name: 'Meta Ads · Tratamiento capilar',
-    campaign_name: 'Verano 2026', channel: 'facebook_dm', medium: 'paid_social',
-    assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    pool_id: null, branch_id: null, contact_id: 'contact-003',
-    created_at: iso(-24), updated_at: iso(-2), last_activity_at: iso(-2), next_action_at: iso(48),
-    notes: 'Confirmó cita para el viernes 5pm.', score: 92,
-  },
-  {
-    id: 'lead-004', tenant_id: 'tenant-demo-001',
-    display_name: 'Roberto Cárdenas', primary_phone: '+525533445566', primary_email: null,
-    status: 'active', stage: 'contactado', source_type: 'referral', source_name: 'Recomendación de cliente',
-    campaign_name: null, channel: 'whatsapp', medium: 'referral',
-    assigned_to_user_id: 'user-owner-001', assigned_to_name: 'Andrea Ríos',
-    pool_id: null, branch_id: null, contact_id: 'contact-004',
-    created_at: iso(-48), updated_at: iso(-6), last_activity_at: iso(-6), next_action_at: iso(12),
-    notes: 'Recomendado por María Torres.', score: 65,
-  },
+const TASK_TITLES = [
+  'Llamar para confirmar cotización', 'Enviar catálogo por WhatsApp', 'Preparar propuesta VIP',
+  'Dar seguimiento post-servicio', 'Recordar cita de mañana', 'Cobrar anticipo pendiente',
+  'Reagendar cita cancelada', 'Pedir reseña en Google', 'Confirmar disponibilidad de producto',
 ];
 
-export const MOCK_DEALS: Deal[] = [
-  {
-    id: 'deal-001', lead_id: 'lead-001', contact_id: 'contact-001',
-    pipeline_id: 'pipe-default', stage_id: 'stage-quote', stage_key: 'quote', stage_name: 'Cotización',
-    status: 'open', amount: 4500, currency: 'MXN', probability: 60,
-    expected_close_date: iso(72),
-    assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    title: 'Paquete de novia — María Torres',
-    created_at: iso(-3), updated_at: iso(-1), won_at: null, lost_at: null, loss_reason: null,
-  },
-  {
-    id: 'deal-002', lead_id: 'lead-003', contact_id: 'contact-003',
-    pipeline_id: 'pipe-default', stage_id: 'stage-negotiation', stage_key: 'negotiation', stage_name: 'Negociación',
-    status: 'open', amount: 2200, currency: 'MXN', probability: 80,
-    expected_close_date: iso(48),
-    assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    title: 'Tratamiento capilar — Ana Sofía',
-    created_at: iso(-24), updated_at: iso(-2), won_at: null, lost_at: null, loss_reason: null,
-  },
+export const MOCK_TASKS: Task[] = Array.from({ length: 16 }, (_, i) => {
+  const lead = activeLeads[i % activeLeads.length];
+  const r = rand();
+  const status: Task['status'] = r < 0.4 ? 'done' : r < 0.55 ? 'in_progress' : 'pending';
+  const dueOffset = status === 'done' ? randInt(-40, -1) : randInt(-2, 10);
+  return {
+    id: `task-${String(i + 1).padStart(3, '0')}`,
+    tenant_id: TENANT,
+    title: pick(TASK_TITLES),
+    description: chance(0.5) ? 'Detalle de la tarea para dar seguimiento al cliente.' : null,
+    status,
+    priority: pick(['low', 'medium', 'high', 'high'] as const),
+    due_at: daysFromNow(dueOffset).toISOString(),
+    assigned_to_user_id: lead.assigned_to_user_id,
+    assigned_to_name: lead.assigned_to_name,
+    lead_id: lead.id,
+    deal_id: chance(0.4) ? pick(MOCK_DEALS).id : null,
+    contact_id: lead.contact_id,
+    created_at: isoDaysAgo(randInt(1, 60)),
+    completed_at: status === 'done' ? daysFromNow(dueOffset).toISOString() : null,
+  };
+});
+
+// ---------------- Inbox: Conversaciones + Mensajes ----------------
+
+const CHANNELS: InboxChannel[] = ['whatsapp', 'whatsapp', 'instagram_dm', 'facebook_dm', 'whatsapp', 'sms', 'email'];
+const INBOUND_SNIPPETS = [
+  'Hola! Vi su anuncio, ¿tienen disponibilidad esta semana?',
+  '¿Cuánto cuesta el paquete completo?',
+  'Quiero agendar para el sábado por la mañana 🙌',
+  '¿Manejan pago con tarjeta?',
+  'Gracias! ¿A qué hora abren?',
+  '¿Puedo mover mi cita a otro día?',
+  'Me encantó el resultado, muchas gracias 💕',
+];
+const OUTBOUND_SNIPPETS = [
+  '¡Hola! Claro, con gusto te ayudo 😊 ¿Para qué fecha buscas?',
+  'El paquete completo son $2,200 MXN e incluye prueba previa.',
+  'Perfecto, te agendo. ¿Te queda bien a las 11:00?',
+  'Sí, aceptamos tarjeta y transferencia.',
+  '¡Con gusto! Te esperamos 💫',
 ];
 
-export const MOCK_TASKS: Task[] = [
-  {
-    id: 'task-001', tenant_id: 'tenant-demo-001',
-    title: 'Llamar a María para confirmar paquete', description: 'Cerrar la cotización del paquete de novia',
-    status: 'pending', priority: 'high', due_at: iso(4),
-    assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    lead_id: 'lead-001', deal_id: 'deal-001', contact_id: 'contact-001',
-    created_at: iso(-3), completed_at: null,
-  },
-  {
-    id: 'task-002', tenant_id: 'tenant-demo-001',
-    title: 'Enviar catálogo a Luis Enrique', description: null,
-    status: 'pending', priority: 'medium', due_at: iso(24),
-    assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    lead_id: 'lead-002', deal_id: null, contact_id: 'contact-002',
-    created_at: iso(-1), completed_at: null,
-  },
-  {
-    id: 'task-003', tenant_id: 'tenant-demo-001',
-    title: 'Preparar propuesta VIP para Roberto', description: 'Cliente referido — trato especial',
-    status: 'pending', priority: 'high', due_at: iso(12),
-    assigned_to_user_id: 'user-owner-001', assigned_to_name: 'Andrea Ríos',
-    lead_id: 'lead-004', deal_id: null, contact_id: 'contact-004',
-    created_at: iso(-48), completed_at: null,
-  },
-];
+export const MOCK_CONVERSATIONS: Conversation[] = Array.from({ length: 12 }, (_, i) => {
+  const p = PEOPLE[i + 4];
+  const channel = CHANNELS[i % CHANNELS.length];
+  const inbound = chance(0.55);
+  const lastAgoHours = i < 4 ? [0.4, 1, 2, 6][i] : randInt(8, 24 * 20);
+  const assigned = chance(0.6) ? { id: VENDOR, name: VENDOR_NAME } : { id: OWNER, name: OWNER_NAME };
+  const unread = inbound ? randInt(0, 3) : 0;
+  return {
+    id: `conv-${String(i + 1).padStart(3, '0')}`,
+    tenant_id: TENANT,
+    channel,
+    contact_id: p.contact_id,
+    contact_name: p.name,
+    contact_avatar: null,
+    status: 'open',
+    ai_mode: pick(['auto', 'suggest', 'disabled'] as const),
+    assigned_to_user_id: assigned.id,
+    assigned_to_name: assigned.name,
+    last_message_at: new Date(NOW.getTime() - lastAgoHours * 3600_000).toISOString(),
+    last_message_preview: inbound ? pick(INBOUND_SNIPPETS) : pick(OUTBOUND_SNIPPETS),
+    last_message_direction: inbound ? 'inbound' : 'outbound',
+    unread_count: unread,
+    root_comment_id: null,
+    metadata: null,
+  };
+});
 
-// ---------------- Inbox ----------------
-
-export const MOCK_CONVERSATIONS: Conversation[] = [
-  {
-    id: 'conv-001', tenant_id: 'tenant-demo-001', channel: 'whatsapp',
-    contact_id: 'contact-001', contact_name: 'María Fernanda Torres', contact_avatar: null,
-    status: 'open', ai_mode: 'suggest',
-    assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    last_message_at: iso(-0.5), last_message_preview: 'Perfecto, entonces te espero el sábado a las 11am 💕',
-    last_message_direction: 'outbound',
-    unread_count: 0, root_comment_id: null, metadata: null,
-  },
-  {
-    id: 'conv-002', tenant_id: 'tenant-demo-001', channel: 'instagram_dm',
-    contact_id: 'contact-002', contact_name: 'Luis Enrique Ramírez', contact_avatar: null,
-    status: 'open', ai_mode: 'auto',
-    assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    last_message_at: iso(-1), last_message_preview: 'Hola! Quería preguntar por sus servicios de barbería',
-    last_message_direction: 'inbound',
-    unread_count: 2, root_comment_id: null, metadata: null,
-  },
-  {
-    id: 'conv-003', tenant_id: 'tenant-demo-001', channel: 'facebook_dm',
-    contact_id: 'contact-003', contact_name: 'Ana Sofía Pérez', contact_avatar: null,
-    status: 'open', ai_mode: 'disabled',
-    assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    last_message_at: iso(-2), last_message_preview: 'Confirmado! Viernes a las 5pm te veo.',
-    last_message_direction: 'inbound',
-    unread_count: 1, root_comment_id: null, metadata: null,
-  },
-  {
-    id: 'conv-004', tenant_id: 'tenant-demo-001', channel: 'whatsapp',
-    contact_id: 'contact-004', contact_name: 'Roberto Cárdenas', contact_avatar: null,
-    status: 'open', ai_mode: 'disabled',
-    assigned_to_user_id: 'user-owner-001', assigned_to_name: 'Andrea Ríos',
-    last_message_at: iso(-6), last_message_preview: 'Gracias! ¿Tienes disponibilidad esta semana?',
-    last_message_direction: 'inbound',
-    unread_count: 0, root_comment_id: null, metadata: null,
-  },
-];
-
-export const MOCK_MESSAGES: Record<string, InboxMessage[]> = {
-  'conv-001': [
-    { id: 'm1-1', conversation_id: 'conv-001', direction: 'inbound', content: 'Hola! Vi su anuncio en Instagram, ¿tienen paquete completo para novia?', content_html: null, media_url: null, media_kind: null, sender_kind: 'contact', sender_user_id: null, sender_name: null, created_at: iso(-3), delivered_at: iso(-3), read_at: iso(-3), error_message: null },
-    { id: 'm1-2', conversation_id: 'conv-001', direction: 'outbound', content: '¡Hola María! 😊 Sí, tenemos varios paquetes. El más completo incluye maquillaje, peinado, mani/pedi y prueba previa. ¿Para qué fecha sería?', content_html: null, media_url: null, media_kind: null, sender_kind: 'agent_ai', sender_user_id: null, sender_name: 'IA', created_at: iso(-2.9), delivered_at: iso(-2.9), read_at: iso(-2.5), error_message: null },
-    { id: 'm1-3', conversation_id: 'conv-001', direction: 'inbound', content: 'Para el 15 de marzo. Cuánto sale?', content_html: null, media_url: null, media_kind: null, sender_kind: 'contact', sender_user_id: null, sender_name: null, created_at: iso(-2), delivered_at: iso(-2), read_at: iso(-2), error_message: null },
-    { id: 'm1-4', conversation_id: 'conv-001', direction: 'outbound', content: 'El paquete completo son $4,500 MXN. Incluye prueba antes del evento. ¿Te agendo para venir a conocernos?', content_html: null, media_url: null, media_kind: null, sender_kind: 'agent_human', sender_user_id: 'user-vendor-002', sender_name: 'Carlos', created_at: iso(-1), delivered_at: iso(-1), read_at: iso(-0.9), error_message: null },
-    { id: 'm1-5', conversation_id: 'conv-001', direction: 'inbound', content: 'Sí, ¿puedo el sábado?', content_html: null, media_url: null, media_kind: null, sender_kind: 'contact', sender_user_id: null, sender_name: null, created_at: iso(-0.7), delivered_at: iso(-0.7), read_at: iso(-0.7), error_message: null },
-    { id: 'm1-6', conversation_id: 'conv-001', direction: 'outbound', content: 'Perfecto, entonces te espero el sábado a las 11am 💕', content_html: null, media_url: null, media_kind: null, sender_kind: 'agent_human', sender_user_id: 'user-vendor-002', sender_name: 'Carlos', created_at: iso(-0.5), delivered_at: iso(-0.5), read_at: null, error_message: null },
-  ],
-  'conv-002': [
-    { id: 'm2-1', conversation_id: 'conv-002', direction: 'inbound', content: 'Hola! Quería preguntar por sus servicios de barbería', content_html: null, media_url: null, media_kind: null, sender_kind: 'contact', sender_user_id: null, sender_name: null, created_at: iso(-1), delivered_at: iso(-1), read_at: null, error_message: null },
-  ],
-};
-
-// ---------------- Agenda ----------------
-
-const today9 = new Date(); today9.setHours(9, 0, 0, 0);
-const today10 = new Date(today9); today10.setHours(10, 30);
-const today11 = new Date(today9); today11.setHours(11, 0);
-const today17 = new Date(today9); today17.setHours(17, 0);
-const tomorrow11 = new Date(today9); tomorrow11.setDate(tomorrow11.getDate() + 1); tomorrow11.setHours(11);
-const tomorrow16 = new Date(tomorrow11); tomorrow16.setHours(16);
-
-export const MOCK_APPOINTMENTS: Appointment[] = [
-  {
-    id: 'appt-001', tenant_id: 'tenant-demo-001', crm_lead_id: 'lead-003', contact_id: 'contact-003',
-    contact_name: 'Ana Sofía Pérez', service_id: 'srv-treatment', service_name: 'Tratamiento capilar',
-    resource_id: 'res-carlos', resource_name: 'Carlos Méndez', location_id: null,
-    starts_at: today9.toISOString(), ends_at: today10.toISOString(),
-    status: 'confirmed', assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    notes: 'Alergia a productos con amoniaco', price: 2200, currency: 'MXN',
-    deposit_paid: true, created_at: iso(-24),
-  },
-  {
-    id: 'appt-002', tenant_id: 'tenant-demo-001', crm_lead_id: null, contact_id: 'contact-005',
-    contact_name: 'Isabella García', service_id: 'srv-manicure', service_name: 'Manicure gel',
-    resource_id: 'res-carlos', resource_name: 'Carlos Méndez', location_id: null,
-    starts_at: today11.toISOString(), ends_at: new Date(today11.getTime() + 60 * 60_000).toISOString(),
-    status: 'scheduled', assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    notes: null, price: 450, currency: 'MXN',
-    deposit_paid: false, created_at: iso(-48),
-  },
-  {
-    id: 'appt-003', tenant_id: 'tenant-demo-001', crm_lead_id: null, contact_id: 'contact-006',
-    contact_name: 'Fernanda Ochoa', service_id: 'srv-color', service_name: 'Corte y color',
-    resource_id: 'res-carlos', resource_name: 'Carlos Méndez', location_id: null,
-    starts_at: today17.toISOString(), ends_at: new Date(today17.getTime() + 120 * 60_000).toISOString(),
-    status: 'confirmed', assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    notes: 'Segunda visita del mes', price: 1800, currency: 'MXN',
-    deposit_paid: true, created_at: iso(-72),
-  },
-  {
-    id: 'appt-004', tenant_id: 'tenant-demo-001', crm_lead_id: 'lead-001', contact_id: 'contact-001',
-    contact_name: 'María Fernanda Torres', service_id: 'srv-bridal', service_name: 'Paquete de novia',
-    resource_id: 'res-carlos', resource_name: 'Carlos Méndez', location_id: null,
-    starts_at: tomorrow11.toISOString(), ends_at: new Date(tomorrow11.getTime() + 180 * 60_000).toISOString(),
-    status: 'scheduled', assigned_to_user_id: 'user-vendor-002', assigned_to_name: 'Carlos Méndez',
-    notes: 'Prueba previa. Trae velo.', price: 4500, currency: 'MXN',
-    deposit_paid: false, created_at: iso(-2),
-  },
-  {
-    id: 'appt-005', tenant_id: 'tenant-demo-001', crm_lead_id: null, contact_id: 'contact-007',
-    contact_name: 'Diana Ramos', service_id: 'srv-manicure', service_name: 'Manicure gel',
-    resource_id: 'res-andrea', resource_name: 'Andrea Ríos', location_id: null,
-    starts_at: tomorrow16.toISOString(), ends_at: new Date(tomorrow16.getTime() + 60 * 60_000).toISOString(),
-    status: 'scheduled', assigned_to_user_id: 'user-owner-001', assigned_to_name: 'Andrea Ríos',
-    notes: null, price: 450, currency: 'MXN',
-    deposit_paid: false, created_at: iso(-6),
-  },
-];
-
-// ---------------- Stats mock ----------------
-
-export const MOCK_INBOX_STATS = {
-  unread_total: 3,
-  open_total: 4,
-  assigned_to_me: 3,
-  unassigned: 1,
-  by_channel: { whatsapp: 2, instagram_dm: 1, facebook_dm: 1 },
-};
-
-export const MOCK_CRM_STATUS = {
-  active_leads: 4,
-  unassigned: 1,
-  won_this_month: 11,
-  lost_this_month: 3,
-  open_deals: 2,
-  tasks_due_today: 4,
-};
-
-export const MOCK_AGENDA_STATUS = {
-  today_count: 3,
-  upcoming_count: 5,
-  completed_this_week: 12,
-  no_shows_this_month: 1,
-};
+export const MOCK_MESSAGES: Record<string, InboxMessage[]> = {};
+MOCK_CONVERSATIONS.forEach((conv) => {
+  const count = randInt(3, 7);
+  const msgs: InboxMessage[] = [];
+  const startAgo = new Date(conv.last_message_at).getTime() - count * randInt(20, 90) * 60_000;
+  for (let j = 0; j < count; j++) {
+    const inbound = j % 2 === 0;
+    const t = new Date(startAgo + j * randInt(20, 90) * 60_000).toISOString();
+    msgs.push({
+      id: `${conv.id}-m${j + 1}`,
+      conversation_id: conv.id,
+      direction: inbound ? 'inbound' : 'outbound',
+      content: inbound ? pick(INBOUND_SNIPPETS) : pick(OUTBOUND_SNIPPETS),
+      content_html: null, media_url: null, media_kind: null,
+      sender_kind: inbound ? 'contact' : (chance(0.3) ? 'agent_ai' : 'agent_human'),
+      sender_user_id: inbound ? null : conv.assigned_to_user_id,
+      sender_name: inbound ? null : (conv.assigned_to_name ?? 'IA'),
+      created_at: t,
+      delivered_at: t,
+      read_at: inbound ? t : (chance(0.7) ? t : null),
+      error_message: null,
+    });
+  }
+  MOCK_MESSAGES[conv.id] = msgs;
+});
 
 // ---------------- Agenda: Servicios & Recursos ----------------
 
@@ -313,10 +356,211 @@ export const MOCK_SERVICES: AgendaService[] = [
 ];
 
 export const MOCK_RESOURCES: AgendaResource[] = [
-  { id: 'res-carlos', name: 'Carlos Méndez', user_id: 'user-vendor-002', location_id: null, active: true },
-  { id: 'res-andrea', name: 'Andrea Ríos', user_id: 'user-owner-001', location_id: null, active: true },
+  { id: 'res-carlos', name: 'Carlos Méndez', user_id: VENDOR, location_id: null, active: true },
+  { id: 'res-andrea', name: 'Andrea Ríos', user_id: OWNER, location_id: null, active: true },
   { id: 'res-sofia', name: 'Sofía Lugo', user_id: null, location_id: null, active: true },
 ];
+
+// ---------------- Agenda: Citas (histórico ~10 meses + próximas) ----------------
+
+function buildAppointments(): Appointment[] {
+  const out: Appointment[] = [];
+  let seq = 1;
+  // De 300 días atrás hasta 14 días adelante
+  for (let offset = -300; offset <= 14; offset++) {
+    const day = daysFromNow(offset);
+    const dow = day.getDay();
+    if (dow === 0) continue; // domingo cerrado
+    // densidad: pasado ~50% de tener citas, futuro un poco más
+    const nAppts = chance(offset < -14 ? 0.42 : 0.6) ? randInt(1, 3) : 0;
+    const usedHours: number[] = [];
+    for (let k = 0; k < nAppts; k++) {
+      const svc = pick(MOCK_SERVICES);
+      let hour = randInt(9, 17);
+      let guard = 0;
+      while (usedHours.includes(hour) && guard++ < 5) hour = randInt(9, 17);
+      usedHours.push(hour);
+      const start = atTime(day, hour, pick([0, 30]));
+      const end = new Date(start.getTime() + svc.duration_minutes * 60_000);
+      const res = pick(MOCK_RESOURCES);
+      const person = PEOPLE[randInt(0, PEOPLE.length - 1)];
+      const assignedId = res.user_id ?? (chance(0.6) ? VENDOR : OWNER);
+      const assignedName = assignedId === VENDOR ? VENDOR_NAME : OWNER_NAME;
+
+      let status: AppointmentStatus;
+      if (offset < -1) {
+        const r = rand();
+        status = r < 0.74 ? 'completed' : r < 0.87 ? 'cancelled' : 'no_show';
+      } else if (offset <= 1) {
+        status = chance(0.5) ? 'confirmed' : 'in_progress';
+      } else {
+        status = chance(0.55) ? 'confirmed' : 'scheduled';
+      }
+
+      const linkedLead = chance(0.5) ? pick(MOCK_LEADS) : null;
+
+      out.push({
+        id: `appt-${String(seq++).padStart(4, '0')}`,
+        tenant_id: TENANT,
+        crm_lead_id: linkedLead?.id ?? null,
+        contact_id: linkedLead?.contact_id ?? person.contact_id,
+        contact_name: linkedLead?.display_name ?? person.name,
+        service_id: svc.id,
+        service_name: svc.name,
+        resource_id: res.id,
+        resource_name: res.name,
+        location_id: null,
+        starts_at: start.toISOString(),
+        ends_at: end.toISOString(),
+        status,
+        assigned_to_user_id: assignedId,
+        assigned_to_name: assignedName,
+        notes: chance(0.35) ? pick(['Trae referencia de color', 'Segunda visita del mes', 'Alergia a amoniaco', 'Prueba previa']) : null,
+        price: svc.price,
+        currency: svc.currency,
+        deposit_paid: chance(0.55),
+        created_at: new Date(start.getTime() - randInt(1, 20) * 86400_000).toISOString(),
+      });
+    }
+  }
+
+  // Bloque garantizado para HOY — que la vista Día (default) y "Citas hoy"
+  // siempre luzcan pobladas al abrir la app.
+  const today = daysFromNow(0);
+  const guaranteed: Array<{ h: number; svc: string; res: string; person: number; status: AppointmentStatus }> = [
+    { h: 10, svc: 'srv-color', res: 'res-carlos', person: 0, status: 'confirmed' },
+    { h: 12, svc: 'srv-manicure', res: 'res-andrea', person: 5, status: 'confirmed' },
+    { h: 13, svc: 'srv-haircut', res: 'res-carlos', person: 8, status: 'scheduled' },
+    { h: 16, svc: 'srv-treatment', res: 'res-carlos', person: 11, status: 'scheduled' },
+    { h: 18, svc: 'srv-manicure', res: 'res-andrea', person: 14, status: 'confirmed' },
+  ];
+  guaranteed.forEach((g) => {
+    const svc = MOCK_SERVICES.find((s) => s.id === g.svc)!;
+    const res = MOCK_RESOURCES.find((r) => r.id === g.res)!;
+    const person = PEOPLE[g.person];
+    const start = atTime(today, g.h, 0);
+    const end = new Date(start.getTime() + svc.duration_minutes * 60_000);
+    const assignedId = res.user_id ?? VENDOR;
+    out.push({
+      id: `appt-${String(seq++).padStart(4, '0')}`,
+      tenant_id: TENANT,
+      crm_lead_id: null,
+      contact_id: person.contact_id,
+      contact_name: person.name,
+      service_id: svc.id,
+      service_name: svc.name,
+      resource_id: res.id,
+      resource_name: res.name,
+      location_id: null,
+      starts_at: start.toISOString(),
+      ends_at: end.toISOString(),
+      status: g.status,
+      assigned_to_user_id: assignedId,
+      assigned_to_name: assignedId === VENDOR ? VENDOR_NAME : OWNER_NAME,
+      notes: null,
+      price: svc.price,
+      currency: svc.currency,
+      deposit_paid: g.status === 'confirmed',
+      created_at: isoDaysAgo(randInt(2, 10)),
+    });
+  });
+
+  return out;
+}
+
+export const MOCK_APPOINTMENTS: Appointment[] = buildAppointments();
+
+// ---------------- Stats (computados desde la data para consistencia) ----------------
+
+const isSameDayLocal = (a: Date, b: Date) =>
+  a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+const withinDays = (iso: string, days: number) => {
+  const t = new Date(iso).getTime();
+  return t >= NOW.getTime() - days * 86400_000 && t <= NOW.getTime();
+};
+const thisMonth = (iso: string | null) => {
+  if (!iso) return false;
+  const d = new Date(iso);
+  return d.getFullYear() === NOW.getFullYear() && d.getMonth() === NOW.getMonth();
+};
+
+const wonThisMonth = MOCK_DEALS.filter((d) => d.status === 'won' && thisMonth(d.won_at));
+const lostThisMonth = MOCK_DEALS.filter((d) => d.status === 'lost' && thisMonth(d.lost_at));
+const wonThisWeek = MOCK_DEALS.filter((d) => d.status === 'won' && d.won_at && withinDays(d.won_at, 7));
+const revenueThisWeek = wonThisWeek.reduce((s, d) => s + (d.amount ?? 0), 0);
+
+const todayAppts = MOCK_APPOINTMENTS.filter((a) => isSameDayLocal(new Date(a.starts_at), NOW));
+const upcomingAppts = MOCK_APPOINTMENTS.filter((a) => {
+  const t = new Date(a.starts_at).getTime();
+  return t >= NOW.getTime() && t <= NOW.getTime() + 7 * 86400_000;
+});
+const completedThisWeek = MOCK_APPOINTMENTS.filter((a) => a.status === 'completed' && withinDays(a.starts_at, 7));
+const noShowsThisMonth = MOCK_APPOINTMENTS.filter((a) => a.status === 'no_show' && thisMonth(a.starts_at));
+
+const newLeadsToday = MOCK_LEADS.filter((l) => isSameDayLocal(new Date(l.created_at), NOW));
+const leadsThisWeek = MOCK_LEADS.filter((l) => withinDays(l.created_at, 7));
+const unassignedLeads = MOCK_LEADS.filter((l) => !l.assigned_to_user_id && l.status !== 'archived');
+const overdueTasks = MOCK_TASKS.filter((t) => t.status !== 'done' && t.due_at && new Date(t.due_at).getTime() < NOW.getTime());
+const tasksDueToday = MOCK_TASKS.filter((t) => t.status !== 'done' && t.due_at && isSameDayLocal(new Date(t.due_at), NOW));
+const unreadConvs = MOCK_CONVERSATIONS.filter((c) => c.unread_count > 0);
+const staleConvs = MOCK_CONVERSATIONS.filter((c) => c.last_message_direction === 'inbound' && !withinDays(c.last_message_at, 0.1));
+
+// ---------------- Dashboard ----------------
+
+export const MOCK_DASHBOARD: DashboardSummary = {
+  business_name: 'Salón Bella Época',
+  vertical: 'beauty',
+  timezone: 'America/Mexico_City',
+  today: {
+    new_leads: newLeadsToday.length,
+    unread_conversations: unreadConvs.reduce((s, c) => s + c.unread_count, 0),
+    upcoming_appointments: todayAppts.filter((a) => new Date(a.starts_at).getTime() >= NOW.getTime()).length,
+    tasks_due_today: tasksDueToday.length,
+  },
+  week: {
+    leads: leadsThisWeek.length,
+    conversions: wonThisWeek.length,
+    revenue: revenueThisWeek,
+    currency: 'MXN',
+  },
+  attention_needed: ([
+    { kind: 'unassigned_lead', count: unassignedLeads.length, label: 'Leads sin asignar' },
+    { kind: 'stale_conversation', count: staleConvs.length, label: 'Conversaciones sin responder' },
+    { kind: 'overdue_task', count: overdueTasks.length, label: 'Tareas vencidas del equipo' },
+    { kind: 'no_show_appointment', count: noShowsThisMonth.length, label: 'No-shows este mes' },
+  ] as DashboardSummary['attention_needed']).filter((a) => a.count > 0),
+};
+
+// ---------------- Stats mock ----------------
+
+const channelCounts: Record<string, number> = {};
+MOCK_CONVERSATIONS.forEach((c) => { channelCounts[c.channel] = (channelCounts[c.channel] ?? 0) + 1; });
+
+export const MOCK_INBOX_STATS = {
+  unread_total: unreadConvs.reduce((s, c) => s + c.unread_count, 0),
+  open_total: MOCK_CONVERSATIONS.filter((c) => c.status === 'open').length,
+  assigned_to_me: MOCK_CONVERSATIONS.filter((c) => c.assigned_to_user_id === VENDOR).length,
+  unassigned: MOCK_CONVERSATIONS.filter((c) => !c.assigned_to_user_id).length,
+  by_channel: channelCounts,
+};
+
+export const MOCK_CRM_STATUS = {
+  active_leads: MOCK_LEADS.filter((l) => l.status === 'active' || l.status === 'new').length,
+  unassigned: unassignedLeads.length,
+  won_this_month: wonThisMonth.length,
+  lost_this_month: lostThisMonth.length,
+  open_deals: MOCK_DEALS.filter((d) => d.status === 'open').length,
+  tasks_due_today: tasksDueToday.length,
+};
+
+export const MOCK_AGENDA_STATUS = {
+  today_count: todayAppts.length,
+  upcoming_count: upcomingAppts.length,
+  completed_this_week: completedThisWeek.length,
+  no_shows_this_month: noShowsThisMonth.length,
+};
+
+// ---------------- Availability & creación (usados por la hoja "Nueva Cita") ----------------
 
 /**
  * Genera slots de disponibilidad de 09:00 a 19:00 en pasos de 30 min.
@@ -342,7 +586,6 @@ export function buildMockAvailability(params: { date: string; service_id?: strin
     for (const m of [0, 30]) {
       const start = new Date(base); start.setHours(h, m, 0, 0);
       const end = new Date(start.getTime() + duration * 60_000);
-      // Excluir si termina después de las 19:30
       if (end.getHours() > 19 || (end.getHours() === 19 && end.getMinutes() > 30)) continue;
 
       const overlaps = dayAppointments.some((a) => {
@@ -376,8 +619,8 @@ export function createMockAppointment(payload: CreateAppointmentPayload): Appoin
   const user = Object.values(MOCK_USERS).find((u) => u.id === payload.assigned_to_user_id) ?? null;
 
   const appt: Appointment = {
-    id: `appt-${Date.now().toString(36)}`,
-    tenant_id: 'tenant-demo-001',
+    id: `appt-new-${Date.now().toString(36)}`,
+    tenant_id: TENANT,
     crm_lead_id: payload.crm_lead_id ?? null,
     contact_id: payload.contact_id ?? null,
     contact_name: payload.contact_name ?? null,
