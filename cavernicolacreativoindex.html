@@ -1,0 +1,2279 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cavernícola Creativo | Agencia de publicidad, marketing y tecnología</title>
+<meta name="description" content="Agencia de publicidad que une marca, medios y tecnología propia. Branding, campañas Meta y Google, sitios web, e-commerce y contenido — con CavernicolApp para que ningún prospecto se enfríe.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Cavernícola Creativo">
+<meta name="theme-color" content="#16181f">
+<link rel="canonical" href="https://www.cavernicolacreativo.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cavernícola Creativo">
+<meta property="og:locale" content="es_MX">
+<meta property="og:url" content="https://www.cavernicolacreativo.com/">
+<meta property="og:title" content="Cavernícola Creativo | Agencia de publicidad, marketing y tecnología">
+<meta property="og:description" content="Marca, medios y tecnología propia bajo un mismo techo. Diseñamos, anunciamos y convertimos — con CavernicolApp incluido.">
+<!-- REEMPLAZAR: imagen 1200x630 alojada en el dominio -->
+<meta property="og:image" content="https://www.cavernicolacreativo.com/og-cavernicola.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cavernícola Creativo — agencia de publicidad y tecnología">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cavernícola Creativo | Agencia de publicidad, marketing y tecnología">
+<meta name="twitter:description" content="Marca, medios y tecnología propia bajo un mismo techo.">
+<meta name="twitter:image" content="https://www.cavernicolacreativo.com/og-cavernicola.jpg">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://app.cavernicolapp.com" crossorigin>
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   CAVERNÍCOLA CREATIVO
+   Paleta tomada del logotipo: barro terracota, fuego que va de
+   ámbar a magenta, letras metálicas y champagne, todo sobre el
+   muro de piedra oscuro del mockup de marca.
+   Mundo único nocturno-cálido. Decisión, no omisión.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  color-scheme: dark;
+
+  /* El muro */
+  --wall:      #16181f;
+  --wall-2:    #1c1f28;
+  --wall-3:    #232732;
+  --card:      #22262f;
+  --card-hi:   #2b303c;
+
+  /* Tinta, sesgada a cálido (piedra, no gris de oficina) */
+  --ink:       #f6f1ea;
+  --ink-2:     rgba(246,241,234,.72);
+  --ink-3:     rgba(246,241,234,.46);
+  --ink-4:     rgba(246,241,234,.24);
+  --line:      rgba(246,241,234,.1);
+  --line-2:    rgba(246,241,234,.17);
+
+  /* Barro — el cuerpo del isotipo */
+  --clay:      #c4674b;
+  --clay-hi:   #dc8360;
+  --clay-lo:   #8d4732;
+
+  /* Fuego — la llama del isotipo */
+  --fire:      #ff7a18;
+  --fire-hi:   #ffc93c;
+  --fire-lo:   #e0561a;
+  --magenta:   #ff2d95;
+
+  /* Metal y champagne — el lockup tipográfico */
+  --steel:     #dfe6ee;
+  --steel-lo:  #8e9bab;
+  --champagne: #e7d3ba;
+
+  --grad-fire:  linear-gradient(120deg, var(--fire-hi) 0%, var(--fire) 45%, var(--magenta) 100%);
+  --grad-clay:  linear-gradient(150deg, var(--clay-hi), var(--clay-lo));
+  --grad-metal: linear-gradient(177deg, #ffffff 0%, #e2e9f1 20%, #93a0b0 46%, #f4f8fc 57%, #a7b3c1 76%, #e6edf4 100%);
+  --grad-champ: linear-gradient(177deg, #fff7ec 0%, #eeddc6 38%, #b99a78 58%, #f6ead9 78%, #d3b795 100%);
+
+  /* Tipografía */
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --t--1: clamp(.78rem, .755rem + .12vw, .85rem);
+  --t-0:  clamp(.96rem, .93rem + .16vw, 1.06rem);
+  --t-1:  clamp(1.1rem, 1.02rem + .38vw, 1.35rem);
+  --t-2:  clamp(1.3rem, 1.14rem + .68vw, 1.75rem);
+  --t-3:  clamp(1.65rem, 1.2rem + 1.6vw, 2.5rem);
+  --t-4:  clamp(2rem, 1.35rem + 2.3vw, 3.3rem);
+  --t-5:  clamp(2.5rem, 1.5rem + 3.5vw, 4.5rem);
+
+  --wrap: 1240px;
+  --ease: cubic-bezier(.2,.75,.28,1);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{ scroll-behavior: smooth; scroll-padding-top: 96px; }
+
+body{
+  margin: 0;
+  background: var(--wall);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--t-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Textura de muro: grano fino y viñeta, como el mockup del logo */
+body::after{
+  content: "";
+  position: fixed; inset: 0; z-index: 200;
+  pointer-events: none;
+  background-image:
+    radial-gradient(rgba(255,235,215,.05) .5px, transparent .5px),
+    radial-gradient(rgba(0,0,0,.22) .5px, transparent .5px),
+    radial-gradient(115% 90% at 50% 42%, transparent 42%, rgba(0,0,0,.5) 100%);
+  background-size: 3px 3px, 5px 5px, 100% 100%;
+  background-position: 0 0, 1px 2px, 0 0;
+}
+
+img, svg, video{ max-width: 100%; display: block; }
+a{ color: inherit; }
+
+h1, h2, h3, h4{
+  margin: 0;
+  font-weight: 760;
+  letter-spacing: -.035em;
+  line-height: .98;
+  text-wrap: balance;
+}
+h1{ font-size: var(--t-5); letter-spacing: -.05em; }
+h2{ font-size: var(--t-4); letter-spacing: -.045em; }
+h3{ font-size: var(--t-1); letter-spacing: -.02em; line-height: 1.2; font-weight: 700; }
+p{ margin: 0; }
+
+:focus-visible{ outline: 3px solid var(--fire); outline-offset: 4px; border-radius: 8px; }
+::selection{ background: var(--fire); color: #1a0d03; }
+
+/* Acabados de marca ─────────────────────────────────────── */
+.metal{
+  background: var(--grad-metal);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.champ{
+  background: var(--grad-champ);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.ardiente{
+  background: var(--grad-fire);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: brasa 8s var(--ease) infinite;
+}
+@keyframes brasa{
+  0%, 100%{ background-position: 0% 0; }
+  50%     { background-position: 100% 0; }
+}
+
+/* ── Composición ─────────────────────────────────────────── */
+.wrap{ width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: 22px; }
+@media (min-width: 1024px){ .wrap{ padding-inline: 40px; } }
+
+.band{ position: relative; padding-block: clamp(72px, 9vw, 132px); }
+.band--tint{ background: var(--wall-2); }
+.band--deep{ background: var(--wall-3); }
+
+.stack{ display: flex; flex-direction: column; }
+.g-2{gap:8px}.g-3{gap:12px}.g-4{gap:16px}.g-5{gap:20px}.g-6{gap:24px}
+.g-8{gap:32px}.g-10{gap:40px}.g-12{gap:48px}.g-16{gap:64px}
+
+.measure{ max-width: 60ch; }
+.lede{ font-size: var(--t-1); color: var(--ink-2); line-height: 1.5; font-weight: 400; }
+
+.eyebrow{
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: .7rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .26em;
+  color: var(--ink-3);
+}
+.eyebrow::before{ content: ""; width: 26px; height: 2px; border-radius: 2px; background: var(--grad-fire); flex: 0 0 auto; }
+.eyebrow[data-tone="clay"]::before{ background: var(--clay); }
+
+/* ── Botones ─────────────────────────────────────────────── */
+.btn{
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  height: 56px; padding-inline: 32px;
+  border: 1px solid transparent; border-radius: 999px;
+  background: var(--grad-fire);
+  color: #1c0c02;
+  font: inherit; font-size: var(--t-0); font-weight: 750;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  overflow: hidden;
+  transition: transform .35s var(--ease-out), box-shadow .35s var(--ease);
+  box-shadow: 0 12px 36px -12px rgba(255,122,24,.75);
+}
+.btn::before{
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(120deg, #ffe08a, var(--fire-hi) 55%, #ff5fae);
+  transform: translateY(101%);
+  transition: transform .45s var(--ease-out);
+}
+.btn:hover{ transform: translateY(-3px); box-shadow: 0 20px 48px -14px rgba(255,45,149,.6); }
+.btn:active{ transform: translateY(-1px); }
+.btn .ico{ width: 18px; height: 18px; flex: 0 0 auto; transition: transform .35s var(--ease-out); }
+.btn:hover .ico{ transform: translateX(4px); }
+
+.btn--clay{ background: var(--grad-clay); color: #fff3ec; box-shadow: 0 12px 36px -14px rgba(196,103,75,.8); }
+.btn--clay::before{ background: linear-gradient(150deg, #e8926e, var(--clay)); }
+
+.btn--ghost{
+  background: transparent; color: var(--ink);
+  border-color: var(--line-2); box-shadow: none;
+}
+.btn--ghost::before{ background: rgba(246,241,234,.1); }
+.btn--ghost:hover{ box-shadow: none; border-color: var(--clay-hi); }
+
+.btn--sm{ height: 46px; padding-inline: 18px; font-size: var(--t--1); }
+.btn--block{ width: 100%; }
+.actions{ display: flex; flex-wrap: wrap; gap: 14px; }
+
+.tag{
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 8px 16px; border-radius: 999px;
+  font-size: .66rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .2em;
+  background: rgba(196,103,75,.14); color: var(--clay-hi);
+  border: 1px solid rgba(196,103,75,.35);
+  backdrop-filter: blur(10px);
+}
+.tag[data-tone="fire"]{
+  background: rgba(255,122,24,.13); color: var(--fire-hi);
+  border-color: rgba(255,122,24,.34);
+}
+.tag i{
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; flex: 0 0 auto;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{ 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.7)} }
+
+/* ── Barra de lectura + navegación ───────────────────────── */
+.progress{ position: fixed; top: 0; left: 0; right: 0; z-index: 120; height: 2px; pointer-events: none; }
+.progress i{
+  display: block; height: 100%; width: 0%;
+  background: var(--grad-fire);
+  box-shadow: 0 0 14px rgba(255,122,24,.8);
+  transition: width .1s linear;
+}
+
+.nav{
+  position: fixed; inset: 2px 0 auto 0; z-index: 110;
+  transition: background-color .45s var(--ease), backdrop-filter .45s var(--ease), border-color .45s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav[data-scrolled="true"]{
+  background: rgba(22,24,31,.78);
+  backdrop-filter: blur(22px) saturate(130%);
+  border-bottom-color: var(--line);
+}
+.nav__inner{ display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; min-width: 0; }
+
+/* ── Lockup de marca ─────────────────────────────────────── */
+.brand{ display: inline-flex; align-items: center; gap: 13px; text-decoration: none; }
+/* El isotipo entra SOLO cuando CONFIG.logo trae el archivo oficial.
+   Mientras tanto, la marca vive en su lockup tipografico: no se dibuja
+   ninguna reconstruccion del logotipo. */
+.brand__mark{
+  height: 46px; flex: 0 0 auto;
+  transition: transform .55s var(--ease-out);
+  animation: fade .5s var(--ease-out) both;
+}
+.brand:hover .brand__mark{ transform: scale(1.06); }
+.brand__mark img{ height: 100%; width: auto; object-fit: contain; }
+.brand[data-lockup="true"] .brand__mark{ height: 52px; }
+.brand[data-lockup="true"] > span:last-child{ display: none; }
+.brand__name{
+  display: block;
+  font-weight: 800; font-size: 1.06rem; line-height: 1.05;
+  letter-spacing: .13em; text-transform: uppercase;
+}
+.brand__kicker{
+  display: block; margin-top: 3px;
+  font-size: .56rem; font-weight: 700; letter-spacing: .42em;
+  text-transform: uppercase;
+}
+
+.nav__links{ display: none; align-items: center; gap: 2px; }
+@media (min-width: 1180px){ .nav__links{ display: flex; } }
+.nav__link{
+  position: relative;
+  padding: 9px 12px; border-radius: 999px;
+  font-size: .845rem; font-weight: 620; text-decoration: none;
+  white-space: nowrap;
+  color: var(--ink-2);
+  transition: color .3s var(--ease), background-color .3s var(--ease);
+}
+.nav__link:hover{ color: var(--ink); background: rgba(246,241,234,.07); }
+.nav__link[data-active="true"]{ color: var(--ink); background: rgba(196,103,75,.16); }
+.nav__link[data-tone="fire"]{ color: var(--fire-hi); }
+.nav__cta{ display: flex; align-items: center; gap: 10px; }
+.nav__cta .btn--ghost{ display: none; }
+@media (min-width: 700px){ .nav__cta .btn--ghost{ display: inline-flex; } }
+
+/* ── Hero ────────────────────────────────────────────────── */
+.hero{
+  position: relative; isolation: isolate;
+  min-height: min(100svh, 860px);
+  display: flex; align-items: center;
+  padding-block: clamp(118px, 14vh, 168px) clamp(56px, 7vh, 92px);
+  overflow: hidden;
+}
+.orb{ position: absolute; z-index: -2; border-radius: 50%; filter: blur(95px); opacity: .5; will-change: transform; }
+.orb--1{ width: 46vw; height: 46vw; left: -10vw; top: -6vw; background: rgba(196,103,75,.62); }
+.orb--2{ width: 40vw; height: 40vw; right: -8vw; top: 2vw; background: rgba(255,45,149,.34); }
+.orb--3{ width: 46vw; height: 46vw; left: 24vw; bottom: -24vw; background: rgba(255,122,24,.4); }
+.hero__mesh{
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(246,241,234,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246,241,234,.03) 1px, transparent 1px);
+  background-size: 74px 74px;
+  mask-image: radial-gradient(80% 65% at 50% 42%, #000 25%, transparent 78%);
+  -webkit-mask-image: radial-gradient(80% 65% at 50% 42%, #000 25%, transparent 78%);
+}
+
+.hero__grid{ display: grid; gap: clamp(44px, 6vw, 76px); align-items: center; }
+@media (min-width: 1100px){ .hero__grid{ grid-template-columns: 1.14fr .86fr; } }
+
+.mask{ display: block; overflow: hidden; padding-block: .04em .18em; margin-block-end: -.14em; }
+.mask > span{
+  display: block; transform: translateY(105%);
+  animation: rise .8s var(--ease-out) forwards;
+  animation-delay: var(--in, 0ms);
+}
+@keyframes rise{ to{ transform: translateY(0); } }
+
+.fade{ opacity: 0; animation: fade .7s var(--ease-out) forwards; animation-delay: var(--in, 0ms); }
+@keyframes fade{ to{ opacity: 1; } }
+
+.hero__sub{ font-size: var(--t-1); color: var(--ink-2); max-width: 54ch; line-height: 1.5; }
+
+.hero__stats{
+  display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 18px; padding-top: 8px; margin-top: 4px;
+  border-top: 1px solid var(--line);
+}
+.hero__stats div{ padding-top: 18px; }
+.hero__stats b{
+  display: block; font-size: var(--t-2); font-weight: 800;
+  letter-spacing: -.04em; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--clay-hi);
+}
+/* Solo la etiqueta: si no se acota al hijo directo, esta regla tambien
+   alcanza al <span data-count> que vive DENTRO de <b> y lo encoge. */
+.hero__stats div > span{ display: block; margin-top: 6px; font-size: .76rem; color: var(--ink-3); line-height: 1.4; }
+
+.pane{
+  position: relative;
+  border-radius: 28px;
+  border: 1px solid var(--line-2);
+  background: linear-gradient(160deg, rgba(246,241,234,.08), rgba(246,241,234,.02));
+  backdrop-filter: blur(24px);
+  padding: 26px;
+  box-shadow: 0 40px 90px -40px rgba(0,0,0,.95);
+  overflow: hidden;
+}
+.pane::before{
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+  background: linear-gradient(140deg, rgba(255,122,24,.65), transparent 42%, transparent 62%, rgba(255,45,149,.5));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none;
+}
+.pane__head{
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 16px; margin-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: .72rem; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.pane__live{ display: inline-flex; align-items: center; gap: 7px; color: var(--fire-hi); }
+.pane__live i{ width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.8s ease-in-out infinite; }
+
+.feed{ display: flex; flex-direction: column; gap: 10px; }
+.feed__item{
+  display: flex; align-items: center; gap: 13px;
+  padding: 13px 15px; border-radius: 16px;
+  background: rgba(246,241,234,.05);
+  border: 1px solid var(--line);
+  transition: background-color .4s var(--ease), border-color .4s var(--ease);
+}
+.feed__item[data-new="true"]{
+  background: rgba(255,122,24,.13);
+  border-color: rgba(255,122,24,.42);
+  animation: dropin .7s var(--ease-out);
+}
+@keyframes dropin{ from{ opacity: 0; transform: translateY(-14px) scale(.97); } }
+.feed__ava{
+  width: 36px; height: 36px; border-radius: 12px; flex: 0 0 auto;
+  display: grid; place-items: center;
+  font-size: .7rem; font-weight: 800; color: #fff3ec;
+  background: var(--grad-clay);
+}
+.feed__item[data-new="true"] .feed__ava{ background: var(--grad-fire); color: #1c0c02; }
+.feed__meta{ flex: 1 1 auto; min-width: 0; }
+.feed__name{ display: block; font-size: .85rem; font-weight: 700; }
+.feed__note{ display: block; font-size: .72rem; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.feed__chip{
+  flex: 0 0 auto; font-size: .58rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .13em;
+  padding: 5px 10px; border-radius: 999px;
+  background: rgba(246,241,234,.09); color: var(--ink-2);
+}
+.feed__item[data-new="true"] .feed__chip{ background: rgba(255,201,60,.22); color: var(--fire-hi); }
+.pane__foot{
+  margin-top: 16px; padding-top: 15px; border-top: 1px solid var(--line);
+  font-size: .78rem; color: var(--ink-3); display: flex; justify-content: space-between; gap: 12px;
+}
+.pane__foot b{ color: var(--fire-hi); font-variant-numeric: tabular-nums; }
+
+/* ── Marquesina ──────────────────────────────────────────── */
+.ticker{
+  position: relative;
+  border-block: 1px solid var(--line);
+  background: var(--wall-2);
+  padding-block: 20px; overflow: hidden;
+  --marquee: 46s;
+}
+.ticker::before, .ticker::after{ content: ""; position: absolute; top: 0; bottom: 0; width: 14vw; z-index: 2; pointer-events: none; }
+.ticker::before{ left: 0; background: linear-gradient(90deg, var(--wall-2), transparent); }
+.ticker::after{ right: 0; background: linear-gradient(270deg, var(--wall-2), transparent); }
+.ticker__track{ display: flex; width: max-content; animation: slide var(--marquee) linear infinite; }
+.ticker:hover .ticker__track{ animation-play-state: paused; }
+@keyframes slide{ to{ transform: translateX(-50%); } }
+.ticker__group{ display: flex; align-items: center; flex: 0 0 auto; }
+.ticker__item{
+  display: inline-flex; align-items: center; gap: 18px;
+  padding-inline: 26px;
+  font-size: clamp(1rem, .85rem + .6vw, 1.5rem);
+  font-weight: 700; letter-spacing: -.02em;
+  color: var(--ink-3); white-space: nowrap;
+}
+.ticker__item svg{ width: 15px; height: 15px; color: var(--clay); flex: 0 0 auto; }
+.ticker__item:nth-child(even){ color: var(--ink); }
+
+/* ── Rejilla bento ───────────────────────────────────────── */
+.bento{ display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 760px){ .bento{ grid-template-columns: repeat(6, 1fr); } }
+.tile{
+  position: relative; isolation: isolate; overflow: hidden;
+  grid-column: span 1;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--card);
+  padding: clamp(26px, 2.8vw, 38px);
+  display: flex; flex-direction: column; gap: 15px;
+  transition: border-color .45s var(--ease), transform .55s var(--ease-out), background-color .45s var(--ease);
+}
+@media (min-width: 760px){
+  .tile{ grid-column: span 3; }
+  .tile[data-span="2"]{ grid-column: span 2; }
+  .tile[data-span="4"]{ grid-column: span 4; }
+  .tile[data-span="6"]{ grid-column: span 6; }
+}
+.tile::before{
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 0%), rgba(196,103,75,.24), transparent 62%);
+  opacity: 0; transition: opacity .45s var(--ease);
+}
+.tile:hover{ border-color: var(--line-2); transform: translateY(-4px); background: var(--card-hi); }
+.tile:hover::before{ opacity: 1; }
+.tile[data-tone="fire"]::before{ background: radial-gradient(340px circle at var(--mx,50%) var(--my,0%), rgba(255,122,24,.26), transparent 62%); }
+
+.tile__ico{
+  width: 52px; height: 52px; border-radius: 17px; flex: 0 0 auto;
+  display: grid; place-items: center;
+  background: rgba(196,103,75,.16);
+  border: 1px solid rgba(196,103,75,.3);
+  color: var(--clay-hi);
+  transition: transform .5s var(--ease-out), background-color .4s var(--ease), border-color .4s var(--ease);
+}
+.tile:hover .tile__ico{ transform: translateY(-3px) rotate(-5deg); background: rgba(196,103,75,.26); }
+.tile__ico svg{ width: 23px; height: 23px; }
+.tile[data-tone="fire"] .tile__ico{ background: rgba(255,122,24,.16); border-color: rgba(255,122,24,.32); color: var(--fire-hi); }
+.tile[data-tone="fire"]:hover .tile__ico{ background: rgba(255,122,24,.26); }
+.tile p{ color: var(--ink-2); font-size: .97rem; line-height: 1.55; }
+.tile__list{
+  list-style: none; margin: 0; padding: 16px 0 0;
+  border-top: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.tile__list li{
+  font-size: .74rem; font-weight: 600;
+  padding: 6px 12px; border-radius: 999px;
+  background: rgba(246,241,234,.05);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+}
+.tile__n{
+  position: absolute; right: 26px; top: 22px;
+  font-family: var(--mono); font-size: .72rem; letter-spacing: .1em;
+  color: var(--ink-4);
+}
+
+/* ── Método: riel que se enciende ────────────────────────── */
+.method__grid{ display: grid; gap: 44px; }
+@media (min-width: 1000px){
+  .method__grid{ grid-template-columns: .82fr 1.18fr; gap: 70px; align-items: start; }
+  .method__aside{ position: sticky; top: 130px; }
+}
+.rail{ display: flex; flex-direction: column; }
+.rail__item{
+  position: relative;
+  padding: 34px 0 34px 34px;
+  border-left: 1px solid var(--line);
+  transition: border-color .5s var(--ease);
+}
+.rail__item::before{
+  content: ""; position: absolute; left: -6px; top: 42px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--wall-2); border: 2px solid var(--line-2);
+  transition: background-color .45s var(--ease), border-color .45s var(--ease), transform .45s var(--ease-out), box-shadow .45s var(--ease);
+}
+.rail__item[data-on="true"]{ border-left-color: rgba(255,122,24,.55); }
+.rail__item[data-on="true"]::before{
+  background: var(--fire); border-color: var(--fire-hi);
+  transform: scale(1.4);
+  box-shadow: 0 0 24px rgba(255,122,24,.95);
+}
+.rail__n{ font-family: var(--mono); font-size: .72rem; font-weight: 600; letter-spacing: .16em; color: var(--clay-hi); }
+.rail__name{
+  font-size: var(--t-3); font-weight: 800; letter-spacing: -.045em; line-height: 1;
+  margin: 10px 0 12px; color: var(--ink-4);
+  transition: color .5s var(--ease);
+}
+.rail__item[data-on="true"] .rail__name{ color: var(--ink); }
+.rail__desc{ color: var(--ink-2); font-size: 1rem; max-width: 52ch; line-height: 1.6; }
+
+/* ── Corte diagonal entre bandas ─────────────────────────── */
+.cut::before{
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 90px;
+  background: inherit;
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  transform: translateY(-89px);
+}
+
+/* ── CavernicolApp ───────────────────────────────────────── */
+.app__grid{ display: grid; gap: clamp(38px, 5vw, 64px); align-items: start; }
+@media (min-width: 1100px){ .app__grid{ grid-template-columns: 1.02fr .98fr; } }
+
+.brief{ display: flex; flex-direction: column; gap: 9px; padding-left: 22px; border-left: 2px solid rgba(196,103,75,.55); }
+.brief[data-tone="fire"]{ border-left-color: rgba(255,122,24,.7); }
+.brief h3{ font-size: var(--t-1); }
+.brief p{ color: var(--ink-2); font-size: .97rem; line-height: 1.6; }
+
+.pains{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+.pains li{ display: grid; grid-template-columns: 88px 1fr; gap: 14px; align-items: start; font-size: .95rem; color: var(--ink-2); line-height: 1.5; }
+.pains s{
+  text-decoration: none; color: var(--fire);
+  font-size: .68rem; text-transform: uppercase; letter-spacing: .14em;
+  font-weight: 800; padding-top: 4px;
+}
+.pains b{ color: var(--ink); font-weight: 680; }
+
+.screen{
+  border-radius: 26px; border: 1px solid var(--line-2);
+  background: linear-gradient(165deg, rgba(246,241,234,.07), rgba(246,241,234,.02));
+  backdrop-filter: blur(20px);
+  padding: 16px;
+  box-shadow: 0 40px 90px -40px rgba(0,0,0,.95);
+}
+.screen__chrome{ display: flex; align-items: center; gap: 8px; padding: 5px 6px 15px; }
+.screen__chrome i{ width: 9px; height: 9px; border-radius: 50%; background: var(--ink-4); }
+.screen__chrome span{ margin-left: auto; font-size: .66rem; color: var(--ink-4); font-family: var(--mono); }
+.screen__body{
+  border-radius: 18px; background: rgba(10,11,15,.6);
+  border: 1px solid var(--line);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 11px;
+}
+.screen__tabs{ display: flex; gap: 6px; padding-bottom: 4px; flex-wrap: wrap; }
+.screen__tab{
+  font-size: .66rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  padding: 7px 12px; border-radius: 999px;
+  color: var(--ink-3); background: rgba(246,241,234,.05); border: 1px solid var(--line);
+}
+.screen__tab[data-on="true"]{ color: #1c0c02; background: var(--grad-fire); border-color: transparent; }
+
+/* ── Portafolio ──────────────────────────────────────────── */
+.works{ display: grid; gap: 18px; }
+@media (min-width: 700px){ .works{ grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1060px){ .works{ grid-template-columns: repeat(3, 1fr); } }
+.work{
+  position: relative; overflow: hidden;
+  border-radius: 24px; border: 1px solid var(--line);
+  background: var(--card);
+  transform-style: preserve-3d;
+  transition: transform .4s var(--ease-out), border-color .4s var(--ease);
+  will-change: transform;
+}
+.work:hover{ border-color: rgba(196,103,75,.45); }
+.work__art{ position: relative; aspect-ratio: 4/3; overflow: hidden; }
+.work__art::before{
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(58% 58% at 28% 22%, rgba(255,122,24,.6), transparent 62%),
+    radial-gradient(52% 52% at 78% 76%, rgba(255,45,149,.42), transparent 64%),
+    linear-gradient(150deg, #3a2018, #6d3626);
+  transition: transform .8s var(--ease-out);
+}
+.work:hover .work__art::before{ transform: scale(1.12) rotate(2deg); }
+.work__letter{
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: clamp(3rem, 6vw, 4.4rem); font-weight: 800; letter-spacing: -.06em;
+  color: rgba(255,244,236,.94); text-shadow: 0 8px 40px rgba(0,0,0,.55);
+}
+.work__flag{
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  font-size: .56rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+  padding: 6px 11px; border-radius: 999px;
+  background: rgba(22,24,31,.75); color: var(--fire-hi);
+  border: 1px solid rgba(255,201,60,.4); backdrop-filter: blur(8px);
+}
+.work__body{ padding: 22px 24px 26px; display: flex; flex-direction: column; gap: 7px; }
+.work__sector{ font-size: .64rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--clay-hi); }
+.work__title{ font-size: var(--t-1); font-weight: 720; letter-spacing: -.025em; }
+.work__result{ font-size: var(--t--1); color: var(--ink-3); line-height: 1.5; }
+
+
+/* ── Marcas del portafolio ───────────────────────────────────
+   Identidades FICTICIAS, construidas con tipografia para que el
+   archivo siga siendo autocontenido. Cada una lleva su etiqueta
+   "Ejemplo" visible: no son clientes reales. Al entrar los casos
+   verdaderos, se sustituye el bloque .mk por la imagen y se quita
+   la etiqueta. */
+.mk{
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 9px; padding: 24px; text-align: center;
+  color: #fff;
+  transition: transform .8s var(--ease-out);
+}
+.work:hover .mk{ transform: scale(1.045); }
+.mk__row{ display: flex; align-items: center; justify-content: center; gap: .34em; }
+.mk__sub{
+  font-size: .56rem; font-weight: 600;
+  letter-spacing: .46em; text-transform: uppercase;
+  opacity: .72; padding-left: .46em;
+}
+.mk__bars{ display: inline-flex; gap: 3px; align-self: stretch; align-items: center; }
+.mk__bars i{ width: 1.5px; height: 1.25em; background: currentColor; display: block; }
+
+/* Motomosion — seminuevos */
+.mk--moto{ font-style: italic; }
+.mk--moto .mk__row{ gap: .5em; }
+.mk--moto b{ font-size: clamp(1.3rem,3.4vw,1.85rem); font-weight: 900; letter-spacing: -.03em; text-transform: uppercase; }
+.mk--moto b span{ font-weight: 300; opacity: .85; }
+.mk--moto .slash{ display: inline-flex; gap: 3px; }
+.mk--moto .slash i{ width: 3px; height: 1.15em; background: #ff5a2b; transform: skewX(-18deg); display: block; }
+
+/* The ‖ Parallel — desarrollo residencial */
+.mk--parallel{ font-weight: 200; }
+.mk--parallel .mk__row{ gap: .42em; }
+.mk--parallel b{ font-size: clamp(1.05rem,2.7vw,1.5rem); font-weight: 200; letter-spacing: .3em; text-transform: uppercase; }
+.mk--parallel .mk__bars i{ width: 1.5px; height: 1.5em; }
+
+/* Aurora — centro medico */
+.mk--aurora .mk__row{ gap: .42em; }
+.mk--aurora b{ font-size: clamp(1.25rem,3vw,1.7rem); font-weight: 500; letter-spacing: .12em; text-transform: uppercase; }
+.mk--aurora .arc{
+  width: 1.15em; height: .6em; display: block;
+  border: 2px solid currentColor; border-bottom: 0;
+  border-radius: 100% 100% 0 0;
+  align-self: flex-end; margin-bottom: .12em;
+}
+
+/* Nordika — retail */
+.mk--nordika b{ font-size: clamp(1.2rem,3vw,1.65rem); font-weight: 700; letter-spacing: .34em; text-transform: uppercase; }
+.mk--nordika .rule{ width: 46px; height: 2px; background: currentColor; opacity: .8; }
+
+/* Aldebarán — colegio */
+.mk--aldebaran b{ font-size: clamp(1.15rem,2.8vw,1.55rem); font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+.mk--aldebaran .star{ font-size: 1.1em; line-height: 1; opacity: .9; }
+
+/* Sereno — spa */
+.mk--sereno b{ font-size: clamp(1.4rem,3.4vw,1.95rem); font-weight: 300; letter-spacing: .26em; text-transform: lowercase; font-variant: small-caps; }
+.mk--sereno .leaf{
+  width: .62em; height: .62em; display: block;
+  border-radius: 0 100% 0 100%;
+  background: currentColor; opacity: .82;
+  transform: rotate(-22deg);
+}
+
+/* Fondos por marca — cada una con su propio mundo de color */
+.work__art[data-brand]::before{ background: var(--art); }
+.work__art[data-brand="moto"]     { --art: linear-gradient(150deg,#1a1d24,#2c3038 55%,#7a2d12); }
+.work__art[data-brand="parallel"] { --art: linear-gradient(165deg,#0b1526,#16233c 52%,#3b4a63); }
+.work__art[data-brand="aurora"]   { --art: linear-gradient(150deg,#07231f,#0e3b33 55%,#1d6a58); }
+.work__art[data-brand="nordika"]  { --art: linear-gradient(150deg,#231f1b,#3b332b 55%,#7a6247); }
+.work__art[data-brand="aldebaran"]{ --art: linear-gradient(150deg,#111a33,#1c2a4d 55%,#3f5488); }
+.work__art[data-brand="sereno"]   { --art: linear-gradient(150deg,#2a1a1c,#452428 55%,#8d4a4a); }
+
+/* ── Testimonios ─────────────────────────────────────────── */
+.quote{
+  border: 1px solid var(--line); border-radius: 24px;
+  background: var(--card); padding: 32px;
+  display: flex; flex-direction: column; gap: 22px;
+  transition: border-color .4s var(--ease), transform .5s var(--ease-out);
+}
+.quote:hover{ border-color: rgba(196,103,75,.45); transform: translateY(-4px); }
+.quote__mark{ font-size: 2.6rem; line-height: .6; color: var(--clay); font-weight: 800; }
+.quote blockquote{ margin: 0; font-size: 1.04rem; line-height: 1.55; color: var(--ink); }
+.quote figcaption{ display: flex; align-items: center; gap: 13px; }
+.quote__ava{
+  width: 44px; height: 44px; border-radius: 14px; flex: 0 0 auto;
+  display: grid; place-items: center; font-weight: 800; font-size: .84rem;
+  background: rgba(196,103,75,.18); color: var(--clay-hi); border: 1px solid rgba(196,103,75,.35);
+}
+.quote__who b{ display: block; font-size: .9rem; font-weight: 680; }
+.quote__who span{ font-size: .77rem; color: var(--ink-3); }
+
+/* ── FAQ ─────────────────────────────────────────────────── */
+.faq{ border-top: 1px solid var(--line); }
+.faq details{ border-bottom: 1px solid var(--line); }
+.faq summary{
+  list-style: none; cursor: pointer; position: relative;
+  padding: 28px 56px 28px 0;
+  font-size: var(--t-1); font-weight: 700; letter-spacing: -.02em;
+  transition: color .3s var(--ease);
+}
+.faq summary::-webkit-details-marker{ display: none; }
+.faq summary:hover{ color: var(--clay-hi); }
+.faq summary::after{
+  content: ""; position: absolute; right: 10px; top: 50%;
+  width: 15px; height: 15px;
+  border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3);
+  transform: translateY(-70%) rotate(45deg);
+  transition: transform .4s var(--ease-out), border-color .3s var(--ease);
+}
+.faq details[open] summary::after{ transform: translateY(-25%) rotate(225deg); border-color: var(--fire); }
+.faq details > div{ padding: 0 60px 30px 0; color: var(--ink-2); line-height: 1.65; }
+
+/* ── Formularios ─────────────────────────────────────────── */
+.form-card{
+  border: 1px solid var(--line-2); border-radius: 28px;
+  background: linear-gradient(165deg, rgba(246,241,234,.07), rgba(246,241,234,.02));
+  backdrop-filter: blur(20px);
+  padding: clamp(26px, 3.4vw, 44px);
+  box-shadow: 0 40px 90px -44px rgba(0,0,0,.95);
+}
+.field{ display: flex; flex-direction: column; gap: 8px; }
+.field > label{ font-size: .68rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
+.field input, .field select, .field textarea{
+  width: 100%; font: inherit; font-size: .98rem; color: var(--ink);
+  background: rgba(10,11,15,.5);
+  border: 1px solid var(--line-2); border-radius: 14px;
+  padding: 14px 16px;
+  transition: border-color .3s var(--ease), box-shadow .3s var(--ease), background-color .3s var(--ease);
+}
+.field textarea{ resize: vertical; min-height: 108px; }
+.field input::placeholder, .field textarea::placeholder{ color: var(--ink-4); }
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline: none; background: rgba(10,11,15,.78);
+  border-color: var(--fire); box-shadow: 0 0 0 4px rgba(255,122,24,.18);
+}
+.field select option{ background: var(--wall-3); color: var(--ink); }
+.form-grid{ display: grid; gap: 18px; }
+@media (min-width: 640px){ .form-grid--2{ grid-template-columns: 1fr 1fr; } }
+.form-note{ font-size: .76rem; color: var(--ink-4); line-height: 1.55; }
+.form-note a{ color: var(--clay-hi); font-weight: 600; }
+.form-status{ display: none; border-radius: 14px; padding: 14px 16px; font-size: .9rem; line-height: 1.5; }
+.form-status[data-state="ok"]{ display: block; background: rgba(196,103,75,.14); color: var(--clay-hi); border: 1px solid rgba(196,103,75,.36); }
+.form-status[data-state="error"]{ display: block; background: rgba(255,45,149,.12); color: #ff8fc4; border: 1px solid rgba(255,45,149,.34); }
+.btn[aria-busy="true"]{ opacity: .6; pointer-events: none; }
+
+.contact-line{ display: flex; align-items: center; gap: 15px; text-decoration: none; transition: transform .4s var(--ease-out); }
+.contact-line:hover{ transform: translateX(5px); }
+.contact-line__ico{
+  width: 48px; height: 48px; border-radius: 16px; flex: 0 0 auto;
+  display: grid; place-items: center;
+  background: rgba(246,241,234,.05); border: 1px solid var(--line-2);
+  transition: border-color .4s var(--ease), background-color .4s var(--ease);
+}
+.contact-line:hover .contact-line__ico{ border-color: rgba(255,122,24,.5); background: rgba(255,122,24,.12); }
+.contact-line__ico svg{ width: 20px; height: 20px; color: var(--fire-hi); }
+.contact-line b{ display: block; font-size: .96rem; font-weight: 660; }
+.contact-line > span:last-child > span{ display: block; font-size: .77rem; color: var(--ink-3); }
+
+/* ── Promoción ───────────────────────────────────────────── */
+.promo{ position: relative; overflow: hidden; background: var(--wall-3); }
+.promo__glow{
+  position: absolute; inset: -25% -10% auto -10%; height: 100%; z-index: 0; pointer-events: none;
+  background: radial-gradient(46% 58% at 22% 8%, rgba(255,122,24,.4), transparent 64%),
+              radial-gradient(42% 54% at 82% 16%, rgba(255,45,149,.26), transparent 62%);
+}
+.promo .wrap{ position: relative; z-index: 1; }
+.promo__grid{ display: grid; gap: clamp(38px, 5vw, 62px); align-items: center; }
+@media (min-width: 1060px){ .promo__grid{ grid-template-columns: 1fr 1fr; } }
+.promo h2 em{ font-style: normal; }
+
+.howto{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; counter-reset: paso; }
+.howto li{
+  display: grid; grid-template-columns: 34px 1fr; gap: 16px; align-items: start;
+  font-size: .97rem; color: var(--ink-2); line-height: 1.55;
+}
+.howto li::before{
+  counter-increment: paso; content: counter(paso, decimal-leading-zero);
+  width: 34px; height: 34px; border-radius: 12px;
+  display: grid; place-items: center;
+  background: rgba(255,122,24,.14); border: 1px solid rgba(255,122,24,.32);
+  color: var(--fire-hi); font-size: .74rem; font-weight: 800; font-family: var(--mono);
+}
+.howto li b{ color: var(--ink); font-weight: 680; }
+
+.ticket{
+  border-radius: 28px; border: 1px solid rgba(255,122,24,.32);
+  background: linear-gradient(165deg, rgba(246,241,234,.08), rgba(246,241,234,.02));
+  backdrop-filter: blur(20px);
+  padding: clamp(26px, 3.2vw, 40px);
+  box-shadow: 0 40px 90px -44px rgba(0,0,0,.95);
+  display: flex; flex-direction: column; gap: 20px;
+}
+.ticket__head{ display: flex; flex-direction: column; gap: 7px; }
+.ticket__head b{ font-size: var(--t-1); font-weight: 720; letter-spacing: -.025em; }
+.ticket__head span{ font-size: .86rem; color: var(--ink-3); }
+
+.coupon{ display: none; flex-direction: column; gap: 17px; }
+.coupon[data-state="ready"]{ display: flex; animation: fade .6s var(--ease-out); }
+.coupon__code{
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  border: 2px dashed rgba(255,201,60,.5); border-radius: 18px;
+  background: rgba(255,122,24,.11);
+  padding: 20px 22px;
+}
+.coupon__code::after{
+  content: ""; position: absolute; top: 0; bottom: 0; width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.18), transparent);
+  animation: glint 3.4s var(--ease) infinite;
+}
+@keyframes glint{ 0%{ left: -50%; } 55%, 100%{ left: 110%; } }
+.coupon__value{
+  position: relative; z-index: 1;
+  font-family: var(--mono); font-weight: 700;
+  font-size: clamp(1.15rem, .9rem + 1.15vw, 1.7rem);
+  letter-spacing: .07em; color: var(--fire-hi);
+  word-break: break-all; user-select: all;
+}
+.coupon__copy{
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 44px; padding-inline: 20px; border: 0; border-radius: 999px;
+  background: var(--fire-hi); color: #1c0c02;
+  font: inherit; font-size: .86rem; font-weight: 800; cursor: pointer; white-space: nowrap;
+  transition: background-color .3s var(--ease), transform .3s var(--ease-out);
+}
+.coupon__copy:hover{ background: #ffe08a; transform: translateY(-2px); }
+.coupon__copy[data-copied="true"]{ background: var(--clay-hi); color: #fff3ec; }
+.coupon__copy svg{ width: 16px; height: 16px; }
+.coupon__meta{ font-size: .83rem; color: var(--ink-3); line-height: 1.55; }
+.coupon__meta b{ color: var(--fire-hi); }
+.coupon__meta a{ color: var(--fire-hi); font-weight: 700; }
+
+/* ── Cierre ──────────────────────────────────────────────── */
+.finale{ position: relative; overflow: hidden; text-align: center; background: var(--wall-2); }
+.finale__glow{
+  position: absolute; inset: -40% -20% auto -20%; height: 140%; z-index: 0; pointer-events: none;
+  background: radial-gradient(40% 50% at 50% 18%, rgba(255,122,24,.32), transparent 66%),
+              radial-gradient(38% 46% at 20% 62%, rgba(196,103,75,.3), transparent 64%),
+              radial-gradient(38% 46% at 80% 66%, rgba(255,45,149,.24), transparent 64%);
+}
+.finale .wrap{ position: relative; z-index: 1; }
+.finale .actions{ justify-content: center; }
+
+/* ── Pie ─────────────────────────────────────────────────── */
+.foot{ background: var(--wall); border-top: 1px solid var(--line); padding-block: 66px 34px; }
+.foot__grid{ display: grid; gap: 42px; }
+@media (min-width: 880px){ .foot__grid{ grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
+.foot h3{ font-size: .68rem; text-transform: uppercase; letter-spacing: .2em; color: var(--ink-4); font-weight: 800; }
+.foot ul{ list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
+.foot a{ color: var(--ink-2); text-decoration: none; font-size: .9rem; transition: color .3s var(--ease); }
+.foot a:hover{ color: var(--clay-hi); }
+.foot__legal{
+  margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; gap: 12px 26px; justify-content: space-between;
+  font-size: .78rem; color: var(--ink-4);
+}
+.social{ display: flex; gap: 10px; margin-top: 20px; }
+.social a{
+  width: 42px; height: 42px; border-radius: 14px;
+  display: grid; place-items: center;
+  background: rgba(246,241,234,.05); border: 1px solid var(--line);
+  transition: background-color .35s var(--ease), transform .4s var(--ease-out), border-color .35s var(--ease);
+}
+.social a:hover{ background: rgba(255,122,24,.16); border-color: rgba(255,122,24,.45); transform: translateY(-3px); }
+.social svg{ width: 18px; height: 18px; }
+
+/* ── WhatsApp flotante ───────────────────────────────────── */
+.wa{
+  position: fixed; right: 20px; bottom: 20px; z-index: 130;
+  display: inline-flex; align-items: center; gap: 11px;
+  height: 58px; padding-inline: 21px; border-radius: 999px;
+  background: #25d366; color: #05240f;
+  font-weight: 750; font-size: .92rem; text-decoration: none;
+  box-shadow: 0 16px 40px -12px rgba(37,211,102,.6);
+  transition: transform .4s var(--ease-out), box-shadow .4s var(--ease);
+}
+.wa:hover{ transform: translateY(-4px) scale(1.03); box-shadow: 0 24px 50px -14px rgba(37,211,102,.78); }
+.wa svg{ width: 24px; height: 24px; flex: 0 0 auto; }
+.wa span{ display: none; }
+@media (min-width: 640px){ .wa span{ display: inline; } }
+
+/* ── Revelado al scroll ──────────────────────────────────── */
+.rv{
+  opacity: 0; transform: translateY(30px);
+  transition: opacity .85s var(--ease-out), transform .85s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+  will-change: opacity, transform;
+}
+.rv[data-in="true"]{ opacity: 1; transform: none; }
+.rv[data-fx="left"]{ transform: translateX(-34px); }
+.rv[data-fx="right"]{ transform: translateX(34px); }
+.rv[data-fx="zoom"]{ transform: scale(.94); }
+.rv[data-fx="clip"]{
+  opacity: 1; transform: none;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.rv[data-fx="clip"][data-in="true"]{ clip-path: inset(0 0 0 0); }
+
+/* ── Movimiento reducido ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *, *::before, *::after{
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .rv{ opacity: 1 !important; transform: none !important; clip-path: none !important; }
+  .mask > span{ transform: none; }
+  .fade{ opacity: 1; }
+  .ticker__track{ animation: none; }
+  .orb{ display: none; }
+}
+
+.sr-only{ position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip{
+  position: absolute; left: 18px; top: -70px; z-index: 300;
+  background: var(--fire); color: #1c0c02; padding: 13px 22px; border-radius: 999px;
+  text-decoration: none; font-weight: 750; font-size: .88rem; transition: top .3s var(--ease);
+}
+.skip:focus{ top: 18px; }
+</style>
+</head>
+
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<!-- ══ Isotipo — REEMPLAZAR el contenido de este símbolo por el logo oficial ══ -->
+
+<div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+
+<!-- ══════════════════════ NAVEGACIÓN ══════════════════════ -->
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="#inicio" aria-label="Cavernícola Creativo — inicio">
+      <span>
+          <span class="brand__name metal">Cavernícola</span>
+          <span class="brand__kicker champ">Creativo</span>
+        </span>
+    </a>
+
+    <nav class="nav__links" id="nav-links" aria-label="Navegación principal">
+      <a class="nav__link" href="#servicios">Servicios</a>
+      <a class="nav__link" href="#metodo">Método</a>
+      <a class="nav__link" href="#cavernicolapp">CavernicolApp</a>
+      <a class="nav__link" href="#trabajo">Trabajo</a>
+      <a class="nav__link" href="#preguntas">Preguntas</a>
+      <a class="nav__link" data-tone="fire" href="#promo">15 días gratis</a>
+    </nav>
+
+    <div class="nav__cta">
+      <a class="btn btn--sm btn--ghost" href="https://app.cavernicolapp.com" target="_blank" rel="noopener">Entrar a mi cuenta</a>
+      <a class="btn btn--sm" href="#contacto">Diagnóstico gratis</a>
+    </div>
+  </div>
+</header>
+
+<main id="contenido">
+
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<section class="hero" id="inicio">
+  <div class="orb orb--1" data-par="0.03" aria-hidden="true"></div>
+  <div class="orb orb--2" data-par="-0.045" aria-hidden="true"></div>
+  <div class="orb orb--3" data-par="0.028" aria-hidden="true"></div>
+  <div class="hero__mesh" aria-hidden="true"></div>
+
+  <div class="wrap hero__grid">
+    <div class="stack g-8">
+      <p class="fade" style="--in:40ms"><span class="tag"><i></i> Marca · Medios · Tecnología propia</span></p>
+
+      <h1>
+        <span class="mask"><span style="--in:110ms">Publicidad que</span></span>
+        <span class="mask"><span style="--in:190ms">no se queda en</span></span>
+        <span class="mask"><span class="ardiente" style="--in:270ms">el aplauso.</span></span>
+      </h1>
+
+      <p class="hero__sub fade" style="--in:370ms">
+        Diseñamos tu marca, ponemos tus campañas a producir y las conectamos a
+        <b style="color:var(--ink);font-weight:600">CavernicolApp</b> — nuestra plataforma — para que el mensaje
+        que costó dinero termine en una conversación, no en una notificación sin contestar.
+      </p>
+
+      <div class="actions fade" style="--in:450ms">
+        <a class="btn" href="#contacto">
+          Agenda tu diagnóstico
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <a class="btn btn--ghost" href="#cavernicolapp">Conoce CavernicolApp</a>
+      </div>
+
+      <!-- REEMPLAZAR: cifras reales de la agencia -->
+      <div class="hero__stats fade" style="--in:530ms" data-placeholder="true">
+        <div><b><span data-count="12">12</span></b><span>años construyendo marcas que venden</span></div>
+        <div><b><span data-count="180">180</span>+</b><span>proyectos entregados</span></div>
+        <div><b>4</b><span>disciplinas bajo un mismo techo</span></div>
+      </div>
+    </div>
+
+    <div class="pane fade" style="--in:330ms" aria-label="Ejemplo de prospectos entrando en tiempo real a CavernicolApp">
+      <div class="pane__head">
+        <span>Entrando ahora</span>
+        <span class="pane__live"><i></i> En vivo</span>
+      </div>
+      <div class="feed" id="feed">
+        <div class="feed__item" data-new="true">
+          <span class="feed__ava" aria-hidden="true">MR</span>
+          <span class="feed__meta"><span class="feed__name">María Robles</span><span class="feed__note">«¿Todavía tienen la promoción?» · Instagram</span></span>
+          <span class="feed__chip">Caliente</span>
+        </div>
+        <div class="feed__item">
+          <span class="feed__ava" aria-hidden="true">JL</span>
+          <span class="feed__meta"><span class="feed__name">Jorge Luna</span><span class="feed__note">Formulario de campaña · Meta Lead Ads</span></span>
+          <span class="feed__chip">Nuevo</span>
+        </div>
+        <div class="feed__item">
+          <span class="feed__ava" aria-hidden="true">AS</span>
+          <span class="feed__meta"><span class="feed__name">Ana Sandoval</span><span class="feed__note">Respondido por el asistente · WhatsApp</span></span>
+          <span class="feed__chip">En proceso</span>
+        </div>
+        <div class="feed__item">
+          <span class="feed__ava" aria-hidden="true">TC</span>
+          <span class="feed__meta"><span class="feed__name">Tomás Cruz</span><span class="feed__note">Comentario en publicación · Facebook</span></span>
+          <span class="feed__chip">Nuevo</span>
+        </div>
+      </div>
+      <div class="pane__foot">
+        <span>Tiempo de primera respuesta</span>
+        <b id="pane-time">8 s</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ MARQUESINA ══════════════════════ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track" id="ticker-track">
+    <div class="ticker__group">
+      <span class="ticker__item">Automotriz <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v18M3 12h18"></path></svg></span>
+      <span class="ticker__item">Inmobiliario <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v18M3 12h18"></path></svg></span>
+      <span class="ticker__item">Belleza <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v18M3 12h18"></path></svg></span>
+      <span class="ticker__item">Salud <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v18M3 12h18"></path></svg></span>
+      <span class="ticker__item">Educación <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v18M3 12h18"></path></svg></span>
+      <span class="ticker__item">Retail <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v18M3 12h18"></path></svg></span>
+      <span class="ticker__item">Servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v18M3 12h18"></path></svg></span>
+      <span class="ticker__item">Restaurantes <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v18M3 12h18"></path></svg></span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ PROBLEMA ══════════════════════ -->
+<section class="band band--tint" aria-labelledby="problema-titulo">
+  <div class="wrap stack g-12">
+    <div class="stack g-5 measure rv">
+      <p class="eyebrow" data-tone="clay">El costo de anunciarse sin sistema</p>
+      <h2 id="problema-titulo">La mayoría no tiene un problema de creatividad. Tiene una fuga.</h2>
+      <p class="lede">El anuncio funciona, el mensaje llega… y ahí se rompe la cadena. Esto es lo que encontramos casi siempre al abrir la operación de un cliente nuevo.</p>
+    </div>
+
+    <div class="bento">
+      <article class="tile rv" data-span="4" data-tone="fire" data-tilt>
+        <span class="tile__n">01</span>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+        <h3>Pagas por mensajes que nadie contesta a tiempo</h3>
+        <p>El interés dura minutos. Si la respuesta llega al día siguiente, el cliente ya compró en otro lado — y tú ya pagaste el clic que lo trajo.</p>
+      </article>
+
+      <article class="tile rv" data-span="2" style="--d:80ms" data-tilt>
+        <span class="tile__n">02</span>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"></path></svg></span>
+        <h3>Tu marca se ve distinta en cada lado</h3>
+        <p>Un logo en el local, otro en el anuncio, otro en la cotización.</p>
+      </article>
+
+      <article class="tile rv" data-span="2" style="--d:160ms" data-tilt>
+        <span class="tile__n">03</span>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"></path><path d="m3 3 18 18"></path></svg></span>
+        <h3>Publicas diario sin saber qué vendió</h3>
+        <p>Reportes de alcance y likes que no dicen de dónde salió el cliente.</p>
+      </article>
+
+      <article class="tile rv" data-span="4" style="--d:240ms" data-tilt>
+        <span class="tile__n">04</span>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 11h-6"></path></svg></span>
+        <h3>Los contactos viven en tres lugares distintos</h3>
+        <p>Una libreta, el celular de un vendedor y los mensajes sin leer de la página. Nadie en la empresa tiene la lista completa — y cuando ese vendedor se va, se lleva la mitad.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SERVICIOS ══════════════════════ -->
+<section class="band" id="servicios" aria-labelledby="servicios-titulo">
+  <div class="wrap stack g-12">
+    <div class="stack g-5 measure rv">
+      <p class="eyebrow">Servicios</p>
+      <h2 id="servicios-titulo">Cuatro frentes que trabajan juntos, no por separado.</h2>
+      <p class="lede">Puedes contratarlos uno por uno. Rinden más cuando corren en el mismo plan: la marca alimenta a los medios, los medios alimentan al sitio y el sitio alimenta a tu operación.</p>
+    </div>
+
+    <div class="bento">
+      <article class="tile rv" data-span="3" data-tone="fire" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"></circle><circle cx="19" cy="13" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="10" cy="20" r="2.5"></circle><path d="M12 2a10 10 0 1 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.6-1.4-.3-.4-.5-.9-.5-1.4 0-1.1.9-2 2-2h2.4A4.7 4.7 0 0 0 22 10.5C22 5.8 17.5 2 12 2z"></path></svg></span>
+        <h3>Marca y diseño</h3>
+        <p>Construimos la identidad que hace que tu negocio se vea del tamaño que realmente es — y que se sostenga igual en el anuncio, en el local y en la cotización.</p>
+        <ul class="tile__list"><li>Identidad y logotipo</li><li>Manual de marca</li><li>Sistema gráfico</li><li>Packaging</li><li>Rediseño de marca</li></ul>
+      </article>
+
+      <article class="tile rv" data-span="3" style="--d:80ms" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 13v-2z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg></span>
+        <h3>Publicidad y medios</h3>
+        <p>Campañas en Meta y Google pensadas para traer prospectos con nombre y teléfono, con presupuesto vigilado y reporte que un dueño entiende sin traductor.</p>
+        <ul class="tile__list"><li>Facebook e Instagram</li><li>Google Ads</li><li>Clic a WhatsApp</li><li>Lead Ads</li><li>Estrategia de medios</li></ul>
+      </article>
+
+      <article class="tile rv" data-span="3" style="--d:160ms" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8m-4-4v4"></path><path d="m9 8 2 2-2 2m4 1h3"></path></svg></span>
+        <h3>Web, e-commerce y tecnología</h3>
+        <p>Sitios y tiendas que cargan rápido, se ven bien en el celular y están hechos para convertir — conectados desde el primer día a tu sistema de seguimiento.</p>
+        <ul class="tile__list"><li>Sitios web</li><li>Landing pages</li><li>Tiendas en línea</li><li>Automatización</li><li>Desarrollo a la medida</li></ul>
+      </article>
+
+      <article class="tile rv" data-span="3" style="--d:240ms" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 10 5-3v10l-5-3v-4z"></path><rect x="2" y="6" width="13" height="12" rx="2"></rect></svg></span>
+        <h3>Contenido y redes</h3>
+        <p>Fotografía, video y textos con intención comercial, publicados con calendario y respondidos a tiempo. Contenido que trabaja, no que solo llena el muro.</p>
+        <ul class="tile__list"><li>Redes sociales</li><li>Foto y video</li><li>Copywriting</li><li>Calendario editorial</li><li>Atención de mensajes</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ MÉTODO ══════════════════════ -->
+<section class="band band--tint" id="metodo" aria-labelledby="metodo-titulo">
+  <div class="wrap method__grid">
+    <div class="method__aside stack g-6 rv" data-fx="left">
+      <p class="eyebrow">Cómo trabajamos</p>
+      <h2 id="metodo-titulo">Cuatro pasos. Siempre en este orden.</h2>
+      <p class="lede">Nadie enciende una campaña antes de saber a quién le habla. Es la razón por la que el segundo mes rinde más que el primero.</p>
+      <div class="actions" style="margin-top:8px">
+        <a class="btn btn--ghost" href="#contacto">Empezar por el paso 1</a>
+      </div>
+    </div>
+
+    <ol class="rail" id="rail" style="list-style:none;margin:0;padding:0">
+      <li class="rail__item">
+        <span class="rail__n">PASO 01</span>
+        <h3 class="rail__name">Rastreo</h3>
+        <p class="rail__desc">Abrimos tu operación: qué vendes, a quién, con qué margen y por dónde se te está yendo el cliente. Sale un diagnóstico con números, no con opiniones.</p>
+      </li>
+      <li class="rail__item">
+        <span class="rail__n">PASO 02</span>
+        <h3 class="rail__name">Estrategia</h3>
+        <p class="rail__desc">Definimos el mensaje, a quién se le habla, en qué medio y con qué presupuesto. Acordamos la meta y cómo se va a medir antes de gastar el primer peso.</p>
+      </li>
+      <li class="rail__item">
+        <span class="rail__n">PASO 03</span>
+        <h3 class="rail__name">Cacería</h3>
+        <p class="rail__desc">Producimos las piezas y encendemos las campañas. Cada prospecto entra a CavernicolApp con su origen marcado y se le da seguimiento desde el minuto uno.</p>
+      </li>
+      <li class="rail__item">
+        <span class="rail__n">PASO 04</span>
+        <h3 class="rail__name">Fuego</h3>
+        <p class="rail__desc">Revisamos qué prendió y qué no, cortamos lo que no rinde y ponemos más presupuesto donde sí. Cada mes el costo por cliente debería bajar.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════════════════ CAVERNICOLAPP ══════════════════════ -->
+<section class="band band--deep cut" id="cavernicolapp" aria-labelledby="app-titulo">
+  <div class="wrap stack g-16">
+
+    <div class="app__grid">
+      <div class="stack g-8 rv" data-fx="left">
+        <p class="eyebrow">Nuestra ventaja tecnológica</p>
+        <h2 id="app-titulo">Conoce CavernicolApp</h2>
+        <p class="lede">No es software que revendemos. Lo construimos nosotros, y es donde termina todo lo que la publicidad genera.</p>
+
+        <div class="stack g-8">
+          <div class="brief">
+            <h3>Qué es</h3>
+            <p>
+              Una plataforma multiempresa donde tu negocio conecta <b style="color:var(--ink);font-weight:640">su propia
+              página de Facebook y su cuenta profesional de Instagram</b>, y desde ahí atiende, publica, anuncia y mide.
+              Mensajes de Messenger, mensajes directos de Instagram, comentarios y WhatsApp llegan a una sola bandeja,
+              con un asistente de inteligencia artificial que responde con el contexto del negocio.
+            </p>
+          </div>
+
+          <div class="brief">
+            <h3>Qué dolores resuelve</h3>
+            <ul class="pains">
+              <li><s>Fuga</s><span>El mensaje de las 11 de la noche que nadie vio. <b>Ahora se contesta solo, al instante.</b></span></li>
+              <li><s>Caos</s><span>Contactos repartidos entre libretas y celulares. <b>Ahora hay una sola lista de la empresa.</b></span></li>
+              <li><s>Ceguera</s><span>Reportes de likes que no dicen qué vendió. <b>Ahora ves gasto, resultados y de qué anuncio salió cada cliente.</b></span></li>
+              <li><s>Olvido</s><span>El prospecto tibio al que nadie volvió a marcar. <b>Ahora el sistema insiste por ti.</b></span></li>
+              <li><s>Fricción</s><span>Publicar a mano en cada red, todos los días. <b>Ahora se programa una vez y sale solo.</b></span></li>
+            </ul>
+          </div>
+
+          <div class="brief" data-tone="fire">
+            <h3>Por qué es la mezcla perfecta</h3>
+            <p>
+              Una agencia sin plataforma te entrega mensajes que se enfrían. Una plataforma sin agencia te entrega
+              una bandeja vacía. Nosotros hacemos las dos cosas:
+              <b style="color:var(--fire-hi);font-weight:700">Cavernícola Creativo genera la demanda y CavernicolApp la convierte</b>,
+              con un solo responsable del resultado completo — sin culpas cruzadas entre proveedores.
+            </p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn" href="https://app.cavernicolapp.com/landing" target="_blank" rel="noopener">
+            Conoce CavernicolApp a fondo
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+          </a>
+          <a class="btn btn--ghost" href="#promo">Quiero mis 15 días gratis</a>
+        </div>
+      </div>
+
+      <div class="screen rv" data-fx="right" style="--d:120ms" role="img" aria-label="Vista de ejemplo de CavernicolApp: bandeja unificada con mensajes de Instagram, Messenger, WhatsApp y comentarios de Facebook">
+        <div class="screen__chrome" aria-hidden="true"><i></i><i></i><i></i><span>app.cavernicolapp.com</span></div>
+        <div class="screen__body">
+          <div class="screen__tabs" aria-hidden="true">
+            <span class="screen__tab" data-on="true">Bandeja</span>
+            <span class="screen__tab">Social Studio</span>
+            <span class="screen__tab">Campañas</span>
+            <span class="screen__tab">Integraciones</span>
+          </div>
+          <div class="feed">
+            <div class="feed__item" data-new="true">
+              <span class="feed__ava" aria-hidden="true">MR</span>
+              <span class="feed__meta"><span class="feed__name">María Robles</span><span class="feed__note">Mensaje directo · Instagram</span></span>
+              <span class="feed__chip">IA respondió</span>
+            </div>
+            <div class="feed__item">
+              <span class="feed__ava" aria-hidden="true">JL</span>
+              <span class="feed__meta"><span class="feed__name">Jorge Luna</span><span class="feed__note">Formulario · Meta Lead Ads</span></span>
+              <span class="feed__chip">Al CRM</span>
+            </div>
+            <div class="feed__item">
+              <span class="feed__ava" aria-hidden="true">TC</span>
+              <span class="feed__meta"><span class="feed__name">Tomás Cruz</span><span class="feed__note">Comentario en publicación · Facebook</span></span>
+              <span class="feed__chip">Contacto capturado</span>
+            </div>
+            <div class="feed__item">
+              <span class="feed__ava" aria-hidden="true">AS</span>
+              <span class="feed__meta"><span class="feed__name">Ana Sandoval</span><span class="feed__note">Clic a WhatsApp desde anuncio</span></span>
+              <span class="feed__chip">Asignado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bento">
+      <article class="tile rv" data-span="2" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.7 4H7.3a2 2 0 0 0-1.8 1.1z"></path></svg></span>
+        <h3>Bandeja unificada</h3>
+        <p>Messenger, mensajes directos de Instagram, comentarios y WhatsApp en la misma pantalla.</p>
+      </article>
+      <article class="tile rv" data-span="2" style="--d:70ms" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M12 8V5m0 0a2 2 0 1 1 2-2M9 14h.01M15 14h.01"></path></svg></span>
+        <h3>Asistente con IA</h3>
+        <p>Responde con el contexto del negocio, califica al interesado y avisa al vendedor. Se enciende y apaga por página.</p>
+      </article>
+      <article class="tile rv" data-span="2" style="--d:140ms" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18"></path><rect x="3" y="4" width="18" height="18" rx="2"></rect></svg></span>
+        <h3>Social Studio</h3>
+        <p>Escribes la publicación, eliges fecha y sale sola en tu página de Facebook y en tu Instagram.</p>
+      </article>
+      <article class="tile rv" data-span="2" style="--d:210ms" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m7 15 4-5 3 3 5-7"></path></svg></span>
+        <h3>Campañas y reportes</h3>
+        <p>Creas anuncios de clic a WhatsApp o Messenger desde la plataforma y ves gasto, alcance y resultados.</p>
+      </article>
+      <article class="tile rv" data-span="2" style="--d:280ms" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="m17 11 2 2 4-4"></path></svg></span>
+        <h3>Lead Ads directo al CRM</h3>
+        <p>El formulario que llenó el cliente en Facebook llega solo, sin descargar hojas de cálculo.</p>
+      </article>
+      <article class="tile rv" data-span="2" style="--d:350ms" data-tilt>
+        <span class="tile__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"></path><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"></path></svg></span>
+        <h3>Conectas tus propias cuentas</h3>
+        <p>Tu página, tu Instagram, tu cuenta publicitaria. Todo sigue siendo tuyo — nosotros no somos dueños de tus activos.</p>
+      </article>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════ PROMOCIÓN ══════════════════════ -->
+<section class="band promo" id="promo" aria-labelledby="promo-titulo">
+  <div class="promo__glow" aria-hidden="true"></div>
+  <div class="wrap promo__grid">
+
+    <div class="stack g-8 rv" data-fx="left">
+      <p><span class="tag" data-tone="fire"><i></i> Cortesía de la agencia</span></p>
+      <h2 id="promo-titulo">Genera tu código y estrena CavernicolApp <em class="ardiente">15 días gratis</em>.</h2>
+      <p class="lede" style="max-width:50ch">Sin tarjeta y sin llamada de ventas de por medio. Generas tu código aquí, lo copias y lo pegas al crear tu cuenta.</p>
+
+      <ol class="howto">
+        <li><span><b>Genera tu código.</b> Déjanos tu nombre y un contacto — es tuyo y solo tuyo.</span></li>
+        <li><span><b>Cópialo con un clic.</b> Queda listo en el portapapeles.</span></li>
+        <li><span><b>Pégalo en CavernicolApp.</b> Al crear tu cuenta, en el campo de código de promoción.</span></li>
+        <li><span><b>Úsalo completo.</b> Quince días con todo abierto, y te ayudamos a conectar tus redes para que no pierdas días configurando.</span></li>
+      </ol>
+    </div>
+
+    <div class="ticket rv" data-fx="right" style="--d:120ms">
+      <form id="form-promo" novalidate>
+        <div class="stack g-5">
+          <div class="ticket__head">
+            <b>Tu código de 15 días gratis</b>
+            <span>Lo generamos al momento. Te lo mostramos aquí mismo.</span>
+          </div>
+
+          <div class="field">
+            <label for="p-nombre">Nombre *</label>
+            <input id="p-nombre" name="nombre" type="text" autocomplete="name" required placeholder="Cómo te llamas">
+          </div>
+
+          <div class="form-grid form-grid--2">
+            <div class="field">
+              <label for="p-telefono">WhatsApp *</label>
+              <input id="p-telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" required placeholder="10 dígitos">
+            </div>
+            <div class="field">
+              <label for="p-email">Correo</label>
+              <input id="p-email" name="email" type="email" autocomplete="email" placeholder="tucorreo@empresa.com">
+            </div>
+          </div>
+
+          <div class="form-status" id="promo-status" role="status" aria-live="polite"></div>
+
+          <button class="btn btn--block" type="submit" id="promo-submit">
+            Generar mi código
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h8l-1 8 10-12h-8l1-8z"></path></svg>
+          </button>
+
+          <p class="form-note">Usamos tus datos solo para activarte la cortesía y ayudarte con la configuración. Consulta el <a href="/aviso-de-privacidad">aviso de privacidad</a>.</p>
+        </div>
+      </form>
+
+      <div class="coupon" id="coupon" aria-live="polite">
+        <div class="ticket__head">
+          <b id="coupon-hello">Listo. Este es tu código.</b>
+          <span>Cópialo y pégalo al crear tu cuenta en CavernicolApp.</span>
+        </div>
+
+        <div class="coupon__code">
+          <span class="coupon__value" id="coupon-value">CAV15-XXXXXX-XX</span>
+          <button class="coupon__copy" type="button" id="coupon-copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h10"></path></svg>
+            <span id="coupon-copy-label">Copiar código</span>
+          </button>
+        </div>
+
+        <p class="coupon__meta">Válido hasta el <b id="coupon-expira">—</b> · 15 días con todas las funciones · Un código por negocio.</p>
+
+        <a class="btn btn--block" href="https://app.cavernicolapp.com/landing" target="_blank" rel="noopener">
+          Ir a CavernicolApp y pegarlo
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+        </a>
+
+        <p class="coupon__meta">¿Se te perdió? Vuelve a esta página desde el mismo dispositivo y te mostramos el mismo código, o escríbenos por WhatsApp y te lo reenviamos.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════ PORTAFOLIO ══════════════════════ -->
+<!-- REEMPLAZAR: los 6 casos son de muestra. Cambiar imagen, cliente, sector y resultado, y quitar la etiqueta "Ejemplo". -->
+<section class="band" id="trabajo" aria-labelledby="trabajo-titulo">
+  <div class="wrap stack g-12">
+    <div class="stack g-5 measure rv">
+      <p class="eyebrow">Trabajo reciente</p>
+      <h2 id="trabajo-titulo">Marcas que dejaron de anunciarse y empezaron a vender.</h2>
+      <p class="lede">Una muestra por sector. Si quieres el caso completo con números, te lo mostramos en la llamada.</p>
+    </div>
+
+    <div class="works">
+      <article class="work rv" data-tilt data-placeholder="true">
+        <div class="work__art" data-brand="moto">
+          <span class="work__flag">Ejemplo</span>
+          <div class="mk mk--moto"><div class="mk__row"><span class="slash" aria-hidden="true"><i></i><i></i><i></i></span><b>Moto<span>mosion</span></b></div><span class="mk__sub">Seminuevos</span></div>
+        </div>
+        <div class="work__body"><p class="work__sector">Automotriz</p><h3 class="work__title">Motomosion</h3><p class="work__result">Agencia de seminuevos. Campañas de clic a WhatsApp con seguimiento automático el mismo día.</p></div>
+      </article>
+      <article class="work rv" style="--d:70ms" data-tilt data-placeholder="true">
+        <div class="work__art" data-brand="parallel">
+          <span class="work__flag">Ejemplo</span>
+          <div class="mk mk--parallel"><div class="mk__row"><b>The</b><span class="mk__bars" aria-hidden="true"><i></i><i></i></span><b>Parallel</b></div><span class="mk__sub">Residences</span></div>
+        </div>
+        <div class="work__body"><p class="work__sector">Inmobiliario</p><h3 class="work__title">The Parallel Residences</h3><p class="work__result">Desarrollo residencial de lujo. Identidad, sitio de venta y campañas por etapa del proyecto.</p></div>
+      </article>
+      <article class="work rv" style="--d:140ms" data-tilt data-placeholder="true">
+        <div class="work__art" data-brand="aurora">
+          <span class="work__flag">Ejemplo</span>
+          <div class="mk mk--aurora"><div class="mk__row"><span class="arc" aria-hidden="true"></span><b>Aurora</b></div><span class="mk__sub">Centro médico</span></div>
+        </div>
+        <div class="work__body"><p class="work__sector">Salud</p><h3 class="work__title">Aurora Centro Médico</h3><p class="work__result">Clínica multiespecialidad. Agenda llena con recordatorios automáticos y menos citas perdidas.</p></div>
+      </article>
+      <article class="work rv" data-tilt data-placeholder="true">
+        <div class="work__art" data-brand="nordika">
+          <span class="work__flag">Ejemplo</span>
+          <div class="mk mk--nordika"><b>Nordika</b><span class="rule" aria-hidden="true"></span><span class="mk__sub">Casa y diseño</span></div>
+        </div>
+        <div class="work__body"><p class="work__sector">Retail</p><h3 class="work__title">Nordika</h3><p class="work__result">Cadena de mobiliario. Marca renovada, tienda en línea y contenido con calendario mensual.</p></div>
+      </article>
+      <article class="work rv" style="--d:70ms" data-tilt data-placeholder="true">
+        <div class="work__art" data-brand="aldebaran">
+          <span class="work__flag">Ejemplo</span>
+          <div class="mk mk--aldebaran"><div class="mk__row"><span class="star" aria-hidden="true">✦</span><b>Aldebarán</b></div><span class="mk__sub">Colegio</span></div>
+        </div>
+        <div class="work__body"><p class="work__sector">Educación</p><h3 class="work__title">Colegio Aldebarán</h3><p class="work__result">Campaña de inscripciones con seguimiento por ciclo escolar y recordatorios de pago.</p></div>
+      </article>
+      <article class="work rv" style="--d:140ms" data-tilt data-placeholder="true">
+        <div class="work__art" data-brand="sereno">
+          <span class="work__flag">Ejemplo</span>
+          <div class="mk mk--sereno"><div class="mk__row"><span class="leaf" aria-hidden="true"></span><b>Sereno</b></div><span class="mk__sub">Spa &amp; bienestar</span></div>
+        </div>
+        <div class="work__body"><p class="work__sector">Belleza</p><h3 class="work__title">Sereno Spa</h3><p class="work__result">Grupo de spas. Citas por Instagram atendidas al instante por el asistente.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ TESTIMONIOS ══════════════════════ -->
+<!-- REEMPLAZAR: testimonios de muestra. Usar solo frases autorizadas por el cliente. -->
+<section class="band band--tint" aria-labelledby="testimonios-titulo">
+  <div class="wrap stack g-12">
+    <div class="stack g-5 measure rv">
+      <p class="eyebrow">Lo que dicen</p>
+      <h2 id="testimonios-titulo">Clientes que ya no persiguen prospectos a mano.</h2>
+    </div>
+    <div class="works">
+      <figure class="quote rv" data-placeholder="true">
+        <span class="quote__mark" aria-hidden="true">“</span>
+        <blockquote>Antes contestábamos cuando podíamos. Ahora el sistema responde al momento y nosotros llegamos a cerrar.</blockquote>
+        <figcaption><span class="quote__ava" aria-hidden="true">RC</span><span class="quote__who"><b>Nombre del cliente</b><span>Director general · Sector</span></span></figcaption>
+      </figure>
+      <figure class="quote rv" style="--d:80ms" data-placeholder="true">
+        <span class="quote__mark" aria-hidden="true">“</span>
+        <blockquote>Por primera vez sé qué campaña trajo a cada cliente. Eso cambió cómo reparto el presupuesto.</blockquote>
+        <figcaption><span class="quote__ava" aria-hidden="true">LM</span><span class="quote__who"><b>Nombre del cliente</b><span>Dueña · Sector</span></span></figcaption>
+      </figure>
+      <figure class="quote rv" style="--d:160ms" data-placeholder="true">
+        <span class="quote__mark" aria-hidden="true">“</span>
+        <blockquote>Nos entregaron marca, sitio y campañas trabajando juntos. No tuve que coordinar a tres proveedores.</blockquote>
+        <figcaption><span class="quote__ava" aria-hidden="true">JT</span><span class="quote__who"><b>Nombre del cliente</b><span>Gerente comercial · Sector</span></span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ PREGUNTAS ══════════════════════ -->
+<section class="band" id="preguntas" aria-labelledby="faq-titulo">
+  <div class="wrap stack g-10" style="max-width:920px">
+    <div class="stack g-5 rv">
+      <p class="eyebrow">Preguntas frecuentes</p>
+      <h2 id="faq-titulo">Lo que casi siempre nos preguntan antes de empezar.</h2>
+    </div>
+
+    <div class="faq rv">
+      <details>
+        <summary>¿Puedo contratar solo un servicio?</summary>
+        <div>Sí. Muchos clientes empiezan con marca o con campañas y van sumando. Lo que no hacemos es encender publicidad sin antes revisar a quién le vas a hablar y cómo vas a dar seguimiento: ahí es donde se pierde el dinero.</div>
+      </details>
+      <details>
+        <summary>¿Cuánto cuesta trabajar con ustedes?</summary>
+        <div>Depende del alcance y del tamaño de tu operación. En el diagnóstico definimos objetivo, entregables y presupuesto de medios por separado, y te entregamos una propuesta con números claros. El diagnóstico no tiene costo ni compromiso.</div>
+      </details>
+      <details>
+        <summary>¿En cuánto tiempo se ven resultados?</summary>
+        <div>Las campañas empiezan a traer prospectos en las primeras semanas. Los resultados de marca y posicionamiento se sostienen en meses, no en días. Desde el primer mes verás el reporte de cuántos prospectos entraron y qué pasó con cada uno.</div>
+      </details>
+      <details>
+        <summary>¿Cómo funcionan los 15 días gratis de CavernicolApp?</summary>
+        <div>Generas tu código en <a href="#promo" style="color:var(--clay-hi);font-weight:600">esta misma página</a>, lo copias y lo pegas al crear tu cuenta en CavernicolApp. Son 15 días con todas las funciones abiertas, sin tarjeta y sin compromiso de quedarte. Es un código por negocio y tienes 7 días para canjearlo. Durante la prueba te ayudamos a conectar tus redes y tu WhatsApp para que no pierdas días configurando.</div>
+      </details>
+      <details>
+        <summary>¿Mis cuentas de Facebook e Instagram siguen siendo mías?</summary>
+        <div>Sí, siempre. Tú conectas tu propia página, tu cuenta profesional de Instagram y tu cuenta publicitaria desde el menú de Integraciones, y autorizas el acceso desde el diálogo de Facebook. Puedes revocarlo cuando quieras. Nosotros operamos sobre tus activos; nunca somos dueños de ellos.</div>
+      </details>
+      <details>
+        <summary>¿Trabajan con clientes fuera de la ciudad?</summary>
+        <div>Sí. Operamos con clientes en distintas partes de México. Las sesiones son en línea y la producción de foto y video se agenda por bloques cuando el proyecto lo requiere.</div>
+      </details>
+      <details>
+        <summary>¿Qué necesito tener listo para empezar?</summary>
+        <div>Muy poco: qué vendes, a qué precio y quién atiende a los interesados. Del resto nos encargamos nosotros, incluida la conexión de tus redes y tu WhatsApp.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CONTACTO ══════════════════════ -->
+<section class="band band--deep cut" id="contacto" aria-labelledby="contacto-titulo">
+  <div class="wrap app__grid">
+    <div class="stack g-8 rv" data-fx="left">
+      <p><span class="tag"><i></i> Diagnóstico sin costo</span></p>
+      <h2 id="contacto-titulo">Cuéntanos qué vendes. Te decimos dónde se está fugando.</h2>
+      <p class="lede" style="max-width:50ch">Una llamada de 30 minutos. Revisamos tu marca, tus campañas y tu forma de dar seguimiento, y te decimos qué arreglaríamos primero — trabajes con nosotros o no.</p>
+
+      <div class="stack g-4">
+        <!-- REEMPLAZAR: datos de contacto reales en el bloque CONFIG -->
+        <a class="contact-line" id="link-whatsapp" href="#" data-placeholder="true">
+          <span class="contact-line__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-4-1L3 21l2.1-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"></path></svg></span>
+          <span><b id="txt-whatsapp">WhatsApp directo</b><span>Respondemos en horario laboral</span></span>
+        </a>
+        <a class="contact-line" id="link-email" href="#" data-placeholder="true">
+          <span class="contact-line__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m2 7 10 6 10-6"></path></svg></span>
+          <span><b id="txt-email">hola@cavernicolacreativo.com</b><span>Correo</span></span>
+        </a>
+        <a class="contact-line" id="link-phone" href="#" data-placeholder="true">
+          <span class="contact-line__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"></path></svg></span>
+          <span><b id="txt-phone">Teléfono de la agencia</b><span>Llamada directa</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="form-card rv" data-fx="right" style="--d:120ms">
+      <form id="form-contacto" novalidate>
+        <div class="stack g-5">
+          <div class="form-grid form-grid--2">
+            <div class="field">
+              <label for="f-nombre">Nombre completo *</label>
+              <input id="f-nombre" name="nombre" type="text" autocomplete="name" required placeholder="Cómo te llamas">
+            </div>
+            <div class="field">
+              <label for="f-empresa">Empresa</label>
+              <input id="f-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Nombre de tu negocio">
+            </div>
+          </div>
+
+          <div class="form-grid form-grid--2">
+            <div class="field">
+              <label for="f-telefono">WhatsApp o teléfono *</label>
+              <input id="f-telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" required placeholder="10 dígitos">
+            </div>
+            <div class="field">
+              <label for="f-email">Correo</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" placeholder="tucorreo@empresa.com">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-servicio">¿Qué necesitas?</label>
+            <select id="f-servicio" name="servicio">
+              <option value="">Elige una opción</option>
+              <option>Marca y diseño</option>
+              <option>Publicidad y medios</option>
+              <option>Web, e-commerce y tecnología</option>
+              <option>Contenido y redes</option>
+              <option>CavernicolApp (plataforma)</option>
+              <option>Todavía no sé, quiero asesoría</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="f-mensaje">Cuéntanos brevemente</label>
+            <textarea id="f-mensaje" name="mensaje" placeholder="Qué vendes, qué has intentado y qué te gustaría lograr."></textarea>
+          </div>
+
+          <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+
+          <button class="btn btn--block" type="submit" id="form-submit">
+            Quiero mi diagnóstico
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </button>
+
+          <p class="form-note">Te contactamos el mismo día hábil. Usamos tus datos solo para responder esta solicitud; puedes pedir que los eliminemos cuando quieras. Consulta el <a href="/aviso-de-privacidad">aviso de privacidad</a>.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CIERRE ══════════════════════ -->
+<section class="band finale">
+  <div class="finale__glow" aria-hidden="true"></div>
+  <div class="wrap stack g-8 rv" data-fx="zoom" style="max-width:860px;margin-inline:auto;align-items:center">
+    <p class="eyebrow">Siguiente paso</p>
+    <h2 style="font-size:var(--t-4)">Tu competencia ya se anuncia. La diferencia la hace <span class="ardiente">quién contesta primero</span>.</h2>
+    <p class="lede" style="text-align:center">Empecemos por el diagnóstico. Sin costo, sin compromiso y con conclusiones que puedes aplicar aunque decidas no contratarnos.</p>
+    <div class="actions">
+      <a class="btn" href="#contacto">
+        Agenda tu diagnóstico
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+      <a class="btn btn--ghost" href="#promo">Probar CavernicolApp gratis</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════════ PIE ══════════════════════ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <a class="brand" href="#inicio" aria-label="Cavernícola Creativo — inicio">
+          <span>
+          <span class="brand__name metal">Cavernícola</span>
+          <span class="brand__kicker champ">Creativo</span>
+        </span>
+        </a>
+        <p style="margin-top:20px;font-size:.9rem;max-width:34ch;line-height:1.65;color:var(--ink-3)">
+          Marca, medios y tecnología propia. Hacemos que la publicidad termine en clientes, no en reportes de alcance.
+        </p>
+        <!-- REEMPLAZAR: enlaces reales de redes -->
+        <div class="social">
+          <a href="#" aria-label="Facebook de Cavernícola Creativo" data-placeholder="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"></path></svg></a>
+          <a href="#" aria-label="Instagram de Cavernícola Creativo" data-placeholder="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"></circle></svg></a>
+          <a href="#" aria-label="LinkedIn de Cavernícola Creativo" data-placeholder="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76V21h-4v-5.6c0-1.34-.03-3.07-1.9-3.07-1.9 0-2.2 1.46-2.2 2.97V21H9z"></path></svg></a>
+          <a href="#" aria-label="TikTok de Cavernícola Creativo" data-placeholder="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 2c.3 2.2 1.6 3.6 3.8 3.8v2.7c-1.3.1-2.5-.2-3.7-.9v6.6c0 4-3.2 6.6-6.8 5.6a5.6 5.6 0 0 1 .3-11c.3 0 .6 0 .9.1v2.9a2.8 2.8 0 1 0 2 2.7V2z"></path></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <h3>Servicios</h3>
+        <ul>
+          <li><a href="#servicios">Marca y diseño</a></li>
+          <li><a href="#servicios">Publicidad y medios</a></li>
+          <li><a href="#servicios">Web y e-commerce</a></li>
+          <li><a href="#servicios">Contenido y redes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Agencia</h3>
+        <ul>
+          <li><a href="#metodo">Cómo trabajamos</a></li>
+          <li><a href="#trabajo">Trabajo reciente</a></li>
+          <li><a href="#preguntas">Preguntas frecuentes</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Plataforma</h3>
+        <ul>
+          <li><a href="https://app.cavernicolapp.com/landing" target="_blank" rel="noopener">Conoce CavernicolApp</a></li>
+          <li><a href="#promo">15 días gratis</a></li>
+          <li><a href="https://app.cavernicolapp.com" target="_blank" rel="noopener">Entrar a mi cuenta</a></li>
+          <li><a href="/aviso-de-privacidad">Aviso de privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__legal">
+      <span>© <span id="year">2026</span> Cavernícola Creativo. Todos los derechos reservados.</span>
+      <span>CavernicolApp es un producto de Cavernícola Creativo.</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa" id="wa-float" href="#" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.2-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.2-.6-.4zM12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z"></path></svg>
+  <span>Escríbenos</span>
+</a>
+
+<!-- ══════════════════════ DATOS ESTRUCTURADOS ══════════════════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.cavernicolacreativo.com/#organizacion",
+      "name": "Cavernícola Creativo",
+      "alternateName": "Cavernícola Creativo Agencia de Publicidad",
+      "url": "https://www.cavernicolacreativo.com/",
+      "logo": "https://www.cavernicolacreativo.com/logo-cavernicola.png",
+      "description": "Agencia de publicidad que integra marca y diseño, publicidad y medios, desarrollo web y e-commerce, y contenido para redes sociales, con tecnología propia (CavernicolApp).",
+      "email": "hola@cavernicolacreativo.com",
+      "sameAs": [
+        "https://www.facebook.com/cavernicolacreativo",
+        "https://www.instagram.com/cavernicolacreativo",
+        "https://www.linkedin.com/company/cavernicolacreativo"
+      ],
+      "contactPoint": [{
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "availableLanguage": ["es-MX"],
+        "areaServed": "MX"
+      }]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.cavernicolacreativo.com/#sitio",
+      "url": "https://www.cavernicolacreativo.com/",
+      "name": "Cavernícola Creativo",
+      "inLanguage": "es-MX",
+      "publisher": { "@id": "https://www.cavernicolacreativo.com/#organizacion" }
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://www.cavernicolacreativo.com/#agencia",
+      "name": "Cavernícola Creativo",
+      "url": "https://www.cavernicolacreativo.com/",
+      "parentOrganization": { "@id": "https://www.cavernicolacreativo.com/#organizacion" },
+      "areaServed": { "@type": "Country", "name": "México" },
+      "priceRange": "$$",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios de Cavernícola Creativo",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Marca y diseño", "description": "Identidad de marca, logotipo, manual de marca, sistema gráfico, packaging y material impreso." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Publicidad y medios", "description": "Campañas en Facebook, Instagram y Google, estrategia de medios, anuncios de clic a WhatsApp, Lead Ads y reportes de resultados." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web, e-commerce y tecnología", "description": "Sitios web, landing pages, tiendas en línea, automatización y desarrollo a la medida." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Contenido y redes", "description": "Manejo de redes sociales, producción de foto y video, copywriting y calendario editorial." } }
+        ]
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://app.cavernicolapp.com/#app",
+      "name": "CavernicolApp",
+      "url": "https://app.cavernicolapp.com/landing",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "es-MX",
+      "description": "Plataforma multiempresa de Cavernícola Creativo: bandeja unificada de Messenger, Instagram, comentarios y WhatsApp, asistente con inteligencia artificial, publicación programada en redes (Social Studio), creación y reporte de campañas de Meta, y captura automática de Lead Ads en el CRM.",
+      "publisher": { "@id": "https://www.cavernicolacreativo.com/#organizacion" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.cavernicolacreativo.com/#preguntas",
+      "mainEntity": [
+        { "@type": "Question", "name": "¿Puedo contratar solo un servicio?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Muchos clientes empiezan con marca o con campañas y van sumando. Lo que no hacemos es encender publicidad sin antes revisar a quién le vas a hablar y cómo vas a dar seguimiento." } },
+        { "@type": "Question", "name": "¿Cuánto cuesta trabajar con ustedes?", "acceptedAnswer": { "@type": "Answer", "text": "Depende del alcance y del tamaño de la operación. En el diagnóstico definimos objetivo, entregables y presupuesto de medios por separado, y entregamos una propuesta con números claros. El diagnóstico no tiene costo ni compromiso." } },
+        { "@type": "Question", "name": "¿En cuánto tiempo se ven resultados?", "acceptedAnswer": { "@type": "Answer", "text": "Las campañas empiezan a traer prospectos en las primeras semanas. Los resultados de marca y posicionamiento se sostienen en meses. Desde el primer mes se entrega el reporte de cuántos prospectos entraron y qué pasó con cada uno." } },
+        { "@type": "Question", "name": "¿Cómo funcionan los 15 días gratis de CavernicolApp?", "acceptedAnswer": { "@type": "Answer", "text": "Se genera un código de promoción en el sitio de Cavernícola Creativo, se copia y se pega al crear la cuenta en CavernicolApp. Son 15 días con todas las funciones, sin tarjeta y sin compromiso. Es un código por negocio y hay 7 días para canjearlo." } },
+        { "@type": "Question", "name": "¿Mis cuentas de Facebook e Instagram siguen siendo mías?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. El negocio conecta su propia página de Facebook, su cuenta profesional de Instagram y su cuenta publicitaria desde el menú de Integraciones, autorizando el acceso en el diálogo de Facebook, y puede revocarlo cuando quiera. La agencia opera sobre los activos del cliente, nunca es dueña de ellos." } },
+        { "@type": "Question", "name": "¿Trabajan con clientes fuera de la ciudad?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Operamos con clientes en distintas partes de México. Las sesiones son en línea y la producción de foto y video se agenda por bloques cuando el proyecto lo requiere." } },
+        { "@type": "Question", "name": "¿Qué necesito tener listo para empezar?", "acceptedAnswer": { "@type": "Answer", "text": "Qué vendes, a qué precio y quién atiende a los interesados. La agencia se encarga del resto, incluida la conexión de redes sociales y WhatsApp." } }
+      ]
+    }
+  ]
+}
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIGURACIÓN — lo único que hay que tocar para publicar.
+   ═══════════════════════════════════════════════════════════ */
+var CONFIG = {
+  crmBase:  'https://app.cavernicolapp.com',
+  crmSlug:  'cavernicola-creativo',   // REEMPLAZAR por el slug real
+  appLanding: 'https://app.cavernicolapp.com/landing',
+  whatsapp: '5215500000000',          // REEMPLAZAR — internacional, sin signos
+  email:    'hola@cavernicolacreativo.com',  // REEMPLAZAR
+  telefono: '+52 55 0000 0000',       // REEMPLAZAR
+
+  // ── ISOTIPO OFICIAL ────────────────────────────────────────────────
+  // NO hay dibujo de respaldo: el isotipo es el tuyo o no hay isotipo.
+  // El sitio BUSCA el archivo en estas rutas, en orden, y coloca la
+  // primera que exista. Si ninguna existe, la marca se queda con su
+  // lockup tipografico — nunca aparece una imagen rota.
+  //
+  //   · Sitio propio  → basta con subir el archivo con uno de estos
+  //                     nombres; no hay que tocar codigo.
+  //   · Modulo de sitio web de CavernicolApp → las rutas relativas NO
+  //                     funcionan ahi: usa una URL completa
+  //                     ("https://www.cavernicolacreativo.com/...")
+  //                     o pega el archivo como data URI.
+  // Tambien acepta una URL completa de donde ya viva la imagen:
+  //   logo: 'https://www.cavernicolacreativo.com/isotipo.png'
+  logo: ['isotipo-cavernicola.svg', '/isotipo-cavernicola.svg',
+         'isotipo-cavernicola.png', '/isotipo-cavernicola.png',
+         'isotipo.svg',  '/isotipo.svg',  'isotipo.png',  '/isotipo.png',
+         'logo.svg',     '/logo.svg',     'logo.png',     '/logo.png'],
+  // true SOLO si la imagen ya incluye las palabras "Cavernícola
+  // Creativo" (asi se oculta el texto y no se duplica el nombre).
+  logoEsLockup: false
+};
+
+(function () {
+  'use strict';
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var raf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+
+  /* ── Año y datos de contacto ─────────────────────────────── */
+  var y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  var waMsg  = encodeURIComponent('Hola, vengo del sitio de Cavernícola Creativo y quiero mi diagnóstico.');
+  var waHref = 'https://wa.me/' + CONFIG.whatsapp + '?text=' + waMsg;
+
+  var set = function (id, fn) { var el = document.getElementById(id); if (el) fn(el); };
+
+  /* ── Isotipo oficial ──────────────────────────────────────────────
+     Aqui NO se dibuja nada. Se busca el archivo del cliente y, si
+     carga, se coloca en el navbar y en el pie. Si no carga, la marca
+     se queda con su lockup tipografico: preferimos no tener isotipo
+     antes que mostrar una imagen rota o una imitacion. */
+  var montarIsotipo = function (url) {
+    Array.prototype.forEach.call(document.querySelectorAll('.brand'), function (marca) {
+      if (marca.querySelector('.brand__mark')) return;
+      var caja = document.createElement('span');
+      caja.className = 'brand__mark';
+      var img = document.createElement('img');
+      img.src = url;
+      img.alt = 'Cavernícola Creativo';
+      caja.appendChild(img);
+      marca.insertBefore(caja, marca.firstChild);
+      if (CONFIG.logoEsLockup) marca.dataset.lockup = 'true';
+    });
+  };
+
+  var buscarIsotipo = function (rutas, i) {
+    if (!rutas || i >= rutas.length) return;      // ninguna existe: nos quedamos con el texto
+    var url = rutas[i];
+    if (url.indexOf('data:') === 0) { montarIsotipo(url); return; }
+    var sonda = new Image();
+    sonda.onload  = function () { montarIsotipo(url); };
+    sonda.onerror = function () { buscarIsotipo(rutas, i + 1); };
+    sonda.src = url;
+  };
+  buscarIsotipo([].concat(CONFIG.logo || []), 0);
+  set('wa-float', function (el) { el.href = waHref; });
+  set('link-whatsapp', function (el) { el.href = waHref; el.target = '_blank'; el.rel = 'noopener'; });
+  set('link-email', function (el) { el.href = 'mailto:' + CONFIG.email; });
+  set('txt-email', function (el) { el.textContent = CONFIG.email; });
+  set('link-phone', function (el) { el.href = 'tel:' + CONFIG.telefono.replace(/[^\d+]/g, ''); });
+  set('txt-phone', function (el) { el.textContent = CONFIG.telefono; });
+
+  /* ── Barra de lectura + navegación sólida ────────────────── */
+  var nav = document.getElementById('nav');
+  var bar = document.getElementById('progress-bar');
+  var ticking = false;
+  var onScroll = function () {
+    if (ticking) return;
+    ticking = true;
+    raf(function () {
+      var sy = window.scrollY || window.pageYOffset;
+      if (nav) nav.dataset.scrolled = sy > 14 ? 'true' : 'false';
+      if (bar) {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (max > 0 ? (sy / max) * 100 : 0) + '%';
+      }
+      ticking = false;
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ── Revelado al entrar en viewport ──────────────────────── */
+  var revs = document.querySelectorAll('.rv');
+  if (reduce || !('IntersectionObserver' in window)) {
+    Array.prototype.forEach.call(revs, function (el) { el.dataset.in = 'true'; });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.dataset.in = 'true';
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.14, rootMargin: '0px 0px -50px 0px' });
+    Array.prototype.forEach.call(revs, function (el) { io.observe(el); });
+  }
+
+  /* ── Conteo de cifras ────────────────────────────────────── */
+  var contar = function (el) {
+    var meta = parseInt(el.getAttribute('data-count'), 10);
+    if (isNaN(meta)) return;
+    if (reduce) { el.textContent = String(meta); return; }
+    var t0 = null, dur = 1300;
+    var paso = function (ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      el.textContent = String(Math.round(meta * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) raf(paso);
+    };
+    raf(paso);
+  };
+  if ('IntersectionObserver' in window) {
+    var ioc = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { contar(e.target); ioc.unobserve(e.target); } });
+    }, { threshold: 0.6 });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-count]'), function (el) { ioc.observe(el); });
+  }
+
+  /* ── Marquesina: se duplica para que el bucle no tenga corte ── */
+  var track = document.getElementById('ticker-track');
+  if (track && track.children.length === 1) {
+    track.appendChild(track.children[0].cloneNode(true));
+  }
+
+  /* ── Reflector que sigue al puntero en las tarjetas ──────── */
+  if (!reduce && window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('pointermove', function (e) {
+      var tile = e.target.closest ? e.target.closest('.tile') : null;
+      if (!tile) return;
+      var r = tile.getBoundingClientRect();
+      tile.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      tile.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+
+    /* Inclinación 3D suave en las piezas de trabajo */
+    Array.prototype.forEach.call(document.querySelectorAll('.work[data-tilt]'), function (card) {
+      var pend = false;
+      card.addEventListener('pointermove', function (e) {
+        if (pend) return;
+        pend = true;
+        raf(function () {
+          var r = card.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - .5;
+          var py = (e.clientY - r.top) / r.height - .5;
+          card.style.transform = 'perspective(900px) rotateY(' + (px * 7).toFixed(2) + 'deg) rotateX(' + (-py * 7).toFixed(2) + 'deg) translateY(-5px)';
+          pend = false;
+        });
+      }, { passive: true });
+      card.addEventListener('pointerleave', function () { card.style.transform = ''; });
+    });
+  }
+
+  /* ── Paralaje de los orbes del hero ──────────────────────── */
+  if (!reduce) {
+    var orbs = document.querySelectorAll('.orb[data-par]');
+    if (orbs.length) {
+      var oTick = false;
+      window.addEventListener('scroll', function () {
+        if (oTick) return;
+        oTick = true;
+        raf(function () {
+          var sy = window.scrollY || 0;
+          if (sy < window.innerHeight * 1.5) {
+            Array.prototype.forEach.call(orbs, function (o) {
+              o.style.transform = 'translate3d(0,' + (sy * parseFloat(o.getAttribute('data-par'))).toFixed(1) + 'px,0)';
+            });
+          }
+          oTick = false;
+        });
+      }, { passive: true });
+    }
+  }
+
+  /* ── Riel del método: se enciende el paso en pantalla ────── */
+  var rail = document.getElementById('rail');
+  if (rail) {
+    var pasos = rail.querySelectorAll('.rail__item');
+    if ('IntersectionObserver' in window && !reduce) {
+      var ior = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { e.target.dataset.on = e.isIntersecting ? 'true' : 'false'; });
+      }, { rootMargin: '-42% 0px -42% 0px' });
+      Array.prototype.forEach.call(pasos, function (p) { ior.observe(p); });
+    } else {
+      Array.prototype.forEach.call(pasos, function (p) { p.dataset.on = 'true'; });
+    }
+  }
+
+  /* ── Enlace activo del menú según la sección visible ─────── */
+  var links = document.querySelectorAll('#nav-links .nav__link');
+  if (links.length && 'IntersectionObserver' in window) {
+    var mapa = {};
+    Array.prototype.forEach.call(links, function (a) {
+      var id = a.getAttribute('href').slice(1);
+      var sec = document.getElementById(id);
+      if (sec) mapa[id] = a;
+    });
+    var ion = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var a = mapa[e.target.id];
+        if (a) a.dataset.active = e.isIntersecting ? 'true' : 'false';
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    Object.keys(mapa).forEach(function (id) { ion.observe(document.getElementById(id)); });
+  }
+
+  /* ── Bandeja del hero: entra un prospecto cada tanto ─────── */
+  var feed = document.getElementById('feed');
+  if (feed && !reduce) {
+    var entrantes = [
+      { ini: 'PV', nom: 'Paola Vega',    nota: '«¿Manejan meses sin intereses?» · Messenger',   chip: 'Caliente' },
+      { ini: 'RM', nom: 'Ricardo Mena',  nota: 'Clic a WhatsApp desde anuncio',                 chip: 'Nuevo' },
+      { ini: 'SD', nom: 'Sofía Durán',   nota: 'Comentario en publicación · Instagram',          chip: 'Nuevo' },
+      { ini: 'EN', nom: 'Emilio Nava',   nota: 'Formulario · Meta Lead Ads',                     chip: 'Caliente' },
+      { ini: 'GB', nom: 'Gaby Bermúdez', nota: '«Quiero cotización» · WhatsApp',                 chip: 'Nuevo' }
+    ];
+    var i = 0;
+    var tiempos = ['8 s', '6 s', '11 s', '5 s', '9 s'];
+    setInterval(function () {
+      if (document.hidden) return;
+      var d = entrantes[i % entrantes.length];
+      var el = document.createElement('div');
+      el.className = 'feed__item';
+      el.setAttribute('data-new', 'true');
+      el.innerHTML =
+        '<span class="feed__ava" aria-hidden="true">' + d.ini + '</span>' +
+        '<span class="feed__meta"><span class="feed__name">' + d.nom + '</span>' +
+        '<span class="feed__note">' + d.nota + '</span></span>' +
+        '<span class="feed__chip">' + d.chip + '</span>';
+      var previo = feed.querySelector('[data-new="true"]');
+      if (previo) previo.removeAttribute('data-new');
+      feed.insertBefore(el, feed.firstChild);
+      while (feed.children.length > 4) feed.removeChild(feed.lastChild);
+      set('pane-time', function (t) { t.textContent = tiempos[i % tiempos.length]; });
+      i++;
+    }, 4200);
+  }
+
+  /* ── Acordeón: una pregunta abierta a la vez ─────────────── */
+  var faqs = document.querySelectorAll('#preguntas details');
+  Array.prototype.forEach.call(faqs, function (d) {
+    d.addEventListener('toggle', function () {
+      if (!d.open) return;
+      Array.prototype.forEach.call(faqs, function (o) { if (o !== d) o.open = false; });
+    });
+  });
+
+  /* ═════════════════════════════════════════════════════════
+     Generador de códigos de promoción — 15 días gratis.
+
+     Formato: CAV15-XXXXXX-YY
+       XXXXXX = 6 caracteres aleatorios del alfabeto (sin
+                letras ni números que se confundan al dictarlos).
+       YY     = 2 caracteres de verificación calculados a
+                partir de los 6 anteriores, para que
+                CavernicolApp valide el código sin consultar
+                nada. El algoritmo está en el README.
+     ═════════════════════════════════════════════════════════ */
+  var PROMO = { alphabet: 'ACDEFGHJKLMNPQRTUVWXY34789', dias: 7, store: 'cav15_promo' };
+
+  var checksum = function (core) {
+    var A = PROMO.alphabet, s = 0, i;
+    for (i = 0; i < core.length; i++) s += (A.indexOf(core.charAt(i)) + 1) * (i + 3);
+    return A.charAt(s % 26) + A.charAt((s * 7 + 11) % 26);
+  };
+
+  var nuevoCodigo = function () {
+    var A = PROMO.alphabet, core = '', i;
+    if (window.crypto && window.crypto.getRandomValues) {
+      var r = new Uint32Array(6);
+      window.crypto.getRandomValues(r);
+      for (i = 0; i < 6; i++) core += A.charAt(r[i] % 26);
+    } else {
+      for (i = 0; i < 6; i++) core += A.charAt(Math.floor(Math.random() * 26));
+    }
+    return 'CAV15-' + core + '-' + checksum(core);
+  };
+
+  var fechaLarga = function (iso) {
+    try { return new Date(iso).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }); }
+    catch (e) { return iso.slice(0, 10); }
+  };
+
+  var promoForm   = document.getElementById('form-promo');
+  var promoStatus = document.getElementById('promo-status');
+  var promoBtn    = document.getElementById('promo-submit');
+  var coupon      = document.getElementById('coupon');
+  var cValue      = document.getElementById('coupon-value');
+  var cExpira     = document.getElementById('coupon-expira');
+  var cHello      = document.getElementById('coupon-hello');
+  var cCopy       = document.getElementById('coupon-copy');
+  var cLabel      = document.getElementById('coupon-copy-label');
+
+  /* El código aparece descifrándose, carácter por carácter */
+  var revelar = function (final) {
+    if (reduce) { cValue.textContent = final; return; }
+    var A = PROMO.alphabet;
+    var listos = 6;            // el prefijo "CAV15-" nunca se altera
+    var t0 = null;
+    var pintar = function (ts) {
+      if (t0 === null) t0 = ts;
+      if (ts - t0 > 60) { listos++; t0 = ts; }
+      if (listos >= final.length) { cValue.textContent = final; return; }
+      var out = final.slice(0, listos), i;
+      for (i = listos; i < final.length; i++) {
+        out += final.charAt(i) === '-' ? '-' : A.charAt(Math.floor(Math.random() * 26));
+      }
+      cValue.textContent = out;
+      raf(pintar);
+    };
+    raf(pintar);
+  };
+
+  var guardado = function () {
+    try {
+      var raw = window.localStorage.getItem(PROMO.store);
+      if (!raw) return null;
+      var d = JSON.parse(raw);
+      if (!d || !d.codigo || !d.expira) return null;
+      if (new Date(d.expira).getTime() < Date.now()) return null;
+      return d;
+    } catch (e) { return null; }
+  };
+
+  var mostrar = function (d, saludo, animar) {
+    if (!coupon) return;
+    if (animar) revelar(d.codigo); else cValue.textContent = d.codigo;
+    cExpira.textContent = fechaLarga(d.expira);
+    if (saludo) cHello.textContent = saludo;
+    if (promoForm) promoForm.style.display = 'none';
+    coupon.dataset.state = 'ready';
+  };
+
+  if (coupon) {
+    var previo = guardado();
+    if (previo) {
+      mostrar(previo, previo.nombre ? 'Ya tienes tu código, ' + previo.nombre + '.' : 'Ya tienes tu código.', false);
+    }
+  }
+
+  if (promoForm) {
+    promoForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var nombre = promoForm.nombre.value.trim();
+      var tel    = promoForm.telefono.value.trim();
+      var mail   = promoForm.email.value.trim();
+
+      var diga = function (st, html) { promoStatus.dataset.state = st; promoStatus.innerHTML = html; };
+      if (!nombre) { diga('error', 'Falta tu nombre.'); promoForm.nombre.focus(); return; }
+      if (!tel && !mail) { diga('error', 'Déjanos tu WhatsApp o tu correo para poder activarte la cortesía.'); promoForm.telefono.focus(); return; }
+
+      var d = {
+        codigo: nuevoCodigo(),
+        expira: new Date(Date.now() + PROMO.dias * 86400000).toISOString(),
+        nombre: nombre.split(' ')[0]
+      };
+      try { window.localStorage.setItem(PROMO.store, JSON.stringify(d)); } catch (err) {}
+
+      var etiqueta = promoBtn.innerHTML;
+      promoBtn.setAttribute('aria-busy', 'true');
+      promoBtn.textContent = 'Generando…';
+      promoStatus.removeAttribute('data-state');
+      promoStatus.innerHTML = '';
+
+      fetch(CONFIG.crmBase + '/api/public/l/' + CONFIG.crmSlug + '/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nombre, email: mail, phone: tel,
+          message: 'Codigo de cortesia 15 dias: ' + d.codigo +
+                   ' · Vence: ' + d.expira.slice(0, 10) +
+                   ' · Origen: promo 15 dias, sitio cavernicolacreativo.com'
+        })
+      })
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function () { mostrar(d, 'Listo ' + d.nombre + '. Este es tu código.', true); })
+        .catch(function () {
+          // El código es suyo de todas formas; solo pedimos que nos lo confirme.
+          mostrar(d, 'Listo ' + d.nombre + '. Este es tu código.', true);
+          var p = document.createElement('p');
+          p.className = 'coupon__meta';
+          p.innerHTML = 'No pudimos registrar tus datos en automático. Mándanos el código por ' +
+            '<a href="' + waHref + '" target="_blank" rel="noopener">WhatsApp</a> para dejártelo activado.';
+          coupon.appendChild(p);
+        })
+        .finally(function () {
+          promoBtn.removeAttribute('aria-busy');
+          promoBtn.innerHTML = etiqueta;
+        });
+    });
+  }
+
+  if (cCopy) {
+    cCopy.addEventListener('click', function () {
+      var listo = function () {
+        cCopy.dataset.copied = 'true';
+        cLabel.textContent = '¡Copiado!';
+        setTimeout(function () { cCopy.removeAttribute('data-copied'); cLabel.textContent = 'Copiar código'; }, 2000);
+      };
+      var respaldo = function () {
+        var sel = window.getSelection(), r = document.createRange();
+        r.selectNodeContents(cValue);
+        sel.removeAllRanges(); sel.addRange(r);
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        if (ok) listo(); else cLabel.textContent = 'Selecciónalo y copia';
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cValue.textContent).then(listo).catch(respaldo);
+      } else { respaldo(); }
+    });
+  }
+
+  /* ── Formulario de contacto → prospecto en el CRM ────────── */
+  var form   = document.getElementById('form-contacto');
+  var status = document.getElementById('form-status');
+  var submit = document.getElementById('form-submit');
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var nombre = form.nombre.value.trim();
+    var tel    = form.telefono.value.trim();
+    var mail   = form.email.value.trim();
+    var emp    = form.empresa.value.trim();
+    var serv   = form.servicio.value;
+    var msj    = form.mensaje.value.trim();
+
+    var diga = function (st, html) { status.dataset.state = st; status.innerHTML = html; };
+    if (!nombre) { diga('error', 'Falta tu nombre para poder contactarte.'); form.nombre.focus(); return; }
+    if (!tel && !mail) { diga('error', 'Necesitamos un teléfono o un correo para responderte.'); form.telefono.focus(); return; }
+
+    var notas = [];
+    if (emp) notas.push('Empresa: ' + emp);
+    if (serv) notas.push('Interés: ' + serv);
+    if (msj) notas.push(msj);
+    notas.push('Origen: sitio web cavernicolacreativo.com');
+
+    var etiqueta = submit.innerHTML;
+    submit.setAttribute('aria-busy', 'true');
+    submit.textContent = 'Enviando…';
+    status.removeAttribute('data-state');
+    status.innerHTML = '';
+
+    fetch(CONFIG.crmBase + '/api/public/l/' + CONFIG.crmSlug + '/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: nombre, email: mail, phone: tel, message: notas.join(' · ') })
+    })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function () {
+        form.reset();
+        diga('ok', '<b>Listo, ya lo tenemos.</b><br>Te contactamos el mismo día hábil. Si es urgente, escríbenos por WhatsApp.');
+      })
+      .catch(function () {
+        diga('error', 'No pudimos enviar el formulario en este momento. Escríbenos por ' +
+          '<a href="' + waHref + '" target="_blank" rel="noopener" style="color:inherit;font-weight:700;text-decoration:underline">WhatsApp</a> o a ' +
+          '<a href="mailto:' + CONFIG.email + '" style="color:inherit;font-weight:700;text-decoration:underline">' + CONFIG.email + '</a> y te atendemos igual.');
+      })
+      .finally(function () {
+        submit.removeAttribute('aria-busy');
+        submit.innerHTML = etiqueta;
+      });
+  });
+})();
+</script>
+</body>
+</html>
